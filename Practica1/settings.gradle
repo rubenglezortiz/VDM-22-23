@@ -15,3 +15,5 @@ dependencyResolutionManagement {
 rootProject.name = "Practica1"
 include ':app'
 include ':Logica'
+include ':Engine'
+include ':AndroidEngine'
