@@ -48,5 +48,9 @@ public class Casilla {
         return 0;
     }
 
+    public void render(/*IGraphicsEngine graphics*/){
+        //renderizar
+    }
+
 
 }

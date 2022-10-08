@@ -166,6 +166,13 @@ public class Tablero {
         return contador;
     }
 
+    public void render(){
+        for (int i = 0; i < numRows; i++){
+            for (int j = 0; j < numCols; j++){
+                tablero[i][j].render();
+            }
+        }
+    }
 
     public static void main(String[] args) {
         Tablero tablero = new Tablero(5, 5);
