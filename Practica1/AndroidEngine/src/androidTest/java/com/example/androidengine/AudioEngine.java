@@ -1,5 +1,10 @@
 package com.example.androidengine;
 
-public class AudioEngine /*extends...*/ {
-    //SUPONGO QUE ESTO LO VEREMOS EN CLASE
+import com.example.engine.IAudio;
+
+public class AudioEngine implements IAudio {
+    public ISound newSound()
+    {
+        return new ISound();
+    }
 }

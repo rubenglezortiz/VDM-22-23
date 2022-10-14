@@ -1,4 +1,10 @@
 package com.example.desktopengine;
 
-public class AudioEngine {
+import com.example.engine.IAudio;
+
+public class AudioEngine implements IAudio {
+    public ISound newSound()
+    {
+        return new ISound();
+    }
 }
