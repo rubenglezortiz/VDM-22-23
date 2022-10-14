@@ -1,12 +1,14 @@
 package com.example.androidengine;
 
-public class StateEngine /*extends...*/{
+import com.example.engine.IStateEngine;
 
-    void update(){
+public class StateEngine implements IStateEngine {
+
+    public void update(){
 
     }
 
-    void render(){
+    public void render(){
 
     }
 }
