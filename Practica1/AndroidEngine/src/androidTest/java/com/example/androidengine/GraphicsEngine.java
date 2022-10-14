@@ -26,7 +26,7 @@ public class GraphicsEngine implements IGraphicsEngine {
     //private boolean running;
 
     public GraphicsEngine(SurfaceView myView){
-        this.myView = myView;
+        //this.myView = myView;
         this.holder = this.myView.getHolder();
         this.paint = new Paint();
         this.paint.setColor(0xFFFFFFFF);
