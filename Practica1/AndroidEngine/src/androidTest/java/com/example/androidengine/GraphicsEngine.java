@@ -22,7 +22,6 @@ public class GraphicsEngine implements IGraphicsEngine {
     private Paint paint;
 
     private AssetManager assetManager;
-
     //private Thread renderThread;
     //private boolean running;
 
@@ -36,76 +35,54 @@ public class GraphicsEngine implements IGraphicsEngine {
 
     @Override
     public void setResolution(int w, int h){
-
+        //NI IDEA
     };
 
     @Override
-    void setColor(String color){
+    public void setColor(String color){
         //Deberíamos comprobar que se pase bien el parámetro "color"???
         this.paint.setColor(Integer.parseInt(color));
     };
 
-    public void setFont(){
+    @Override
+    public void setFont(String filePath, int size) throws IOException {
         //NI IDEA
     }
 
-    public void drawImage() {
-
-    }
-
-
-    public void drawRectangle() {
-
-    }
-
-
-
-    public void setColor(){
-
-    };
-
-    public void drawImage(String filePath, int x, int y) throws IOException { //INTENTAR METER VALORES POR DEFECTO
-        drawImage(filePath, x, y,100,100);
-    }
-
-   void drawImage(String filePath, int x, int y, int w, int h) throws IOException {
+    @Override
+    public void drawImage(String filePath, int x, int y, int w, int h) throws IOException {
+        //INTENTAR METER VALORES POR DEFECTO
         InputStream is = assetManager.open(filePath);
         Bitmap bitmap = BitmapFactory.decodeStream(is);
         bitmap.setWidth(w); bitmap.setHeight(h); //COMPROBAR Q ESTO FUNCIONE
         canvas.drawBitmap(bitmap, x,y, this.paint);
-    };
+    }
 
-
-
-    void drawRectangle(float x, float y, float w, float h, String color){
+    @Override
+    public void drawRectangle(float x, float y, float w, float h, String  color) {
         paint.setColor(Integer.parseInt(color));
-        canvas.drawRect(x,y,w,h,paint);
-    };
+        canvas.drawRect(x, y, w, h, paint);
+    }
 
+    public void drawImage(String filePath, int x, int y) throws IOException {
+        drawImage(filePath, x, y,100,100);
+    }
 
-    void fillRectangle(){
+    @Override
+    public void fillRectangle(String color){
         //NI IDEA
     }
 
     @Override
-    public void drawLine() {
-
+    public void drawLine(float x, float y, float x_stop, float y_stop, String color) {
+        paint.setColor(Integer.parseInt(color));
+        canvas.drawLine(x,y,x_stop, y_stop, paint);
     }
 
     @Override
-    public void drawText() {
-
-    }
-
-    ;
-    void drawLine(float x, float y, float x_stop, float y_stop, String color){
-        paint.setColor(Integer.parseInt(color));
-        canvas.drawLine(x,y,x_stop, y_stop, paint);
-    };
-
-    void drawText(String text, float x, float y, float textSize){
+    public void drawText(String text, float x, float y, float textSize) {
         paint.setColor(Integer.parseInt(text));
         paint.setTextSize(textSize);
         canvas.drawText(text, x, y, paint);
-    };
+    }
 }
