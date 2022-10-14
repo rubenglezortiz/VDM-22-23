@@ -10,10 +10,12 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.engine.IGraphicsEngine;
+
 import java.io.IOException;
 import java.io.InputStream;
 
-public class GraphicsEngine /*extends IGraphics*/  {
+public class GraphicsEngine implements IGraphicsEngine {
     private SurfaceView myView;
     private SurfaceHolder holder;
     private Canvas canvas;
@@ -32,20 +34,37 @@ public class GraphicsEngine /*extends IGraphics*/  {
         //this.assetManager = getAssets(); //DA ERROR
     }
 
-    void setResolution(){
+    @Override
+    public void setResolution(int w, int h){
 
     };
 
+    @Override
     void setColor(String color){
         //Deberíamos comprobar que se pase bien el parámetro "color"???
         this.paint.setColor(Integer.parseInt(color));
     };
 
-    void setFont(){
+    public void setFont(){
         //NI IDEA
+    }
+
+    public void drawImage() {
+
+    }
+
+
+    public void drawRectangle() {
+
+    }
+
+
+
+    public void setColor(){
+
     };
 
-    void drawImage(String filePath, int x, int y) throws IOException { //INTENTAR METER VALORES POR DEFECTO
+    public void drawImage(String filePath, int x, int y) throws IOException { //INTENTAR METER VALORES POR DEFECTO
         drawImage(filePath, x, y,100,100);
     }
 
@@ -66,7 +85,19 @@ public class GraphicsEngine /*extends IGraphics*/  {
 
     void fillRectangle(){
         //NI IDEA
-    };
+    }
+
+    @Override
+    public void drawLine() {
+
+    }
+
+    @Override
+    public void drawText() {
+
+    }
+
+    ;
     void drawLine(float x, float y, float x_stop, float y_stop, String color){
         paint.setColor(Integer.parseInt(color));
         canvas.drawLine(x,y,x_stop, y_stop, paint);

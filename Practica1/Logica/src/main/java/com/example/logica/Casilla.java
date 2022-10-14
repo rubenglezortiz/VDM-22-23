@@ -49,7 +49,23 @@ public class Casilla {
     }
 
     public void render(/*IGraphicsEngine graphics*/){
-        //renderizar
+        /* String color;
+        switch (state){
+            case DESELECCIONADA:
+                color = "blanco";
+                break;
+            case SELECCIONADA:
+                color = "azul";
+            case ELIMINADA:
+                color = "pues el q sea";
+                break;
+            case INCORRECTA:
+                color = "rojo";
+                break;
+            default: break;
+        }
+        graphics.drawRectangle(pos.x*width, pos.y*height, w,h, "color");
+        */
     }
 
 

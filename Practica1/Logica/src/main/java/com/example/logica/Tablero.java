@@ -1,12 +1,13 @@
 package com.example.logica;
-
 import java.util.ArrayList;
 
 public class Tablero {
+
+
     int numCols, numRows;
-    Casilla tablero[][];
-    ArrayList<Integer> colsList [];
-    ArrayList<Integer> rowsList [];
+    Casilla[][] tablero;
+    ArrayList<Integer>[] colsList;
+    ArrayList<Integer>[] rowsList;
 
     public Tablero(int nC, int nR){
         numCols = nC;
@@ -167,6 +168,7 @@ public class Tablero {
     }
 
     public void render(){
+        //RENDERIZAR PISTAS
         for (int i = 0; i < numRows; i++){
             for (int j = 0; j < numCols; j++){
                 tablero[i][j].render();
