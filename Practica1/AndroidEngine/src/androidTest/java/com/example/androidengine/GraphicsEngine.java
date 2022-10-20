@@ -8,7 +8,10 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.engine.IColor;
+import com.example.engine.IFont;
 import com.example.engine.IGraphics;
+import com.example.engine.IImage;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,28 +35,50 @@ public class GraphicsEngine implements IGraphics {
     }
 
     @Override
-    public void setResolution(int w, int h){
-        //NI IDEA
-    };
-
-    @Override
-    public void setColor(String color){
-        //Deberíamos comprobar que se pase bien el parámetro "color"???
-        this.paint.setColor(Integer.parseInt(color));
-    };
-
-    @Override
-    public void setFont(String filePath, int size) throws IOException {
+    public void setResolution(float xScale, float yScale){
         //NI IDEA
     }
 
     @Override
-    public void drawImage(String filePath, int x, int y, int w, int h) throws IOException {
+    public void translate(int x, int y) {
+
+    }
+
+    ;
+
+    @Override
+    public void setColor(IColor color){
+        //Deberíamos comprobar que se pase bien el parámetro "color"???
+        //this.paint.setColor(Integer.parseInt(color));
+    };
+
+    @Override
+    public void setFont(IFont font){
+        //NI IDEA
+    }
+
+    @Override
+    public IImage newImage(String name, int width, int height) {
+        return null;
+    }
+
+    @Override
+    public IFont newFont(String name, int size, boolean bold) {
+        return null;
+    }
+
+    @Override
+    public void clear(IColor color) {
+
+    }
+
+    @Override
+    public void drawImage(IImage image, int x, int y, int w, int h) {
         //INTENTAR METER VALORES POR DEFECTO
-        InputStream is = assetManager.open(filePath);
-        Bitmap bitmap = BitmapFactory.decodeStream(is);
-        bitmap.setWidth(w); bitmap.setHeight(h); //COMPROBAR Q ESTO FUNCIONE
-        canvas.drawBitmap(bitmap, x,y, this.paint);
+        //InputStream is = assetManager.open(filePath);
+        //Bitmap bitmap = BitmapFactory.decodeStream(is);
+        //bitmap.setWidth(w); bitmap.setHeight(h); //COMPROBAR Q ESTO FUNCIONE
+        //canvas.drawBitmap(bitmap, x,y, this.paint);
     }
 
     @Override
@@ -62,8 +87,8 @@ public class GraphicsEngine implements IGraphics {
         canvas.drawRect(x, y, w, h, paint);
     }
 
-    public void drawImage(String filePath, int x, int y) throws IOException {
-        drawImage(filePath, x, y,100,100);
+    public void drawImage(IImage image, int x, int y, int w, int h, int rotation) {
+        //drawImage(filePath, x, y,100,100);
     }
 
     @Override
@@ -72,15 +97,47 @@ public class GraphicsEngine implements IGraphics {
     }
 
     @Override
-    public void drawLine(float x, float y, float x_stop, float y_stop, String color) {
-        paint.setColor(Integer.parseInt(color));
-        canvas.drawLine(x,y,x_stop, y_stop, paint);
+    public void drawLine(float x, float y, float x_stop, float y_stop, IColor color) {
+        //paint.setColor(Integer.parseInt(color));
+        //canvas.drawLine(x,y,x_stop, y_stop, paint);
     }
 
     @Override
-    public void drawText(String text, float x, float y, float textSize) {
+    public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
         paint.setColor(Integer.parseInt(text));
         paint.setTextSize(textSize);
         canvas.drawText(text, x, y, paint);
     }
+
+    @Override
+    public int getWidth() {
+        return 0;
+    }
+
+    @Override
+    public int getHeight() {
+        return 0;
+    }
+
+    @Override
+    public int getLogicWidth() {
+        return 0;
+    }
+
+    @Override
+    public int getLogicHeight() {
+        return 0;
+    }
+
+    @Override
+    public int realToLogicX(int x) {
+        return 0;
+    }
+
+    @Override
+    public int realToLogicY(int y) {
+        return 0;
+    }
+
+
 }
