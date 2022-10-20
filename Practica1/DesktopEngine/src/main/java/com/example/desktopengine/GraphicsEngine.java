@@ -21,14 +21,20 @@ import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 public class GraphicsEngine implements IGraphics {
+    // Class variables
+    int width, height;
+    float logicWidth, logicHeight;
+
+    // Java variables
     private JFrame window;
     private BufferStrategy buffer;
     private Graphics2D canvas;
 
+    // Thread (creo q es opcional)
     private Thread renderThread;
     private boolean running;
 
-    public GraphicsEngine(JFrame window_){
+    public GraphicsEngine(JFrame window_, int width_, int height_){
         this.window = window_;
 
         int intentos = 10;
@@ -43,6 +49,7 @@ public class GraphicsEngine implements IGraphics {
         }
         this.buffer = this.window.getBufferStrategy();
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
+        width = width_; height = height_;
     }
 
     // Canvas
@@ -71,8 +78,8 @@ public class GraphicsEngine implements IGraphics {
 
     // Create
     @Override
-    public IImage newImage(String nombre) {
-        return  null;
+    public IImage newImage(String name, int width, int height) {
+        return new DImage(name, width, height);
     }
 
     @Override
@@ -107,13 +114,8 @@ public class GraphicsEngine implements IGraphics {
 
     @Override
     public void drawImage(IImage image, int x, int y, int w, int h) {
-        canvas.drawImage(((DImage)image).getImagen(),x,y,null); //el getImagen te devuelve el awt
+        canvas.drawImage(((DImage)image).getImage(),x,y,null);
     }
-
-    @Override
-    public void drawImage(IImage image, int x, int y, float w, float h, double r) {
-    }
-
 
     @Override
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
@@ -123,12 +125,12 @@ public class GraphicsEngine implements IGraphics {
     // Getters
     @Override
     public int getWidth() {
-        return 0;
+        return width;
     }
 
     @Override
     public int getHeight() {
-        return 0;
+        return height;
     }
 
     @Override
