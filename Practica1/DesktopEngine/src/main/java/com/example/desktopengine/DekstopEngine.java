@@ -2,25 +2,20 @@ package com.example.desktopengine;
 
 import com.example.engine.IAudio;
 import com.example.engine.IEngine;
-import com.example.engine.IGraphicsEngine;
-import com.example.engine.IStateEngine;
+import com.example.engine.IGraphics;
+import com.example.engine.IState;
 
-public class DekstopEngine extends IEngine {
+public class DekstopEngine implements IEngine {
     private GraphicsEngine graphics;
     private AudioEngine audio;
     private StateEngine state;
 
     @Override
-    public IGraphicsEngine getGraphics() { return graphics;}
+    public IGraphics getGraphics() { return graphics;}
 
     @Override
     public IAudio getAudio() { return audio;}
 
     @Override
-    public IStateEngine getState() { return state;}
-
-    @Override
-    public void run() {
-
-    }
+    public IState getState() { return state;}
 }

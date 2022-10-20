@@ -1,8 +1,8 @@
 package com.example.androidengine;
 
-import com.example.engine.IStateEngine;
+import com.example.engine.IState;
 
-public class StateEngine implements IStateEngine {
+public class StateEngine implements IState {
 
     public void update(){
 

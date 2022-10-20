@@ -1,7 +1,5 @@
 package com.example.androidengine;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,12 +8,12 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.example.engine.IGraphicsEngine;
+import com.example.engine.IGraphics;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-public class GraphicsEngine implements IGraphicsEngine {
+public class GraphicsEngine implements IGraphics {
     private SurfaceView myView;
     private SurfaceHolder holder;
     private Canvas canvas;

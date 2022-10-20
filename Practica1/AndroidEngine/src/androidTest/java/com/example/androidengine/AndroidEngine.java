@@ -3,13 +3,11 @@ package com.example.androidengine;
 
 import com.example.engine.IAudio;
 import com.example.engine.IEngine;
-import com.example.engine.IGraphicsEngine;
-import com.example.engine.IStateEngine;
-
-import android.view.SurfaceView;
+import com.example.engine.IGraphics;
+import com.example.engine.IState;
 
 
-public class AndroidEngine extends IEngine {
+public class AndroidEngine implements IEngine {
     private GraphicsEngine graphics;
     private AudioEngine audio;
     private StateEngine state;
@@ -22,16 +20,11 @@ public class AndroidEngine extends IEngine {
     }
 
     @Override
-    public IGraphicsEngine getGraphics() { return graphics;}
+    public IGraphics getGraphics() { return graphics;}
 
     @Override
     public IAudio getAudio() { return audio;}
 
     @Override
-    public IStateEngine getState() { return state;}
-
-    @Override
-    public void run() {
-
-    }
+    public IState getState() { return state;}
 }

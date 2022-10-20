@@ -1,6 +1,9 @@
 package com.example.desktopengine;
 
-import com.example.engine.IGraphicsEngine;
+import com.example.engine.IColor;
+import com.example.engine.IFont;
+import com.example.engine.IGraphics;
+import com.example.engine.IImage;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,64 +20,135 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-public class GraphicsEngine implements IGraphicsEngine {
-    private JFrame myView;
-    private BufferStrategy bufferStrategy;
-    private Graphics2D graphics2D;
+public class GraphicsEngine implements IGraphics {
+    private JFrame window;
+    private BufferStrategy buffer;
+    private Graphics2D canvas;
 
     private Thread renderThread;
     private boolean running;
 
-    public GraphicsEngine(){
+    public GraphicsEngine(JFrame window_){
+        this.window = window_;
 
+        int intentos = 10;
+        while(intentos > 0) {
+            try {
+                this.window.createBufferStrategy(2);
+                break;
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            intentos--;
+        }
+        this.buffer = this.window.getBufferStrategy();
+        this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
     }
 
+    // Canvas
     @Override
-    public void setResolution(int w, int h) {
+    public void setResolution(float xScale, float yScale) {
         //NI IDEA
     }
 
     @Override
-    public void setColor(String color){
-        graphics2D.setColor(Color.decode(color));
+    public void translate (int x, int y){
+        //NI IDEA
     }
 
     @Override
-    public void setFont(String filePath, int size) throws IOException, FontFormatException {
-        InputStream is = new FileInputStream(filePath);
-        Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-        font = font.deriveFont(font.getStyle(),size);
-        graphics2D.setFont(font);
+    public void setColor(IColor color){
+        //canvas.setColor(Color.decode(color));
     }
 
-    public void drawImage(String filePath, int x, int y, int w, int h) throws IOException{
-        Image img = ImageIO.read(new File(filePath));
-        Graphics graphics = bufferStrategy.getDrawGraphics();
-        graphics.drawImage(img,x, y, w, h,null);
+    @Override
+    public void setFont(IFont font) {
+        /*InputStream is = new FileInputStream(filePath);
+        Font font = Font.createFont(Font.TRUETYPE_FONT, is);
+        font = font.deriveFont(font.getStyle(),size);
+        canvas.setFont(font);*/
+    }
+
+    // Create
+    @Override
+    public IImage newImage(String nombre) {
+        return  null;
+    }
+
+    @Override
+    public IFont newFont(String name, int size, boolean bold) {
+        return null;
+    }
+
+    // Draw
+    @Override
+    public void clear (IColor color){
+        this.canvas.setColor(Color.WHITE);
+        this.canvas.fillRect(0, 0, getWidth(), getHeight());
+    }
+
+    @Override
+    public void drawLine(float x, float y, float x_stop, float y_stop, IColor color){
+
     }
 
     @Override
     public void drawRectangle(float x, float y, float w, float h, String color) {
-        graphics2D.setColor(Color.decode(color));
-        graphics2D.drawRect((int)x, (int)y, (int)w, (int)h);
+        canvas.setColor(Color.decode(color));
+        canvas.drawRect((int)x, (int)y, (int)w, (int)h);
     }
 
     @Override
     public void fillRectangle(String color) {
-        graphics2D.setColor(Color.decode(color));
+        canvas.setColor(Color.decode(color));
         //NECESITAMOS SABER QUÉ HACE FILL RECTANGLE EXACTAMENTE
         //graphics2D.fillRect(x, y, w, h);
     }
 
     @Override
-    public void drawLine(float x, float y, float x_stop, float y_stop, String color) {
-        graphics2D.setColor(Color.decode(color));
-        graphics2D.drawLine((int)x, (int)y, (int)x_stop, (int)y_stop);
+    public void drawImage(IImage image, int x, int y, int w, int h) {
+        canvas.drawImage(((DImage)image).getImagen(),x,y,null); //el getImagen te devuelve el awt
     }
 
     @Override
-    public void drawText(String text, float x, float y, float textSize) {
-        graphics2D.drawString(text, x, y);
+    public void drawImage(IImage image, int x, int y, float w, float h, double r) {
+    }
+
+
+    @Override
+    public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
+
+    }
+
+    // Getters
+    @Override
+    public int getWidth() {
+        return 0;
+    }
+
+    @Override
+    public int getHeight() {
+        return 0;
+    }
+
+    @Override
+    public int getLogicWidth() {
+        return 0;
+    }
+
+    @Override
+    public int getLogicHeight() {
+        return 0;
+    }
+
+    @Override
+    public int realToLogicX(int x) {
+        return 0;
+    }
+
+    @Override
+    public int realToLogicY(int y) {
+        return 0;
     }
 
 }

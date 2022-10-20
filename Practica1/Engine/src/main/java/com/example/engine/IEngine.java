@@ -1,8 +1,8 @@
 package com.example.engine;
 
-public abstract class IEngine implements Runnable {
-    IGraphicsEngine graphics;
-    public abstract IGraphicsEngine getGraphics();
+public interface IEngine  { //METER ESTO COMO UNA INTERFAZ
+    //IGraphicsEngine graphics;
+    public abstract IGraphics getGraphics();
     public abstract IAudio getAudio();
-    public abstract IStateEngine getState();
+    public abstract IState getState();
 }
