@@ -12,7 +12,7 @@ public class DFont implements IFont {
 
     private Font fuente;
 
-    public DFont(String name, int tam, boolean esNeg){
+    public DFont(String name, float tam, boolean esNeg){
         try {
             FileInputStream fis = new FileInputStream(name);
             this.fuente = Font.createFont(Font.TRUETYPE_FONT, fis);
@@ -38,4 +38,6 @@ public class DFont implements IFont {
     public boolean isBold() {
         return this.fuente.isBold();
     }
+
+    public Font getFont() { return fuente; }
 }
