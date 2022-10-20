@@ -76,6 +76,11 @@ public class GraphicsEngine implements IGraphics {
         canvas.setFont(((DFont)font).getFont());
     }
 
+    @Override
+    public IColor newColor(int r_, int g_, int b_, int a_) {
+        return new DColor(r_, g_, b_, a_);
+    }
+
     // Create
     @Override
     public IImage newImage(String name, int width, int height) {
@@ -96,7 +101,8 @@ public class GraphicsEngine implements IGraphics {
 
     @Override
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color){
-
+        setColor(color);
+        canvas.drawLine((int)x, (int)y, (int)x_stop, (int)y_stop);
     }
 
     @Override

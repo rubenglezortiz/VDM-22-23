@@ -41,7 +41,7 @@ public class GraphicsEngine implements IGraphics {
 
     @Override
     public void translate(int x, int y) {
-
+        //NI IDEA
     }
 
     ;
@@ -58,13 +58,18 @@ public class GraphicsEngine implements IGraphics {
     }
 
     @Override
+    public IColor newColor(int r_, int g_, int b_, int a_) {
+        return new AColor(r_, g_, b_, a_);
+    }
+
+    @Override
     public IImage newImage(String name, int width, int height) {
-        return null;
+        return new AImage(name, width, height);
     }
 
     @Override
     public IFont newFont(String name, int size, boolean bold) {
-        return null;
+        return new AFont(name, size, bold);
     }
 
     @Override
@@ -79,12 +84,9 @@ public class GraphicsEngine implements IGraphics {
 
     public void drawImage(IImage image, int x, int y, int w, int h, int rotation) {
         //INTENTAR METER VALORES POR DEFECTO
-        //InputStream is = assetManager.open(filePath);
-        //Bitmap bitmap = BitmapFactory.decodeStream(is);
-        //bitmap.setWidth(w); bitmap.setHeight(h); //COMPROBAR Q ESTO FUNCIONE
-        //canvas.drawBitmap(bitmap, x,y, this.paint);
-
-        //drawImage(filePath, x, y,100,100);
+        ((AImage)image).setWidth(w);
+        ((AImage)image).setHeight(h);
+        canvas.drawBitmap(((AImage)image).getBitmap(), x,y, this.paint);
     }
 
 

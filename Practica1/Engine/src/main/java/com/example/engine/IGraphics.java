@@ -13,6 +13,7 @@ public interface IGraphics {
     public void setFont(IFont font);
 
     // Create
+    public IColor newColor(int r_, int g_, int b_, int a_);
     public IImage newImage(String name, int width, int height);
     public IFont newFont (String name, int size, boolean bold);
 
