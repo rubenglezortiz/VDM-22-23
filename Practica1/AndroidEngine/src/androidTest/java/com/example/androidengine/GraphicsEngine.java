@@ -64,7 +64,9 @@ public class GraphicsEngine implements IGraphics {
 
     @Override
     public IImage newImage(String name, int width, int height) {
-        return new AImage(name, width, height);
+        AImage newAImage = new AImage(name, width, height);
+        //newAImage.setAssetManager(assetManager);
+        return newAImage;
     }
 
     @Override
