@@ -30,12 +30,12 @@ public class DFont implements IFont {
     }
 
     @Override
-    public int getTamanyo() {
+    public int getSize() {
         return this.fuente.getSize();
     }
 
     @Override
-    public boolean esNegrita() {
+    public boolean isBold() {
         return this.fuente.isBold();
     }
 }
