@@ -25,4 +25,5 @@ public class AColor implements IColor {
     public Color getColor(){
         return miColor;
     }
+    public int getARGBColor() { return miColor.toArgb(); }
 }

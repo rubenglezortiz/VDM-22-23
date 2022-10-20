@@ -90,7 +90,7 @@ public class GraphicsEngine implements IGraphics {
     // Draw
     @Override
     public void clear (IColor color){
-        this.canvas.setColor(Color.WHITE);
+        setColor(color);
         this.canvas.fillRect(0, 0, getWidth(), getHeight());
     }
 
@@ -100,14 +100,14 @@ public class GraphicsEngine implements IGraphics {
     }
 
     @Override
-    public void drawRectangle(float x, float y, float w, float h, String color) {
-        canvas.setColor(Color.decode(color));
+    public void drawRectangle(float x, float y, float w, float h, IColor color) {
+        setColor(color);
         canvas.drawRect((int)x, (int)y, (int)w, (int)h);
     }
 
     @Override
-    public void fillRectangle(String color) {
-        canvas.setColor(Color.decode(color));
+    public void fillRectangle(IColor color) {
+        setColor(color);
         //NECESITAMOS SABER QUÉ HACE FILL RECTANGLE EXACTAMENTE
         //graphics2D.fillRect(x, y, w, h);
     }

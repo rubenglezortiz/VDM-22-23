@@ -49,7 +49,7 @@ public class GraphicsEngine implements IGraphics {
     @Override
     public void setColor(IColor color){
         //Deberíamos comprobar que se pase bien el parámetro "color"???
-        //this.paint.setColor(Integer.parseInt(color));
+        this.paint.setColor(((AColor)color).getARGBColor());
     };
 
     @Override
@@ -69,55 +69,58 @@ public class GraphicsEngine implements IGraphics {
 
     @Override
     public void clear(IColor color) {
-
+        drawRectangle(0,0, getWidth(), getHeight(), color);
     }
 
     @Override
     public void drawImage(IImage image, int x, int y, int w, int h) {
+        drawImage(image, x, y, w, h, 0);
+    }
+
+    public void drawImage(IImage image, int x, int y, int w, int h, int rotation) {
         //INTENTAR METER VALORES POR DEFECTO
         //InputStream is = assetManager.open(filePath);
         //Bitmap bitmap = BitmapFactory.decodeStream(is);
         //bitmap.setWidth(w); bitmap.setHeight(h); //COMPROBAR Q ESTO FUNCIONE
         //canvas.drawBitmap(bitmap, x,y, this.paint);
-    }
 
-    @Override
-    public void drawRectangle(float x, float y, float w, float h, String  color) {
-        paint.setColor(Integer.parseInt(color));
-        canvas.drawRect(x, y, w, h, paint);
-    }
-
-    public void drawImage(IImage image, int x, int y, int w, int h, int rotation) {
         //drawImage(filePath, x, y,100,100);
     }
 
+
     @Override
-    public void fillRectangle(String color){
+    public void drawRectangle(float x, float y, float w, float h, IColor color) {
+        setColor(color);
+        canvas.drawRect(x, y, w, h, paint);
+    }
+
+
+    @Override
+    public void fillRectangle(IColor color){
+        setColor(color);
         //NI IDEA
     }
 
     @Override
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color) {
-        //paint.setColor(Integer.parseInt(color));
-        //canvas.drawLine(x,y,x_stop, y_stop, paint);
+        setColor(color);
+        canvas.drawLine(x,y,x_stop, y_stop, paint);
     }
 
     @Override
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
-        paint.setColor(Integer.parseInt(text));
+        setColor(color);
         paint.setTextSize(textSize);
         canvas.drawText(text, x, y, paint);
     }
 
     @Override
-    public int getWidth() {
-        return 0;
-    }
+    public int getWidth() { return this.canvas.getWidth(); } //NO ESTOY SEGURO
 
     @Override
     public int getHeight() {
-        return 0;
-    }
+        return this.canvas.getHeight();
+    }  //NO ESTOY SEGURO
 
     @Override
     public int getLogicWidth() {
