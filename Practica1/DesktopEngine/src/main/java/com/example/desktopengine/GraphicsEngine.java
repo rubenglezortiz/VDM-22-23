@@ -22,7 +22,6 @@ import javax.swing.JFrame;
 
 public class GraphicsEngine implements IGraphics {
     // Class variables
-    int width, height;
     float logicWidth, logicHeight;
 
     // Java variables
@@ -34,7 +33,7 @@ public class GraphicsEngine implements IGraphics {
     private Thread renderThread;
     private boolean running;
 
-    public GraphicsEngine(JFrame window_, int width_, int height_){
+    public GraphicsEngine(JFrame window_){
         this.window = window_;
 
         int intentos = 10;
@@ -49,7 +48,6 @@ public class GraphicsEngine implements IGraphics {
         }
         this.buffer = this.window.getBufferStrategy();
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
-        width = width_; height = height_;
     }
 
     // Canvas
@@ -66,6 +64,7 @@ public class GraphicsEngine implements IGraphics {
     @Override
     public void setColor(IColor color){
         //canvas.setColor(Color.decode(color));
+        canvas.setColor(((DColor)color).getColor());
     }
 
     @Override
@@ -74,6 +73,7 @@ public class GraphicsEngine implements IGraphics {
         Font font = Font.createFont(Font.TRUETYPE_FONT, is);
         font = font.deriveFont(font.getStyle(),size);
         canvas.setFont(font);*/
+        canvas.setFont(((DFont)font).getFont());
     }
 
     // Create
@@ -84,7 +84,7 @@ public class GraphicsEngine implements IGraphics {
 
     @Override
     public IFont newFont(String name, int size, boolean bold) {
-        return null;
+        return new DFont(name, size, bold);
     }
 
     // Draw
@@ -125,12 +125,12 @@ public class GraphicsEngine implements IGraphics {
     // Getters
     @Override
     public int getWidth() {
-        return width;
+        return this.window.getWidth();
     }
 
     @Override
     public int getHeight() {
-        return height;
+        return this.window.getHeight();
     }
 
     @Override
