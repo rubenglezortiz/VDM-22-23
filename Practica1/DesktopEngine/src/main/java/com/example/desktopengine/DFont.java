@@ -1,0 +1,41 @@
+package com.example.desktopengine;
+
+import com.example.engine.IFont;
+
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+public class DFont implements IFont {
+
+    private Font fuente;
+
+    public DFont(String name, int tam, boolean esNeg){
+        try {
+            FileInputStream fis = new FileInputStream(name);
+            this.fuente = Font.createFont(Font.TRUETYPE_FONT, fis);
+            if (esNeg){
+                this.fuente = this.fuente.deriveFont(Font.BOLD);
+            }
+            this.fuente = this.fuente.deriveFont(tam);
+
+
+        } catch (FontFormatException | IOException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    @Override
+    public int getTamanyo() {
+        return this.fuente.getSize();
+    }
+
+    @Override
+    public boolean esNegrita() {
+        return this.fuente.isBold();
+    }
+}
