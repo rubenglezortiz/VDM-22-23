@@ -48,13 +48,13 @@ public class GraphicsEngine implements IGraphics {
 
     @Override
     public void setColor(IColor color){
-        //Deberíamos comprobar que se pase bien el parámetro "color"???
         this.paint.setColor(((AColor)color).getARGBColor());
     };
 
     @Override
     public void setFont(IFont font){
-        //NI IDEA
+        this.paint.setTypeface(((AFont)font).getTypeface());
+        this.paint.setTextSize(((AFont)font).getSize());
     }
 
     @Override
@@ -64,14 +64,12 @@ public class GraphicsEngine implements IGraphics {
 
     @Override
     public IImage newImage(String name, int width, int height) {
-        AImage newAImage = new AImage(name, width, height);
-        //newAImage.setAssetManager(assetManager);
-        return newAImage;
+        return new AImage(name, width, height, this.assetManager);
     }
 
     @Override
     public IFont newFont(String name, int size, boolean bold) {
-        return new AFont(name, size, bold);
+        return new AFont(name, size, bold, this.assetManager);
     }
 
     @Override

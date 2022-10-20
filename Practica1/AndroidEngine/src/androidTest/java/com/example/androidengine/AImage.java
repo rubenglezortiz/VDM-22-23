@@ -15,12 +15,11 @@ public class AImage implements IImage {
     //InputStream is = assetManager.open(filePath);
     //Bitmap bitmap = BitmapFactory.decodeStream(is);
     //bitmap.setWidth(w); bitmap.setHeight(h); //COMPROBAR Q ESTO FUNCIONE
-    AssetManager assetManager;
 
-    public AImage(String name, int width, int height){
+    public AImage(String name, int width, int height, AssetManager assetMan){
         InputStream is = null;
         try {
-            is = assetManager.open(name);
+            is = assetMan.open(name);
             bitmap = BitmapFactory.decodeStream(is);
             bitmap.setWidth(width); //COMPROBAR Q ESTO FUNCIONE
             bitmap.setHeight(height);
@@ -50,10 +49,5 @@ public class AImage implements IImage {
     public void setHeight(int height){
         bitmap.setHeight(height);
     }
-
-    public void setAssetManager(AssetManager assetMan) { assetManager = assetMan; }
-
-
-
 
 }
