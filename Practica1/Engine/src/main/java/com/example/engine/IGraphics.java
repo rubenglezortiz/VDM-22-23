@@ -13,7 +13,7 @@ public interface IGraphics {
     public void setFont(IFont font);
 
     // Create
-    public IImage newImage(String name);
+    public IImage newImage(String name, int width, int height);
     public IFont newFont (String name, int size, boolean bold);
 
     // Draw
@@ -22,7 +22,6 @@ public interface IGraphics {
     public void drawRectangle(float x, float y, float w, float h, String  color);
     public void fillRectangle(String color);
     public void drawImage(IImage image, int x, int y, int w, int h);
-    public void drawImage(IImage image, int x, int y, float w, float h, double r); //r = rotacion
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color);
 
     // Getters

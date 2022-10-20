@@ -11,28 +11,24 @@ import javax.imageio.ImageIO;
 
 public class DImage implements IImage {
 
-    private Image imagen;
+    private Image image;
+    private int width, height;
 
-    public DImage(String name){
+    public DImage(String name, int width_, int height_){
         try {
-            this.imagen = ImageIO.read(new File(name));
+            this.image = ImageIO.read(new File(name));
         } catch (IOException e) {
             e.printStackTrace();
         }
+        width = width_;
+        height = height_;
     }
 
     @Override
-    public int getAncho() {
-        return 0;
-    }
+    public int getWidth() { return width; }
 
     @Override
-    public int getAlto() {
-        return 0;
-    }
+    public int getHeight() { return height; }
 
-    public Image getImagen(){
-        return this.imagen;
-    }
-
+    public Image getImage(){ return this.image; }
 }
