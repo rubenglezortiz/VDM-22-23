@@ -126,16 +126,13 @@ public class GraphicsEngine implements IGraphics {
     @Override
     public void drawRectangle(float x, float y, float w, float h, IColor color) {
         setColor(color);
-
-        System.out.println(canvas.getColor());
-        canvas.drawRect((int)0, (int)0, (int)200, (int)200);
+        canvas.drawRect((int)x, (int)y, (int)w, (int)h);
     }
 
     @Override
-    public void fillRectangle(IColor color) {
+    public void fillRectangle(float x, float y, float w, float h, IColor  color) {
         setColor(color);
-        //NECESITAMOS SABER QUÉ HACE FILL RECTANGLE EXACTAMENTE
-        //graphics2D.fillRect(x, y, w, h);
+        this.canvas.fillRect((int)x, (int)y, (int)w, (int)h);
     }
 
     @Override
@@ -144,10 +141,30 @@ public class GraphicsEngine implements IGraphics {
     }
 
     @Override
-    public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
+    public void drawText(String text, float x, float y, float textSize, IColor color) {
+        setColor(color);
+        this.canvas.setFont(this.canvas.getFont().deriveFont(textSize));
 
+        this.canvas.drawString(text,x,y);
     }
 
+    @Override
+    public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
+        font.setSize(textSize);
+        setColor(color);
+        this.canvas.setFont(((DFont)font).getFont());
+        this.canvas.drawString(text,x,y);
+    }
+  //  protected void renderText() throws IOException, FontFormatException {
+  //      String filePath = new String("font.TTF");
+  //      InputStream is = new FileInputStream(filePath);
+  //      Font awtFont = Font.createFont(Font.TRUETYPE_FONT, is);
+  //      awtFont = awtFont.deriveFont(awtFont.getStyle(),10);
+//
+  //      this.graphics2D.setFont(awtFont);
+  //      this.graphics2D.drawString("holaa",100,100);
+//
+  //  }
     // Getters
     @Override
     public int getWidth() {

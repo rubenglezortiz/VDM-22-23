@@ -17,8 +17,8 @@ public class Casilla {
         state = Estado.DESELECCIONADA;
         x = x_;
         y = y_;
-        w = 10;
-        h = 10;
+        w = 100;
+        h = 100;
         solucion = sol;
     }
 
@@ -53,7 +53,7 @@ public class Casilla {
         return 0;
     }
 
-    public void render(IGraphics graphics){
+    public void render(IGraphics graphics,int numRows, int numCols){
         IColor icolor;
         switch (state){
             case DESELECCIONADA:
@@ -72,8 +72,9 @@ public class Casilla {
                 icolor = graphics.newColor(255,255,255,255); // Rojo
                 break;
         }
-        graphics.newColor(255,0,0,255);// comprobar esto si es azul -> argb
-        graphics.drawRectangle(x, y, w, h, icolor);
+        //if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
+        graphics.newColor(255,0,0,255);//
+        graphics.fillRectangle(x*w+ graphics.getWidth()/2-(numRows*w/2)+10*x-10*(numRows), y*h+ graphics.getHeight()/2-h/2-(numCols*h/2)+10*y-10*(numCols), w, h, icolor);
     }
 
 

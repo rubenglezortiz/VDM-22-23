@@ -1,6 +1,8 @@
 package com.example.logica;
+import com.example.engine.IColor;
 import com.example.engine.IGraphics;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Tablero {
@@ -169,17 +171,29 @@ public class Tablero {
         return contador;
     }
 
-    public void render(IGraphics graphics){
+    public void render(IGraphics graphics) {
         //RENDERIZAR PISTAS
-        for (int i = 0; i < numRows; i++){
-            for (int j = 0; j < numCols; j++){
-                tablero[i][j].render(graphics);
+        int width = graphics.getWidth();
+        int height = graphics.getHeight();
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                tablero[i][j].render(graphics, numRows, numCols);
             }
         }
-    }
+        int xCasilla = width/2-((numRows-1)*tablero[0][0].w/2)-10*(numRows);
+        int yCasilla = height/2-((numCols-1)*tablero[0][0].h/2)-10*(numCols);
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < rowsList[i].size() ;j++)
+                graphics.drawText(rowsList[i].get(j).toString(), xCasilla+i*(tablero[0][0].w+10),yCasilla-tablero[0][0].h-10-30+30*j , 30, graphics.newColor(200, 0, 0, 255));
+        }
+        for (int i = 0; i < numCols; i++) {
+            for (int j = 0; j < colsList[i].size() ;j++)
+                graphics.drawText(colsList[i].get(j).toString(), xCasilla-tablero[0][0].w-10-30+30*j,yCasilla-tablero[0][0].h/2+(i*(tablero[0][0].h+10)) , 30, graphics.newColor(200, 0, 0, 255));
+        }
 
     /*public static void main(String[] args) {
         Tablero tablero = new Tablero(5, 5);
     }
     */
+    }
 }

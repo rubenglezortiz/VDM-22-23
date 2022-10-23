@@ -98,7 +98,7 @@ public class GraphicsEngine implements IGraphics {
 
 
     @Override
-    public void fillRectangle(IColor color){
+    public void fillRectangle(float x, float y, float w, float h,IColor color){
         setColor(color);
         //NI IDEA
     }

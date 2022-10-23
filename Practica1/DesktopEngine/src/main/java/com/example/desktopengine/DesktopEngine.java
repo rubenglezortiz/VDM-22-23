@@ -40,7 +40,6 @@ public class DesktopEngine implements IEngine, Runnable {
     @Override
     public void run() {
         while(true) {
-            System.out.println("Bucle");
             if(tablero != null)
                 tablero.render(getGraphics());
             //DColor color = new DColor(0,0,0,255);

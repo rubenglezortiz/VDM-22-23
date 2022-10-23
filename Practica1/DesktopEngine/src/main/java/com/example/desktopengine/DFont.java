@@ -40,4 +40,6 @@ public class DFont implements IFont {
     }
 
     public Font getFont() { return fuente; }
+    @Override
+    public void setSize(float size) { this.fuente.deriveFont(size);}
 }
