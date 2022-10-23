@@ -35,8 +35,10 @@ public class GraphicsEngine implements IGraphics {
 
     public GraphicsEngine(JFrame window_){
         this.window = window_;
+        this.window.setSize(600, 400);
+        this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        int intentos = 10;
+        int intentos = 1000;
         while(intentos > 0) {
             try {
                 this.window.createBufferStrategy(2);
@@ -46,10 +48,26 @@ public class GraphicsEngine implements IGraphics {
             }
             intentos--;
         }
+        if (intentos == 0) {
+            System.err.println("No pude crear la BufferStrategy");
+            return;
+        }
+
         this.buffer = this.window.getBufferStrategy();
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
+        this.window.setIgnoreRepaint(true);
+        this.window.setVisible(true);
+
+
+    }
+    public void show(){
+        this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
+        this.buffer.show();
     }
 
+    public void dispose(){
+        this.buffer.dispose();
+    }
     // Canvas
     @Override
     public void setResolution(float xScale, float yScale) {
@@ -108,7 +126,9 @@ public class GraphicsEngine implements IGraphics {
     @Override
     public void drawRectangle(float x, float y, float w, float h, IColor color) {
         setColor(color);
-        canvas.drawRect((int)x, (int)y, (int)w, (int)h);
+
+        System.out.println(canvas.getColor());
+        canvas.drawRect((int)0, (int)0, (int)200, (int)200);
     }
 
     @Override

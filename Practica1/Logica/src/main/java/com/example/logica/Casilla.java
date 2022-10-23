@@ -1,5 +1,8 @@
 package com.example.logica;
 
+import com.example.engine.IColor;
+import com.example.engine.IGraphics;
+
 public class Casilla {
 
     enum Estado {DESELECCIONADA, SELECCIONADA, ELIMINADA, INCORRECTA};
@@ -7,13 +10,15 @@ public class Casilla {
 
 
     boolean solucion;
-    int x, y;
+    int x, y, w, h;
     Estado state;
 
     public Casilla(int x_, int y_, boolean sol){
         state = Estado.DESELECCIONADA;
         x = x_;
         y = y_;
+        w = 10;
+        h = 10;
         solucion = sol;
     }
 
@@ -48,24 +53,27 @@ public class Casilla {
         return 0;
     }
 
-    public void render(/*IGraphicsEngine graphics*/){
-        /* String color;
+    public void render(IGraphics graphics){
+        IColor icolor;
         switch (state){
             case DESELECCIONADA:
-                color = "blanco";
+                icolor = graphics.newColor(0,0,0,255); // Blanco
                 break;
             case SELECCIONADA:
-                color = "azul";
+                icolor = graphics.newColor(0,0,255,255); // Azul
+                break;
             case ELIMINADA:
-                color = "pues el q sea";
+                icolor = graphics.newColor(255,255,255,255); // Negro
                 break;
             case INCORRECTA:
-                color = "rojo";
+                icolor = graphics.newColor(255,0,0,255); // Rojo
                 break;
-            default: break;
+            default:
+                icolor = graphics.newColor(255,255,255,255); // Rojo
+                break;
         }
-        graphics.drawRectangle(pos.x*width, pos.y*height, w,h, "color");
-        */
+        graphics.newColor(255,0,0,255);// comprobar esto si es azul -> argb
+        graphics.drawRectangle(x, y, w, h, icolor);
     }
 
 
