@@ -1,9 +1,7 @@
 package com.example.desktopgame;
 
 
-import com.example.desktopengine.DFont;
 import com.example.desktopengine.DesktopEngine;
-import com.example.desktopengine.GraphicsEngine;
 import com.example.logica.Tablero;
 
 import javax.swing.JFrame;

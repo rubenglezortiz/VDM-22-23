@@ -5,22 +5,12 @@ import com.example.engine.IFont;
 import com.example.engine.IGraphics;
 import com.example.engine.IImage;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.image.BufferStrategy;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
-public class GraphicsEngine implements IGraphics {
+public class DGraphicsEngine implements IGraphics {
     // Class variables
     float logicWidth, logicHeight;
 
@@ -33,7 +23,7 @@ public class GraphicsEngine implements IGraphics {
     private Thread renderThread;
     private boolean running;
 
-    public GraphicsEngine(JFrame window_){
+    public DGraphicsEngine(JFrame window_){
         this.window = window_;
         this.window.setSize(600, 400);
         this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
