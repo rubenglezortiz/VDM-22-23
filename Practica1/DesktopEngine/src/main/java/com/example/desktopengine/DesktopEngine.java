@@ -7,49 +7,75 @@ import com.example.engine.IState;
 import com.example.logica.Tablero;
 
 import javax.swing.JFrame;
+import javax.swing.plaf.synth.Region;
 
 public class DesktopEngine implements IEngine, Runnable {
-    private Thread renderThread;
+    private Thread currentThread;
     private DGraphicsEngine graphics;
     private DAudioEngine audio;
-    private DStateEngine state;
-    private Tablero tablero;
+    private DState currentState;
 
-    public DesktopEngine(JFrame window){
-        graphics = new DGraphicsEngine(window);
-        audio = new DAudioEngine();
-        state = new DStateEngine();
+    private JFrame window;
 
-        this.renderThread = new Thread(this);
-        this.renderThread.start();
+    private Tablero tablero; //ESTO HAY QUE ELIMINARLO
+
+    public DesktopEngine(JFrame window_){
+        this.window = window_;
+        this.graphics = new DGraphicsEngine(window);
+        this.audio = new DAudioEngine();
+        this.currentState = new DState();
+
+        this.currentThread = new Thread(this);
+        this.currentThread.start();
     }
 
-    @Override
-    public IGraphics getGraphics() { return graphics;}
 
     @Override
-    public IAudio getAudio() { return audio;}
+    public IGraphics getGraphics() { return this.graphics;}
 
     @Override
-    public IState getState() { return state;}
+    public IAudio getAudio() { return this.audio;}
+
+    @Override
+    public IState getState() { return this.currentState;}
 
     @Override
     public void run() {
-        while(true) {
-            if(tablero != null)
-                tablero.render(getGraphics());
-            //DColor color = new DColor(0,0,0,255);
-            //this.graphics.clear(color);
-            this.graphics.dispose(); //Elimina el contexto gráfico y libera recursos del sistema realacionado
-
-
-            this.graphics.show();
+        if(this.currentThread!=Thread.currentThread()){
+            //lanzar error
         }
 
+        while(this.currentState != null) {
+            //update
+            this.currentState.update();
+            //inputs
+            this.currentState.handleInputs();
+            //render
+            //preparar Frame
+            do {
+                this.graphics.prepareFrame();
+                this.currentState.render();
+                //terminar Frame
+                this.graphics.finishFrame();
+            }while(!this.graphics.cambioBuffer());
+
+            /*if(tablero != null)
+                tablero.render(getGraphics());*/
+            this.graphics.dispose(); //Elimina el contexto gráfico y libera recursos del sistema realacionado
+            this.graphics.show();
+        }
     }
 
     public void setTablero(Tablero tablero_){
         this.tablero = tablero_;
     }
 
+    public void resume(){
+        this.currentThread = new Thread( this);
+        this.currentThread.start();
+    }
+
+    public void stop() throws InterruptedException {
+        this.currentThread.join();
+    }
 }

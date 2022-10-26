@@ -7,8 +7,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.List;
 
-public class DInputEngine implements IInput, KeyListener, MouseListener, MouseMotionListener {
+public class DInput implements IInput, KeyListener, MouseListener, MouseMotionListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -58,5 +60,21 @@ public class DInputEngine implements IInput, KeyListener, MouseListener, MouseMo
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
 
+    }
+
+
+    private List<Event> eventos = new ArrayList<Event>();
+
+    public void addEvent(MouseEvent evento){
+        InputTouchType tipo;
+        if(evento.getID()== MouseEvent.BUTTON1_DOWN_MASK){
+            tipo = InputTouchType.TOUCH_DOWN;
+        }
+        else tipo = InputTouchType.TOUCH_DOWN; //CAMBIAR ESTO
+        eventos.add(new Event(evento.getX(), evento.getY(), 0, tipo));
+    }
+
+    public List<Event> getEventList(){
+        return null;
     }
 }

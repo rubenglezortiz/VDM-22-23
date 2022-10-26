@@ -91,8 +91,8 @@ public class DGraphicsEngine implements IGraphics {
 
     // Create
     @Override
-    public IImage newImage(String name, int width, int height) {
-        return new DImage(name, width, height);
+    public IImage newImage(String name) {
+        return new DImage(name);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class DGraphicsEngine implements IGraphics {
 
     @Override
     public void drawImage(IImage image, int x, int y, int w, int h) {
-        canvas.drawImage(((DImage)image).getImage(),x,y,null);
+        canvas.drawImage(((DImage)image).getImage(),x,y, w, h,null);
     }
 
     @Override
@@ -184,6 +184,25 @@ public class DGraphicsEngine implements IGraphics {
     @Override
     public int realToLogicY(int y) {
         return 0;
+    }
+
+    public void prepareFrame() {
+        this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
+        //this.canvas.scale();
+        //this.canvas.translate();
+        //this.canvas.clearRect();
+    }
+
+    public void finishFrame() {
+        this.canvas.dispose();
+    }
+
+    public boolean cambioBuffer() {
+        if (this.buffer.contentsRestored()) {
+            return false;
+        }
+        this.buffer.show();
+        return !this.buffer.contentsLost();
     }
 
 }
