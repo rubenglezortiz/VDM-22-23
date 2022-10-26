@@ -14,7 +14,7 @@ public class DState implements IState {
     @Override
     public void render() {
         if(currState!=null)
-            currState.update();
+            currState.render();
     }
 
     @Override
