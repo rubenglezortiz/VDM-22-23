@@ -77,7 +77,7 @@ public class DGraphicsEngine implements IGraphics {
 
     @Override
     public void setFont(IFont font) {
-        /*InputStream is = new FileInputStream(filePath);
+        /*InputStream is = new FileInputrStream(filePath);
         Font font = Font.createFont(Font.TRUETYPE_FONT, is);
         font = font.deriveFont(font.getStyle(),size);
         canvas.setFont(font);*/

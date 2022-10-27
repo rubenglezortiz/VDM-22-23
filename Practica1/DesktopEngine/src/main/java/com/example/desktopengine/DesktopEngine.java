@@ -61,8 +61,8 @@ public class DesktopEngine implements IEngine, Runnable {
 
             /*if(tablero != null)
                 tablero.render(getGraphics());*/
-            this.graphics.dispose(); //Elimina el contexto gráfico y libera recursos del sistema realacionado
-            this.graphics.show();
+            //this.graphics.show();
+            //this.graphics.dispose(); //Elimina el contexto gráfico y libera recursos del sistema realacionado
         }
     }
 
