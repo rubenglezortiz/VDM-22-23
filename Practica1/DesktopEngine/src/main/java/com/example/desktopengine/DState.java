@@ -1,29 +1,31 @@
 package com.example.desktopengine;
 
+import com.example.engine.IScene;
 import com.example.engine.IState;
 import com.example.logica.Scene1;
 
 public class DState implements IState {
-    IState currState;
+    IScene currScene;
     @Override
     public void update() {
-        if(currState!=null)
-            currState.update();
+        if(currScene!=null)
+            currScene.update();
     }
 
     @Override
     public void render() {
-        if(currState!=null)
-            currState.render();
+        if(currScene!=null)
+            currScene.render();
     }
 
     @Override
     public void handleInputs() {
-
+        if(currScene!=null)
+            currScene.handleInputs();
     }
 
     @Override
-    public void setScene(IState scene) {
-        currState = scene;
+    public void setScene(IScene scene) {
+        currScene = scene;
     }
 }

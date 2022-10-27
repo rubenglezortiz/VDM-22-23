@@ -1,8 +1,7 @@
 package com.example.engine;
 
-public interface IState {
+public interface IScene {
     public void update();
     public void render();
     public void handleInputs();
-    public void setScene(IScene scene);
 }
