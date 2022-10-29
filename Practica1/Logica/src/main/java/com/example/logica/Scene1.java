@@ -3,11 +3,12 @@ package com.example.logica;
 import com.example.engine.IEngine;
 import com.example.engine.IGraphics;
 import com.example.engine.IImage;
+import com.example.engine.IScene;
 import com.example.engine.IState;
 
 import java.awt.Image;
 
-public class Scene1 implements IState {
+public class Scene1 implements IScene {
     private IImage imagen;
     private IGraphics graphics;
 
@@ -31,11 +32,6 @@ public class Scene1 implements IState {
 
     @Override
     public void handleInputs() {
-
-    }
-
-    @Override
-    public void setScene(IState scene) {
 
     }
 }
