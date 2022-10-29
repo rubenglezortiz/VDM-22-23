@@ -11,12 +11,17 @@ public class Tablero {
     private ArrayList<Integer>[] rowsList;
     private boolean mousePressed;
     private Casilla pressedCell;
+    private IGraphics graphics;
 
-    public Tablero(int nC, int nR,IGraphics graphics){
+    private boolean checkPressed = false;
+    private int casErroneas = 0;
+    private int casRestantes = 0;
+    private boolean win = false;
+    public Tablero(int nC, int nR,IGraphics graphics_){
         numCols = nC;
         numRows = nR;
         tablero = new Casilla[numRows][numCols];
-
+        graphics = graphics_;
         int numCasillas = nC * nR;
 
         int contador = 0;
@@ -198,6 +203,15 @@ public class Tablero {
             for (int j = 0; j < rowsList[i].size() ;j++)
                 graphics.drawText(rowsList[i].get(j).toString(), xInicial+casillaW/2+i*(casillaW+separacion)-separacion,yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2 , textSize, graphics.newColor(200, 0, 0, 255));
         }
+        if (checkPressed)
+        {
+            if (win) graphics.drawText("Felicidades, has ganado",0,250 ,30, graphics.newColor(0, 200, 0, 255));
+            else
+            {
+                graphics.drawText("Te faltan " + casRestantes + " casillas",0,250 ,30, graphics.newColor(200, 0, 0, 255));
+                graphics.drawText("Tienes mal " + casErroneas + " casillas",0,300 ,30, graphics.newColor(200, 0, 0, 255));
+            }
+        }
     }
 
     public void handleInputs(IInput.Event event) {
@@ -215,6 +229,10 @@ public class Tablero {
                         mousePressed = false;
                     }
                 }
+                break;
+            case KEY_DOWN:
+                if (((IInput.KeyInputEvent)event).key == 'A')
+                    checkWin();
                 break;
             default:
                 break;
@@ -243,6 +261,29 @@ public class Tablero {
                 j++;
             }
             i++;
+        }
+    }
+    public boolean checkWin()
+    {
+        checkPressed = true;
+        casRestantes = 0;
+        casErroneas = 0;
+        for (int i = 0; i < numCols; i++)
+        {
+            for (int j = 0; j < numRows; j++)
+            {
+                int res = tablero[i][j].comprueba();
+                if (res == 2) casErroneas++;
+                else if (res == 1) casRestantes++;
+            }
+        }
+        if (casRestantes == 0 && casErroneas == 0) {
+            win = true;
+            return true;
+        }
+        else {
+            win = false;
+            return false;
         }
     }
 }

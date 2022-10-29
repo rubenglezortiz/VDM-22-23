@@ -5,6 +5,7 @@ import com.example.engine.IFont;
 import com.example.engine.IGraphics;
 import com.example.engine.IImage;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
@@ -188,6 +189,7 @@ public class DGraphicsEngine implements IGraphics {
 
     public void prepareFrame() {
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
+        this.clear(newColor(220,220,220,255));
         //this.canvas.scale();
         //this.canvas.translate();
         //this.canvas.clearRect();

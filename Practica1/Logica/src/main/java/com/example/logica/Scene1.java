@@ -47,6 +47,7 @@ public class Scene1 implements IScene {
                     board.handleInputs(event);
                     break;
                 case KEY_DOWN:
+                    board.handleInputs(event);
                     break;
                 default:
                     break;

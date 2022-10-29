@@ -40,15 +40,17 @@ public class Casilla {
     }
 
     public boolean pintadaErronea(){
-        return state == Estado.SELECCIONADA && !solucion;
+        return (state == Estado.SELECCIONADA && !solucion) || (state == Estado.INCORRECTA);
     }
 
     public int comprueba(){
         if (solucion && (state == Estado.DESELECCIONADA  || state == Estado.ELIMINADA ))
             return 1; //Devuelve 1 para sumar esta casilla a la cantidad que faltan por pintar
 
-        if (pintadaErronea())
+        if (pintadaErronea()) {
             state = Estado.INCORRECTA;
+            return 2;
+        }
 
         return 0;
     }
