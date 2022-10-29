@@ -30,7 +30,7 @@ public class DFont implements IFont {
     }
 
     @Override
-    public int getSize() {
+    public float getSize() {
         return this.fuente.getSize();
     }
 
@@ -39,7 +39,7 @@ public class DFont implements IFont {
         return this.fuente.isBold();
     }
 
-    public Font getFont() { return fuente; }
+    public Font getFont() { return this.fuente; }
     @Override
     public void setSize(float size) { this.fuente.deriveFont(size);}
 }

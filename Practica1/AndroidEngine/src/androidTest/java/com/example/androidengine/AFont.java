@@ -9,9 +9,9 @@ public class AFont implements IFont {
 
     Typeface typeface;
 
-    int size;
+    float size;
     boolean isBold;
-    public AFont(String fontPath, int s, boolean isB, AssetManager assetMan){
+    public AFont(String fontPath, float s, boolean isB, AssetManager assetMan){
         size = s;
         isBold = isB;
 
@@ -19,13 +19,18 @@ public class AFont implements IFont {
         if (isB) typeface = Typeface.create(typeface, Typeface.BOLD);
     }
     @Override
-    public int getSize() {
+    public float getSize() {
         return size;
     }
 
     @Override
     public boolean isBold() {
         return isBold;
+    }
+
+    @Override
+    public void setSize(float size) {
+        this.size = size;
     }
 
     public Typeface getTypeface() { return typeface; };

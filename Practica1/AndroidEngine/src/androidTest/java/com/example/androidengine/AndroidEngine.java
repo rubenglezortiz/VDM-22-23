@@ -18,6 +18,7 @@ public class AndroidEngine implements IEngine {
         //graphics = new GraphicsEngine(); DESDE DÓNDE SE PASA EL SURFACE VIEW???
         audio = new AudioEngine();
         state = new StateEngine();
+        //HAY QUE PASARLE EL ASSET MANAGER A AUDIO Y A GRAPHICS (NO SÉ COMO AÚN)
     }
 
     @Override

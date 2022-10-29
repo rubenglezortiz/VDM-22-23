@@ -63,6 +63,11 @@ public class GraphicsEngine implements IGraphics {
     }
 
     @Override
+    public IImage newImage(String name) {
+        return null;
+    }
+
+    @Override
     public IImage newImage(String name, int width, int height) {
         return new AImage(name, width, height, this.assetManager);
     }
@@ -80,6 +85,11 @@ public class GraphicsEngine implements IGraphics {
     @Override
     public void drawImage(IImage image, int x, int y, int w, int h) {
         drawImage(image, x, y, w, h, 0);
+    }
+
+    @Override
+    public void drawText(String text, float x, float y, float textSize, IColor color) {
+
     }
 
     public void drawImage(IImage image, int x, int y, int w, int h, int rotation) {

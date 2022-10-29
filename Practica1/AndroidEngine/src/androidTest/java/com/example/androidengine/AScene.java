@@ -1,10 +1,8 @@
 package com.example.androidengine;
 
 import com.example.engine.IScene;
-import com.example.engine.IState;
 
-public class StateEngine implements IState {
-
+public class AScene implements IScene {
     @Override
     public void update() {
 
@@ -17,11 +15,6 @@ public class StateEngine implements IState {
 
     @Override
     public void handleInputs() {
-
-    }
-
-    @Override
-    public void setScene(IScene scene) {
 
     }
 }
