@@ -41,11 +41,13 @@ public interface IInput {
     public static class MouseInputEvent extends Event{
         public int x;
         public int y;
+        public int mouseButton;
 
-        public MouseInputEvent(int x_, int y_, int index_, InputType type_) {
+        public MouseInputEvent(int x_, int y_, int mouseButton_, int index_, InputType type_) {
             super(index_, type_);
             this.x = x_;
             this.y = y_;
+            this.mouseButton = mouseButton_;
         }
     }
 

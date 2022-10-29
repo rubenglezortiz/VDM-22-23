@@ -1,30 +1,22 @@
 package com.example.logica;
-import com.example.engine.IColor;
 import com.example.engine.IGraphics;
 import com.example.engine.IInput;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 public class Tablero {
-
-
-    int numCols, numRows;
-    Casilla[][] tablero;
-    ArrayList<Integer>[] colsList;
-    ArrayList<Integer>[] rowsList;
+    private int numCols, numRows;
+    private Casilla[][] tablero;
+    private ArrayList<Integer>[] colsList;
+    private ArrayList<Integer>[] rowsList;
+    private boolean mousePressed;
 
     public Tablero(int nC, int nR,IGraphics graphics){
         numCols = nC;
         numRows = nR;
         tablero = new Casilla[numRows][numCols];
 
-        //ArrayList<Boolean> loteria = new ArrayList<Boolean>();
         int numCasillas = nC * nR;
-        //int numSolucion = (int) (Math.random() * (numCasillas * 0.3) + (numCasillas * 0.4));
-
-        //for (int i = 0; i < numSolucion; i++) loteria.add(true);
-        //for (int i = numSolucion; i < numCasillas; i++) loteria.add(false);
 
         int contador = 0;
         for(int i=0; i < numRows; i++){
@@ -118,39 +110,40 @@ public class Tablero {
             }
         }
 
-        // ----------------------------- RENDER ------------------------------------
-        for (int i = 0; i < numRows; i++){
-            for (int j = 0; j < numCols; j++) {
-                if (tablero[i][j].isSolucion()) System.out.print(" x ");
-                else System.out.print(" . ");
-            }
-            System.out.println("");
-        }
+        mousePressed = false;
 
-        System.out.println("LISTAS COLUMNAS");
-        System.out.println("");
+       // // ----------------------------- RENDER ------------------------------------
+       // for (int i = 0; i < numRows; i++){
+       //     for (int j = 0; j < numCols; j++) {
+       //         if (tablero[i][j].isSolucion()) System.out.print(" x ");
+       //         else System.out.print(" . ");
+       //     }
+       //     System.out.println("");
+       // }
 
-        for (int i = 0; i < numCols; i++){
-            for (int j = 0; j < colsList[i].size(); j++) {
-                System.out.print(colsList[i].get(j));
-                System.out.print(" ");
-            }
-            System.out.println("");
-        }
-        System.out.println("");
+       // System.out.println("LISTAS COLUMNAS");
+       // System.out.println("");
 
-        System.out.println("LISTAS FILAS");
-        System.out.println("");
+       // for (int i = 0; i < numCols; i++){
+       //     for (int j = 0; j < colsList[i].size(); j++) {
+       //         System.out.print(colsList[i].get(j));
+       //         System.out.print(" ");
+       //     }
+       //     System.out.println("");
+       // }
+       // System.out.println("");
 
-        for (int i = 0; i < numRows; i++){
-            for (int j = 0; j < rowsList[i].size(); j++) {
-                System.out.print(rowsList[i].get(j));
-                System.out.print(" ");
-            }
-            System.out.println("");
-        }
-        System.out.println("");
+       // System.out.println("LISTAS FILAS");
+       // System.out.println("");
 
+       // for (int i = 0; i < numRows; i++){
+       //     for (int j = 0; j < rowsList[i].size(); j++) {
+       //         System.out.print(rowsList[i].get(j));
+       //         System.out.print(" ");
+       //     }
+       //     System.out.println("");//
+       // }
+       // System.out.println("");
     }
 
     //Método que devuelve la cantidad de casillas que te faltan por pintar, y en caso de que no te falten, si
@@ -213,10 +206,29 @@ public class Tablero {
             case TOUCH_RELEASED:
                 break;
             case TOUCH_CLICKED:
+                int i=0;
+                boolean checked = false;
+                if(((IInput.MouseInputEvent)event).mouseButton == 1){
+                    while (i<numRows && !checked){
+                        int j = 0;
+                        while (j<numCols &&!checked) {
+                            if(this.tablero[i][j].checkCollisions(((IInput.MouseInputEvent)event).x, ((IInput.MouseInputEvent)event).y)){
+                                checked = true;
+                                this.tablero[i][j].cambiaEstado();
+                            }
+                            j++;
+                        }
+                        i++;
+                    }
+                }
 
                 break;
             default:
                 break;
         }
+    }
+
+    private void checkCellsCollision(){
+
     }
 }

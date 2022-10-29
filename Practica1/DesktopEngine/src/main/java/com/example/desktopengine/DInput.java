@@ -65,7 +65,7 @@ public class DInput implements IInput, KeyListener, MouseListener, MouseMotionLi
     }
 
     public void addEvent(MouseEvent event, InputType tipo){
-        Event newEvent = new MouseInputEvent(event.getX(), event.getY(), 0, tipo);
+        Event newEvent = new MouseInputEvent(event.getX(), event.getY(), event.getButton(), 0, tipo);
         eventos.add(newEvent);
     }
 
