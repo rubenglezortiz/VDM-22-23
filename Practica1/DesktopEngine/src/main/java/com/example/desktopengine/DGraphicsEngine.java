@@ -189,7 +189,7 @@ public class DGraphicsEngine implements IGraphics {
 
     public void prepareFrame() {
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
-        this.clear(newColor(220,220,220,255));
+        this.clear(newColor(255,255,255,255));
         //this.canvas.scale();
         //this.canvas.translate();
         //this.canvas.clearRect();

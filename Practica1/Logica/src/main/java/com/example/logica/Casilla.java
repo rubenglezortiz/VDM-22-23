@@ -59,13 +59,13 @@ public class Casilla {
         IColor icolor;
         switch (state){
             case DESELECCIONADA:
-                icolor = graphics.newColor(0,0,0,255); // Blanco
+                icolor = graphics.newColor(200,200,200,255); // Gris
                 break;
             case SELECCIONADA:
                 icolor = graphics.newColor(0,0,255,255); // Azul
                 break;
             case ELIMINADA:
-                icolor = graphics.newColor(255,255,255,255); // Negro
+                icolor = graphics.newColor(255,255,255,255); // Blanco
                 break;
             case INCORRECTA:
                 icolor = graphics.newColor(255,0,0,255); // Rojo
@@ -75,7 +75,8 @@ public class Casilla {
                 break;
         }
         //if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
-        graphics.fillRectangle(xGraphic_, yGraphic_, w, h, icolor);
+        if (state == Estado.ELIMINADA) graphics.drawRectangle(xGraphic_, yGraphic_, w, h, graphics.newColor(0,0,0,255));
+        else graphics.fillRectangle(xGraphic_, yGraphic_, w, h, icolor);
         this.xGraphic = xGraphic_;
         this.yGraphic = yGraphic_;
     }

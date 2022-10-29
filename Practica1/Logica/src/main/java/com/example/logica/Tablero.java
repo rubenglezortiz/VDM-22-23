@@ -196,22 +196,25 @@ public class Tablero {
         int textSize = casillaW/2;
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < colsList[i].size() ;j++)
-                graphics.drawText(colsList[i].get(j).toString(), xInicial-colsList[i].size()*textSize+j*textSize,yInicial+casillaH/2+i*(casillaH+separacion)+separacion, textSize, graphics.newColor(200, 0, 0, 255));
+                graphics.drawText(colsList[i].get(j).toString(), xInicial-colsList[i].size()*textSize+j*textSize,yInicial+casillaH/2+i*(casillaH+separacion)+separacion, textSize, graphics.newColor(0, 0, 0, 255));
         }
         // Se dibujan las pistas de las columnas
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < rowsList[i].size() ;j++)
-                graphics.drawText(rowsList[i].get(j).toString(), xInicial+casillaW/2+i*(casillaW+separacion)-separacion,yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2 , textSize, graphics.newColor(200, 0, 0, 255));
+                graphics.drawText(rowsList[i].get(j).toString(), xInicial+casillaW/2+i*(casillaW+separacion)-separacion,yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2 , textSize, graphics.newColor(0, 0, 0, 255));
         }
         if (checkPressed)
         {
-            if (win) graphics.drawText("Felicidades, has ganado",0,250 ,30, graphics.newColor(0, 200, 0, 255));
+            if (win) graphics.drawText("Felicidades, has ganado",xInicial,yInicial/2,textSize, graphics.newColor(0, 200, 0, 255));
             else
             {
-                graphics.drawText("Te faltan " + casRestantes + " casillas",0,250 ,30, graphics.newColor(200, 0, 0, 255));
-                graphics.drawText("Tienes mal " + casErroneas + " casillas",0,300 ,30, graphics.newColor(200, 0, 0, 255));
+                if (casRestantes != 0) graphics.drawText("Te faltan " + casRestantes + " casillas",xInicial,yInicial/2 ,textSize, graphics.newColor(200, 0, 0, 255));
+                if (casErroneas != 0) graphics.drawText("Tienes mal " + casErroneas + " casillas",xInicial,yInicial/2+textSize ,textSize, graphics.newColor(200, 0, 0, 255));
             }
         }
+        // Dibujado de rectangulos para el borde
+        graphics.drawRectangle(xInicial,yInicial-4*textSize,anchoTablero,altoTablero+4*textSize,graphics.newColor(0,0,0,255));
+        graphics.drawRectangle(xInicial-4*textSize,yInicial,anchoTablero+4*textSize,altoTablero,graphics.newColor(0,0,0,255));
     }
 
     public void handleInputs(IInput.Event event) {
