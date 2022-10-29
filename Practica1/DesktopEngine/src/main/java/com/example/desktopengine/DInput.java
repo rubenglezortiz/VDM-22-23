@@ -8,38 +8,36 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DInput implements IInput, KeyListener, MouseListener, MouseMotionListener {
 
     @Override
-    public void keyTyped(KeyEvent e) {
-
+    public void keyTyped(KeyEvent keyEvent) {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
-
+    public void keyPressed(KeyEvent keyEvent) {
+        addEvent(keyEvent, InputType.KEY_DOWN);
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-
+    public void keyReleased(KeyEvent keyEvent) {
+        addEvent(keyEvent, InputType.KEY_UP);
     }
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-
+        addEvent(mouseEvent, InputType.TOUCH_CLICKED);
     }
 
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
-
+        addEvent(mouseEvent, InputType.TOUCH_PRESSED);
     }
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-
+        addEvent(mouseEvent, InputType.TOUCH_RELEASED);
     }
 
     @Override
@@ -54,27 +52,31 @@ public class DInput implements IInput, KeyListener, MouseListener, MouseMotionLi
 
     @Override
     public void mouseDragged(MouseEvent mouseEvent) {
-
     }
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
-
+        addEvent(mouseEvent, InputType.TOUCH_MOVE);
     }
 
-
-    private List<Event> eventos = new ArrayList<Event>();
-
-    public void addEvent(MouseEvent evento){
-        InputTouchType tipo;
-        if(evento.getID()== MouseEvent.BUTTON1_DOWN_MASK){
-            tipo = InputTouchType.TOUCH_DOWN;
-        }
-        else tipo = InputTouchType.TOUCH_DOWN; //CAMBIAR ESTO
-        eventos.add(new Event(evento.getX(), evento.getY(), 0, tipo));
+    public void addEvent(KeyEvent event, InputType tipo){
+        Event newEvent = new KeyInputEvent(KeyEvent.getKeyText((event.getKeyCode())).charAt(0), 0, tipo);
+        eventos.add(newEvent);
     }
 
-    public List<Event> getEventList(){
-        return null;
+    public void addEvent(MouseEvent event, InputType tipo){
+        Event newEvent = new MouseInputEvent(event.getX(), event.getY(), 0, tipo);
+        eventos.add(newEvent);
+    }
+
+    private ArrayList<Event> eventos = new ArrayList<Event>();
+
+    public ArrayList<Event> getEventList(){
+        return eventos;
+    }
+
+    @Override
+    public void clearEventList() {
+        eventos.clear();
     }
 }

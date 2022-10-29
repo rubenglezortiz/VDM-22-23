@@ -4,6 +4,7 @@ package com.example.androidengine;
 import com.example.engine.IAudio;
 import com.example.engine.IEngine;
 import com.example.engine.IGraphics;
+import com.example.engine.IInput;
 import com.example.engine.IState;
 
 
@@ -27,4 +28,7 @@ public class AndroidEngine implements IEngine {
 
     @Override
     public IState getState() { return state;}
+
+    @Override
+    public IInput getInput() { return null; }
 }

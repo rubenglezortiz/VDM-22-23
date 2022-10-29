@@ -3,6 +3,7 @@ package com.example.desktopengine;
 import com.example.engine.IAudio;
 import com.example.engine.IEngine;
 import com.example.engine.IGraphics;
+import com.example.engine.IInput;
 import com.example.engine.IState;
 import com.example.logica.Tablero;
 
@@ -13,6 +14,7 @@ public class DesktopEngine implements IEngine, Runnable {
     private Thread currentThread;
     private DGraphicsEngine graphics;
     private DAudioEngine audio;
+    private DInput input;
     private DState currentState;
 
     private JFrame window;
@@ -23,6 +25,10 @@ public class DesktopEngine implements IEngine, Runnable {
         this.window = window_;
         this.graphics = new DGraphicsEngine(window);
         this.audio = new DAudioEngine();
+        this.input = new DInput();
+        this.window.addKeyListener(this.input);
+        this.window.addMouseListener(this.input);
+        this.window.addMouseMotionListener(this.input);
         this.currentState = new DState();
 
         this.currentThread = new Thread(this);
@@ -38,6 +44,9 @@ public class DesktopEngine implements IEngine, Runnable {
 
     @Override
     public IState getState() { return this.currentState;}
+
+    @Override
+    public IInput getInput() {return this.input;}
 
     @Override
     public void run() {
@@ -58,11 +67,6 @@ public class DesktopEngine implements IEngine, Runnable {
                 //terminar Frame
                 this.graphics.finishFrame();
             }while(!this.graphics.cambioBuffer());
-
-            /*if(tablero != null)
-                tablero.render(getGraphics());*/
-            //this.graphics.show();
-            //this.graphics.dispose(); //Elimina el contexto gráfico y libera recursos del sistema realacionado
         }
     }
 

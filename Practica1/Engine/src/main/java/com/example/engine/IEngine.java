@@ -5,4 +5,5 @@ public interface IEngine  { //METER ESTO COMO UNA INTERFAZ
     public abstract IGraphics getGraphics();
     public abstract IAudio getAudio();
     public abstract IState getState();
+    public abstract IInput getInput();
 }

@@ -1,11 +1,8 @@
 package com.example.engine;
 
-import org.graalvm.compiler.nodeinfo.InputType;
-
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public interface IInput {
     public void keyTyped(KeyEvent e); //KEYEVENT SIRVE TANTO PARA JAVA COMO PARA ANDROID?
@@ -17,33 +14,47 @@ public interface IInput {
     public void mouseReleased(MouseEvent mouseEvent);
     public void mouseEntered(MouseEvent mouseEvent);
     public void mouseExited(MouseEvent mouseEvent);
+    public ArrayList<Event> getEventList();
+    public void clearEventList();
 
 
-
-    public static enum InputTouchType{
-        TOUCH_DOWN,
-        TOUCH_UP,
+    public static enum InputType{
+        TOUCH_PRESSED,
+        TOUCH_RELEASED,
         TOUCH_MOVE,
-    }
-
-    public static enum InputKeyType{
+        TOUCH_CLICKED,
         KEY_DOWN,
         KEY_UP,
         KEY_LONG,
     }
 
-    public static class Event{
-        public int x;
-        public int y;
-        public InputTouchType type;
+    public static class Event {
+        public InputType type;
         public int index;
 
-        public Event(int x, int y, InputTouchType type){
-
+        public Event(int index_, InputType type_){
+            this.index = index_;
+            this.type = type_;
         }
+    }
 
-        public Event(int x, int y, int index, InputTouchType type){
+    public static class MouseInputEvent extends Event{
+        public int x;
+        public int y;
 
+        public MouseInputEvent(int x_, int y_, int index_, InputType type_) {
+            super(index_, type_);
+            this.x = x_;
+            this.y = y_;
+        }
+    }
+
+    public static class KeyInputEvent extends Event{
+        public char key;
+
+        public KeyInputEvent(char key_, int index_, InputType type_){
+            super(index_, type_);
+            this.key = key_;
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.logica;
 import com.example.engine.IColor;
 import com.example.engine.IGraphics;
+import com.example.engine.IInput;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -203,10 +204,19 @@ public class Tablero {
             for (int j = 0; j < rowsList[i].size() ;j++)
                 graphics.drawText(rowsList[i].get(j).toString(), xInicial+casillaW/2+i*(casillaW+separacion)-separacion,yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2 , textSize, graphics.newColor(200, 0, 0, 255));
         }
-
-    /*public static void main(String[] args) {
-        Tablero tablero = new Tablero(5, 5);
     }
-    */
+
+    public void handleInputs(IInput.Event event) {
+        switch (event.type) {
+            case TOUCH_PRESSED:
+                break;
+            case TOUCH_RELEASED:
+                break;
+            case TOUCH_CLICKED:
+
+                break;
+            default:
+                break;
+        }
     }
 }
