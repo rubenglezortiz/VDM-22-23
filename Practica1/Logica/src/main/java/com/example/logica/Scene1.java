@@ -31,7 +31,6 @@ public class Scene1 implements IScene {
     @Override
     public void render() {
         board.render(graphics);
-        //this.graphics.drawImage(this.imagen, 0,0, 100,100);
     }
 
     @Override
@@ -52,7 +51,6 @@ public class Scene1 implements IScene {
                 default:
                     break;
             }
-
         }
         this.input.clearEventList();
     }

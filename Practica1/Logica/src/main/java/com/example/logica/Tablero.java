@@ -10,6 +10,7 @@ public class Tablero {
     private ArrayList<Integer>[] colsList;
     private ArrayList<Integer>[] rowsList;
     private boolean mousePressed;
+    private Casilla pressedCell;
 
     public Tablero(int nC, int nR,IGraphics graphics){
         numCols = nC;
@@ -202,33 +203,46 @@ public class Tablero {
     public void handleInputs(IInput.Event event) {
         switch (event.type) {
             case TOUCH_PRESSED:
+                if(((IInput.MouseInputEvent)event).mouseButton == 1){
+                    mousePressed = true;
+                    checkCellsCollision(((IInput.MouseInputEvent)event).x, ((IInput.MouseInputEvent)event).y, true);
+                }
                 break;
             case TOUCH_RELEASED:
-                break;
-            case TOUCH_CLICKED:
-                int i=0;
-                boolean checked = false;
-                if(((IInput.MouseInputEvent)event).mouseButton == 1){
-                    while (i<numRows && !checked){
-                        int j = 0;
-                        while (j<numCols &&!checked) {
-                            if(this.tablero[i][j].checkCollisions(((IInput.MouseInputEvent)event).x, ((IInput.MouseInputEvent)event).y)){
-                                checked = true;
-                                this.tablero[i][j].cambiaEstado();
-                            }
-                            j++;
-                        }
-                        i++;
+                if(mousePressed){
+                    if(((IInput.MouseInputEvent)event).mouseButton == 1){
+                        checkCellsCollision(((IInput.MouseInputEvent)event).x, ((IInput.MouseInputEvent)event).y, false);
+                        mousePressed = false;
                     }
                 }
-
                 break;
             default:
                 break;
         }
     }
 
-    private void checkCellsCollision(){
+    private void checkCellsCollision(int mouseX, int mouseY, boolean pressed){
+        int i = 0, j = 0;
+        boolean checked = false;
 
+        while(i < numCols && !checked){
+            j = 0;
+            while(j < numRows && !checked){
+                if(pressed){
+                    if(tablero[i][j].checkCollisions(mouseX, mouseY)){
+                        checked = true;
+                        pressedCell = tablero[i][j];
+                    }
+                }
+                else{
+                    if(tablero[i][j].checkCollisions(mouseX, mouseY)){
+                        checked = true;
+                        if(pressedCell==tablero[i][j]) tablero[i][j].cambiaEstado();
+                    }
+                }
+                j++;
+            }
+            i++;
+        }
     }
 }
