@@ -42,6 +42,8 @@ public class Scene1 implements IScene {
         while (it.hasNext()) {
             IInput.Event event = it.next();
             switch (event.type) {
+                case TOUCH_PRESSED:
+                case TOUCH_RELEASED:
                 case TOUCH_CLICKED:
                     board.handleInputs(event);
                     break;
@@ -52,7 +54,6 @@ public class Scene1 implements IScene {
             }
 
         }
-        //board.handleInputs(this.input.getEventList());
         this.input.clearEventList();
     }
 }

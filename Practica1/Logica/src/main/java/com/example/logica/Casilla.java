@@ -3,8 +3,6 @@ package com.example.logica;
 import com.example.engine.IColor;
 import com.example.engine.IGraphics;
 
-import java.awt.Graphics;
-
 public class Casilla {
 
     enum Estado {DESELECCIONADA, SELECCIONADA, ELIMINADA, INCORRECTA};
@@ -12,7 +10,7 @@ public class Casilla {
 
 
     boolean solucion;
-    int x, y, w, h;
+    int x, y, w, h, xGraphic, yGraphic;
     Estado state;
 
     public Casilla(int x_, int y_, boolean sol, IGraphics graphics){
@@ -55,7 +53,7 @@ public class Casilla {
         return 0;
     }
 
-    public void render(IGraphics graphics,int numRows, int numCols,int xGraphic, int yGraphic){
+    public void render(IGraphics graphics,int numRows, int numCols,int xGraphic_, int yGraphic_){
         IColor icolor;
         switch (state){
             case DESELECCIONADA:
@@ -74,8 +72,17 @@ public class Casilla {
                 icolor = graphics.newColor(255,255,255,255); // Negro
                 break;
         }
-        if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
-        graphics.fillRectangle(xGraphic, yGraphic, w, h, icolor);
+        //if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
+        graphics.fillRectangle(xGraphic_, yGraphic_, w, h, icolor);
+        this.xGraphic = xGraphic_;
+        this.yGraphic = yGraphic_;
+    }
+
+    public boolean checkCollisions(int x, int y)
+    {
+        if (x >= this.xGraphic && x <= this.xGraphic+this.w &&
+                y >= this.yGraphic && y <= this.yGraphic+this.h) return true;
+        return false;
     }
 
 
