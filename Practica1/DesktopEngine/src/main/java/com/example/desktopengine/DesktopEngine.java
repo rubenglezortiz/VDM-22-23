@@ -19,8 +19,6 @@ public class DesktopEngine implements IEngine, Runnable {
 
     private JFrame window;
 
-    private Tablero tablero; //ESTO HAY QUE ELIMINARLO
-
     public DesktopEngine(JFrame window_){
         this.window = window_;
         this.graphics = new DGraphicsEngine(window);
@@ -53,25 +51,20 @@ public class DesktopEngine implements IEngine, Runnable {
         if(this.currentThread!=Thread.currentThread()){
             //lanzar error
         }
-
         while(this.currentState != null) {
             //update
             this.currentState.update();
             //inputs
             this.currentState.handleInputs();
-            //render
-            //preparar Frame
             do {
+                //preparar Frame
                 this.graphics.prepareFrame();
+                //render
                 this.currentState.render();
                 //terminar Frame
                 this.graphics.finishFrame();
             }while(!this.graphics.cambioBuffer());
         }
-    }
-
-    public void setTablero(Tablero tablero_){
-        this.tablero = tablero_;
     }
 
     public void resume(){

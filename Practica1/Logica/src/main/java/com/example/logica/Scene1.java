@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class Scene1 implements IScene {
-    private IImage imagen;
     private IGraphics graphics;
     private IInput input;
     private Tablero board;
@@ -43,7 +42,6 @@ public class Scene1 implements IScene {
             switch (event.type) {
                 case TOUCH_PRESSED:
                 case TOUCH_RELEASED:
-                case TOUCH_CLICKED:
                     board.handleInputs(event);
                     break;
                 case KEY_DOWN:
