@@ -3,6 +3,8 @@ package com.example.logica;
 import com.example.engine.IColor;
 import com.example.engine.IGraphics;
 
+import java.awt.Graphics;
+
 public class Casilla {
 
     enum Estado {DESELECCIONADA, SELECCIONADA, ELIMINADA, INCORRECTA};
@@ -13,12 +15,12 @@ public class Casilla {
     int x, y, w, h;
     Estado state;
 
-    public Casilla(int x_, int y_, boolean sol){
+    public Casilla(int x_, int y_, boolean sol, IGraphics graphics){
         state = Estado.DESELECCIONADA;
         x = x_;
         y = y_;
-        w = 100;
-        h = 100;
+        w = graphics.getWidth()/10;
+        h = w;
         solucion = sol;
     }
 
@@ -53,7 +55,7 @@ public class Casilla {
         return 0;
     }
 
-    public void render(IGraphics graphics,int numRows, int numCols){
+    public void render(IGraphics graphics,int numRows, int numCols,int xGraphic, int yGraphic){
         IColor icolor;
         switch (state){
             case DESELECCIONADA:
@@ -69,12 +71,11 @@ public class Casilla {
                 icolor = graphics.newColor(255,0,0,255); // Rojo
                 break;
             default:
-                icolor = graphics.newColor(255,255,255,255); // Rojo
+                icolor = graphics.newColor(255,255,255,255); // Negro
                 break;
         }
-        //if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
-        graphics.newColor(255,0,0,255);//
-        graphics.fillRectangle(x*w+ graphics.getWidth()/2-(numRows*w/2)+10*x-10*(numRows), y*h+ graphics.getHeight()/2-h/2-(numCols*h/2)+10*y-10*(numCols), w, h, icolor);
+        if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
+        graphics.fillRectangle(xGraphic, yGraphic, w, h, icolor);
     }
 
 

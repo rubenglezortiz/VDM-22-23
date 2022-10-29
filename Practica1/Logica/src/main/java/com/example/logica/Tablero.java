@@ -13,7 +13,7 @@ public class Tablero {
     ArrayList<Integer>[] colsList;
     ArrayList<Integer>[] rowsList;
 
-    public Tablero(int nC, int nR){
+    public Tablero(int nC, int nR,IGraphics graphics){
         numCols = nC;
         numRows = nR;
         tablero = new Casilla[numRows][numCols];
@@ -36,7 +36,7 @@ public class Tablero {
                     if (isSol) contador++;
                 }
 
-                tablero[i][j] = new Casilla(i,j, isSol);
+                tablero[i][j] = new Casilla(i,j, isSol,graphics);
             }
         }
 
@@ -172,23 +172,36 @@ public class Tablero {
     }
 
     public void render(IGraphics graphics) {
-        //RENDERIZAR PISTAS
         int width = graphics.getWidth();
         int height = graphics.getHeight();
+        // Ancho y alto de cada casilla
+        int casillaW = tablero[0][0].w;
+        int casillaH = tablero[0][0].h;
+        // Distancia de separación entre casillas
+        int separacion = casillaW/10;
+        // Ancho y alto del tablero
+        int anchoTablero = numCols*casillaW + (numCols-1)*separacion;
+        int altoTablero = numRows*casillaH + (numRows-1)*separacion;
+        // Posición desde la que se generan las casillas; partimos de la mitad de la pantalla y restamos la mitad de lo que ocupa el tablero para que este quede centrado
+        int xInicial = width/2-anchoTablero/2;
+        int yInicial = height/2-altoTablero/2;
+        // Renderizado de casillas
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                tablero[i][j].render(graphics, numRows, numCols);
+                tablero[i][j].render(graphics, numRows, numCols,xInicial+i*(casillaW+separacion),yInicial+j*(casillaH+separacion));
             }
         }
-        int xCasilla = width/2-((numRows-1)*tablero[0][0].w/2)-10*(numRows);
-        int yCasilla = height/2-((numCols-1)*tablero[0][0].h/2)-10*(numCols);
+
+        // Se dibujan las pistas de las filas
+        int textSize = casillaW/2;
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < colsList[i].size() ;j++)
+                graphics.drawText(colsList[i].get(j).toString(), xInicial-colsList[i].size()*textSize+j*textSize,yInicial+casillaH/2+i*(casillaH+separacion)+separacion, textSize, graphics.newColor(200, 0, 0, 255));
+        }
+        // Se dibujan las pistas de las columnas
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < rowsList[i].size() ;j++)
-                graphics.drawText(rowsList[i].get(j).toString(), xCasilla+i*(tablero[0][0].w+10),yCasilla-tablero[0][0].h-10-30+30*j , 30, graphics.newColor(200, 0, 0, 255));
-        }
-        for (int i = 0; i < numCols; i++) {
-            for (int j = 0; j < colsList[i].size() ;j++)
-                graphics.drawText(colsList[i].get(j).toString(), xCasilla-tablero[0][0].w-10-30+30*j,yCasilla-tablero[0][0].h/2+(i*(tablero[0][0].h+10)) , 30, graphics.newColor(200, 0, 0, 255));
+                graphics.drawText(rowsList[i].get(j).toString(), xInicial+casillaW/2+i*(casillaW+separacion)-separacion,yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2 , textSize, graphics.newColor(200, 0, 0, 255));
         }
 
     /*public static void main(String[] args) {

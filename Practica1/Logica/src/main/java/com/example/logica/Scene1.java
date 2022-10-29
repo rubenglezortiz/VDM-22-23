@@ -16,7 +16,7 @@ public class Scene1 implements IScene {
 
     public Scene1(IEngine engine){
         this.graphics = engine.getGraphics();
-        board = new Tablero(5,5);
+        board = new Tablero(5,5,this.graphics);
         engine.getState().setScene(this);
     }
 
