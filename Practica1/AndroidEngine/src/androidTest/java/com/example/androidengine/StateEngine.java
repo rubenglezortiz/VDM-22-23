@@ -21,7 +21,12 @@ public class StateEngine implements IState {
     }
 
     @Override
-    public void setScene(IScene scene) {
+    public void addScene(IScene scene) {
+
+    }
+
+    @Override
+    public void removeScene() {
 
     }
 }

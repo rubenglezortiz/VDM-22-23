@@ -3,36 +3,27 @@ package com.example.logica;
 import com.example.engine.IAudio;
 import com.example.engine.IEngine;
 import com.example.engine.IGraphics;
-import com.example.engine.IImage;
 import com.example.engine.IInput;
 import com.example.engine.IScene;
 import com.example.engine.ISound;
-import com.example.engine.IState;
 
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Scene1 implements IScene {
-    private IGraphics graphics;
-    private IInput input;
-    private IAudio audio;
+public class MainScene implements IScene {
+    private IEngine engine;
     private Tablero board;
 
     private ISound backgroundMusic;
     private float timer;
     private long lastUpdateTime;
 
-    public Scene1(IEngine engine){
-        this.graphics = engine.getGraphics();
-        this.input = engine.getInput();
-        this.audio = engine.getAudio();
-        board = new Tablero(5,5,this.graphics, this.audio);
-        engine.getState().setScene(this);
-
+    public MainScene(IEngine engine_, int numRows, int numCols){
+        this.engine = engine_;
+        board = new Tablero(numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
         this.timer = 0.0f;
-
         createMusic();
+        engine.getState().addScene(this);
     }
 
     @Override
@@ -55,12 +46,12 @@ public class Scene1 implements IScene {
 
     @Override
     public void render() {
-        board.render(graphics);
+        this.board.render(this.engine.getGraphics());
     }
 
     @Override
     public void handleInputs() {
-        ArrayList<IInput.Event> eventList = this.input.getEventList();
+        ArrayList<IInput.Event> eventList = this.engine.getInput().getEventList();
         Iterator<IInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
             IInput.Event event = it.next();
@@ -70,20 +61,21 @@ public class Scene1 implements IScene {
                     board.handleInputs(event);
                     break;
                 case KEY_DOWN:
-                    board.handleInputs(event);
+                    this.engine.getAudio().stopSound(this.backgroundMusic);
+                    this.engine.getState().removeScene();
                     break;
                 default:
                     break;
             }
         }
-        this.input.clearEventList();
+        this.engine.getInput().clearEventList();
     }
 
     private void createMusic(){
         //Background music
-        this.backgroundMusic = this.audio.newSound("music.wav");
-        this.audio.setLooping(this.backgroundMusic, true);
-        this.audio.setVolume(this.backgroundMusic, 0.25f);
-        this.audio.playSound(this.backgroundMusic);
+        this.backgroundMusic = this.engine.getAudio().newSound("music.wav");
+        this.engine.getAudio().setLooping(this.backgroundMusic, true);
+        this.engine.getAudio().setVolume(this.backgroundMusic, 0.25f);
+        this.engine.getAudio().playSound(this.backgroundMusic);
     }
 }

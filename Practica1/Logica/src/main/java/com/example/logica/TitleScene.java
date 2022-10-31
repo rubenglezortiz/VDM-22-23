@@ -10,16 +10,15 @@ import com.example.engine.IScene;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TitleScene implements IScene {
-    private IGraphics graphics;
-    private IInput input;
-    private IFont font;
+import jdk.tools.jmod.Main;
 
-    public TitleScene(IEngine engine){
-        this.graphics = engine.getGraphics();
-        this.input = engine.getInput();
-        this.font = graphics.newFont("font.TTF", false);
-        engine.getState().setScene(this);
+public class TitleScene implements IScene {
+    private IFont font;
+    private IEngine engine;
+    public TitleScene(IEngine engine_){
+        this.engine = engine_;
+        this.font = this.engine.getGraphics().newFont("font.TTF", false);
+        engine.getState().addScene(this);
     }
 
     @Override
@@ -29,21 +28,25 @@ public class TitleScene implements IScene {
 
     @Override
     public void render() {
-        this.graphics.setFont(this.font);
-        this.graphics.drawText("NONOGRAMS",this.graphics.getWidth()/2 - ((10*50)/2), 100, 50, this.graphics.newColor(0,0,0,255));
+        this.engine.getGraphics().setFont(this.font);
+        this.engine.getGraphics().drawText("NONOGRAMS",this.engine.getGraphics().getWidth()/2 - ((10*50)/2),
+                100, 50, this.engine.getGraphics().newColor(0,0,0,255));
     }
 
     @Override
     public void handleInputs() {
-        ArrayList<IInput.Event> eventList = this.input.getEventList();
+        ArrayList<IInput.Event> eventList = this.engine.getInput().getEventList();
         Iterator<IInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
             IInput.Event event = it.next();
             switch (event.type) {
+                case KEY_DOWN:
+                    MainScene mainScene = new MainScene(this.engine, 3,3);
+                    break;
                 default:
                     break;
             }
         }
-        this.input.clearEventList();
+        this.engine.getInput().clearEventList();
     }
 }

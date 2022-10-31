@@ -82,8 +82,8 @@ public class Casilla extends GameObject {
 
     public boolean checkCollisions(int x, int y)
     {
-        if (x >= this.xGraphic && x <= this.xGraphic+this.w &&
-                y >= this.yGraphic && y <= this.yGraphic+this.h) return true;
+        if (x >= this.x && x <= this.x + this.w &&
+                y >= this.y  && y <= this.y + this.h) return true;
         return false;
     }
 

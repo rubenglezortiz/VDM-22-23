@@ -4,5 +4,6 @@ public interface IState {
     public void update();
     public void render();
     public void handleInputs();
-    public void setScene(IScene scene);
+    public void addScene(IScene scene);
+    public void removeScene();
 }
