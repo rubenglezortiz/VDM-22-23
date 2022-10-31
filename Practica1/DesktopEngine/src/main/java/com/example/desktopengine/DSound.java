@@ -7,6 +7,7 @@ import java.io.File;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 
 public class DSound implements ISound {
@@ -28,6 +29,7 @@ public class DSound implements ISound {
 
     @Override
     public void play() {
+        this.clip.setFramePosition(0);
         this.clip.start();
     }
 
@@ -36,6 +38,17 @@ public class DSound implements ISound {
         if(isRunning())
             this.clip.stop();
     }
+
+    @Override
+    public void setVolume(float volume) {
+        if (volume < 0f || volume > 1f)
+            throw new IllegalArgumentException("Volume not valid: " + volume);
+        FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+        gainControl.setValue(20f * (float) Math.log10(volume));
+
+    }
+
+
 
     public boolean isRunning(){
         return this.clip.isRunning();

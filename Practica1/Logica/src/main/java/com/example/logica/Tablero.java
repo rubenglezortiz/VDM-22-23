@@ -1,6 +1,8 @@
 package com.example.logica;
+import com.example.engine.IAudio;
 import com.example.engine.IGraphics;
 import com.example.engine.IInput;
+import com.example.engine.ISound;
 
 import java.util.ArrayList;
 
@@ -12,17 +14,23 @@ public class Tablero {
     private boolean mousePressed;
     private Casilla pressedCell;
     private IGraphics graphics;
+    private IAudio audio;
 
     private boolean checkPressed = false;
     private int casErroneas = 0;
     private int casRestantes = 0;
     private boolean win = false;
 
-    public Tablero(int nC, int nR,IGraphics graphics_){
+    private ISound cellSound;
+    private ISound winSound;
+    private ISound failSound;
+
+    public Tablero(int nC, int nR,IGraphics graphics_, IAudio audio_){
         numCols = nC;
         numRows = nR;
         tablero = new Casilla[numRows][numCols];
         graphics = graphics_;
+        audio = audio_;
         int numCasillas = nC * nR;
 
         int contador = 0;
@@ -118,6 +126,7 @@ public class Tablero {
 
         mousePressed = false;
 
+        createSounds();
        // // ----------------------------- RENDER ------------------------------------
        // for (int i = 0; i < numRows; i++){
        //     for (int j = 0; j < numCols; j++) {
@@ -255,7 +264,10 @@ public class Tablero {
                 else{
                     if(tablero[i][j].checkCollisions(mouseX, mouseY)){
                         checked = true;
-                        if(pressedCell==tablero[i][j]) tablero[i][j].cambiaEstado();
+                        if(pressedCell==tablero[i][j]){
+                            tablero[i][j].cambiaEstado();
+                            this.audio.playSound(this.cellSound);
+                        }
                     }
                 }
                 j++;
@@ -280,11 +292,45 @@ public class Tablero {
         }
         if (casRestantes == 0 && casErroneas == 0) {
             win = true;
+            this.audio.playSound(this.winSound);
             return true;
         }
         else {
             win = false;
+            this.audio.playSound(this.failSound);
             return false;
+        }
+    }
+
+    private void createSounds(){
+        //Cell sound
+        this.cellSound = this.audio.newSound("cell.wav");
+
+        //Win sound
+        this.winSound = this.audio.newSound("win.wav");
+        this.audio.setVolume(this.winSound, 0.75f);
+
+        //Fail sound
+        this.failSound = this.audio.newSound("fail.wav");
+        this.audio.setVolume(this.failSound, 0.5f);
+    }
+
+    public boolean getCheckPressed() { return checkPressed; }
+
+    public void checkOut() {
+        checkPressed = false;
+
+        int i = 0;
+        while (casErroneas > 0 && i < numCols){
+            int j = 0;
+            while (casErroneas > 0 && j < numRows) {
+                if (tablero[i][j].esCorregida()){
+                    tablero[i][j].checkOut();
+                    casErroneas--;
+                }
+                j++;
+            }
+            i++;
         }
     }
 }

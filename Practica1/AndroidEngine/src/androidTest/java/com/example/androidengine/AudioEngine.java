@@ -24,6 +24,12 @@ public class AudioEngine implements IAudio {
     @Override
     public void stopSound(ISound sound) { sound.stop(); }
 
-    public void setLooping(ASound sound, boolean looping) { sound.setLooping(looping); }
+    @Override
+    public void setLooping(ISound sound, boolean looping) { ((ASound)sound).setLooping(looping); }
+
+    @Override
+    public void setVolume(ISound sound, float volume) { sound.setVolume(volume); }
+
+
 
 }

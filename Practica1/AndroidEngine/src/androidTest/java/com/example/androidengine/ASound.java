@@ -32,6 +32,11 @@ public class ASound implements ISound {
     @Override
     public void stop() { mPlayer.stop(); }
 
+    @Override
+    public void setVolume(float volume) { mPlayer.setVolume(volume, volume); }
+
+
+
     public void setLooping(boolean looping){ this.mPlayer.setLooping(looping);}
 
 

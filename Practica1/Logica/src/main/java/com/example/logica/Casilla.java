@@ -79,4 +79,20 @@ public class Casilla extends GameObject {
         }
         else graphics.fillRectangle(xGraphic_, yGraphic_, w, h, icolor);
     }
+
+    public boolean checkCollisions(int x, int y)
+    {
+        if (x >= this.xGraphic && x <= this.xGraphic+this.w &&
+                y >= this.yGraphic && y <= this.yGraphic+this.h) return true;
+        return false;
+    }
+
+    public boolean esCorregida(){
+        return state == Estado.INCORRECTA;
+    }
+
+    public void checkOut(){
+        state = Estado.SELECCIONADA;
+    }
+
 }
