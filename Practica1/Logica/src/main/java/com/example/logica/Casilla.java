@@ -65,20 +65,23 @@ public class Casilla {
                 icolor = graphics.newColor(0,0,255,255); // Azul
                 break;
             case ELIMINADA:
-                icolor = graphics.newColor(255,255,255,255); // Blanco
+                icolor = graphics.newColor(0,0,0,255); // Blanco
                 break;
             case INCORRECTA:
                 icolor = graphics.newColor(255,0,0,255); // Rojo
                 break;
             default:
-                icolor = graphics.newColor(255,255,255,255); // Negro
+                icolor = graphics.newColor(255,255,255,255); // Blanco
                 break;
         }
         //if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
-        if (state == Estado.ELIMINADA) graphics.drawRectangle(xGraphic_, yGraphic_, w, h, graphics.newColor(0,0,0,255));
-        else graphics.fillRectangle(xGraphic_, yGraphic_, w, h, icolor);
         this.xGraphic = xGraphic_;
         this.yGraphic = yGraphic_;
+        if (state == Estado.ELIMINADA) {
+            graphics.drawRectangle(xGraphic_, yGraphic_, w, h, icolor);
+            graphics.drawLine(this.xGraphic, this.yGraphic, this.xGraphic+w, this.yGraphic +h, icolor);
+        }
+        else graphics.fillRectangle(xGraphic_, yGraphic_, w, h, icolor);
     }
 
     public boolean checkCollisions(int x, int y)

@@ -1,6 +1,5 @@
 - Meter sonidos
 - Meter el menú
-- Meter el métdo drawLine y renderizar correctamente todas las casillas
 - Añadir timer
 - Botón de comprobar
 - Refactorizar el código (meter clase GameObject)
