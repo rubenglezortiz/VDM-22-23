@@ -317,4 +317,23 @@ public class Tablero {
         this.failSound = this.audio.newSound("fail.wav");
         this.audio.setVolume(this.failSound, 0.5f);
     }
+
+    public boolean getCheckPressed() { return checkPressed; }
+
+    public void checkOut() {
+        checkPressed = false;
+
+        int i = 0;
+        while (casErroneas > 0 && i < numCols){
+            int j = 0;
+            while (casErroneas > 0 && j < numRows) {
+                if (tablero[i][j].esCorregida()){
+                    tablero[i][j].checkOut();
+                    casErroneas--;
+                }
+                j++;
+            }
+            i++;
+        }
+    }
 }

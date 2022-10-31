@@ -91,5 +91,12 @@ public class Casilla {
         return false;
     }
 
+    public boolean esCorregida(){
+        return state == Estado.INCORRECTA;
+    }
+
+    public void checkOut(){
+        state = Estado.SELECCIONADA;
+    }
 
 }

@@ -20,6 +20,8 @@ public class Scene1 implements IScene {
     private Tablero board;
 
     private ISound backgroundMusic;
+    private float timer;
+    private long lastUpdateTime;
 
     public Scene1(IEngine engine){
         this.graphics = engine.getGraphics();
@@ -28,11 +30,27 @@ public class Scene1 implements IScene {
         board = new Tablero(5,5,this.graphics, this.audio);
         engine.getState().setScene(this);
 
+        this.timer = 0.0f;
+
         createMusic();
     }
 
     @Override
     public void update() {
+
+        //Borrar el mensaje de correción al cabo de un tiempo
+        if (board.getCheckPressed()){
+            long actualTime = System.nanoTime() / 1000000; //Miliseconds
+             timer = timer + ((actualTime - lastUpdateTime) / 1000.0f); //Timer está en seconds
+            if (timer > 5.0f){
+                board.checkOut();
+                timer = 0.0f;
+            }
+
+            lastUpdateTime = actualTime;
+        }
+        else lastUpdateTime = System.nanoTime() / 1000000; //Miliseconds
+
     }
 
     @Override
