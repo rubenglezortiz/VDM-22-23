@@ -19,7 +19,7 @@ public class DState implements IState {
     }
 
     @Override
-    public void handleInputs() {
+    public synchronized void handleInputs() {
         if(currScene!=null)
             currScene.handleInputs();
     }

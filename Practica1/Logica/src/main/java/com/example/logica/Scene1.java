@@ -36,7 +36,6 @@ public class Scene1 implements IScene {
     public void handleInputs() {
         ArrayList<IInput.Event> eventList = this.input.getEventList();
         Iterator<IInput.Event> it = eventList.iterator();
-
         while (it.hasNext()) {
             IInput.Event event = it.next();
             switch (event.type) {
