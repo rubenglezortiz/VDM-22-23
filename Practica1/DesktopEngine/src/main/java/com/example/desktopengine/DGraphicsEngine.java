@@ -13,7 +13,8 @@ import javax.swing.JFrame;
 
 public class DGraphicsEngine implements IGraphics {
     // Class variables
-    float logicWidth, logicHeight;
+    private int logicWidth, logicHeight;
+    private float scaleFactorX, scaleFactorY;
 
     // Java variables
     private JFrame window;
@@ -26,6 +27,8 @@ public class DGraphicsEngine implements IGraphics {
 
     public DGraphicsEngine(JFrame window_){
         this.window = window_;
+        this.logicWidth = this.window.getWidth();
+        this.logicHeight = this.window.getHeight();
         this.window.setSize(600, 400);
         this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -61,7 +64,8 @@ public class DGraphicsEngine implements IGraphics {
     // Canvas
     @Override
     public void setResolution(float xScale, float yScale) {
-        //NI IDEA
+       scaleFactorX = xScale/logicWidth;
+       scaleFactorY = yScale/logicHeight;
     }
 
     @Override
@@ -167,30 +171,24 @@ public class DGraphicsEngine implements IGraphics {
 
     @Override
     public int getLogicWidth() {
-        return 0;
+        return this.logicWidth;
     }
 
     @Override
-    public int getLogicHeight() {
-        return 0;
-    }
+    public int getLogicHeight() { return this.logicHeight; }
 
     @Override
-    public int realToLogicX(int x) {
-        return 0;
-    }
-
-    @Override
-    public int realToLogicY(int y) {
-        return 0;
+    public int realToLogic(int x) {
+        float scaleFactor;
+        if(scaleFactorX< scaleFactorY) scaleFactor = scaleFactorX;
+        else scaleFactor = scaleFactorY;
+        return (int)(x * scaleFactor);
     }
 
     public void prepareFrame() {
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
         this.clear(newColor(255,255,255,255));
-        //this.canvas.scale();
-        //this.canvas.translate();
-        //this.canvas.clearRect();
+        this.setResolution(this.window.getWidth(), this.window.getHeight());
     }
 
     public void finishFrame() {

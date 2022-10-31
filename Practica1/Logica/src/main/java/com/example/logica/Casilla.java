@@ -5,13 +5,14 @@ import com.example.engine.IGraphics;
 
 public class Casilla extends GameObject {
     enum Estado {DESELECCIONADA, SELECCIONADA, ELIMINADA, INCORRECTA};
-
     boolean solucion;
     int row, col;
     Estado state;
+    IGraphics graphics;
 
-    public Casilla(int row_, int col_, boolean sol, IGraphics graphics){
-        super(graphics.getWidth()/10, graphics.getWidth()/10);
+    public Casilla(int row_, int col_, boolean sol, IGraphics graphics_){
+        super(graphics_.getWidth()/10, graphics_.getWidth()/10);
+        this.graphics = graphics_;
         state = Estado.DESELECCIONADA;
         row = row_;
         col = col_;
@@ -74,16 +75,20 @@ public class Casilla extends GameObject {
         this.x = xGraphic_;
         this.y = yGraphic_;
         if (state == Estado.ELIMINADA) {
-            graphics.drawRectangle(xGraphic_, yGraphic_, w, h, icolor);
-            graphics.drawLine(this.x, this.y, this.x+w, this.y +h, icolor);
+            graphics.drawRectangle(graphics.realToLogic(xGraphic_), graphics.realToLogic(yGraphic_),
+                    graphics.realToLogic(w), graphics.realToLogic(h), icolor);
+            graphics.drawLine(graphics.realToLogic(this.x), graphics.realToLogic(this.y) ,
+                    graphics.realToLogic(this.x+w), graphics.realToLogic(this.y +h), icolor);
         }
-        else graphics.fillRectangle(xGraphic_, yGraphic_, w, h, icolor);
+        else graphics.fillRectangle(graphics.realToLogic(xGraphic_), graphics.realToLogic(yGraphic_),
+                graphics.realToLogic(w), graphics.realToLogic(h), icolor);
     }
 
     public boolean checkCollisions(int x, int y)
     {
-        if (x >= this.x && x <= this.x + this.w &&
-                y >= this.y  && y <= this.y + this.h) return true;
+        if (x >= this.graphics.realToLogic(this.x) && x <= this.graphics.realToLogic(this.x) + this.graphics.realToLogic(this.w) &&
+                y >= this.graphics.realToLogic(this.y)  && y <= this.graphics.realToLogic(this.y) + this.graphics.realToLogic(this.h))
+            return true;
         return false;
     }
 

@@ -1,5 +1,5 @@
-- Meter sonidos
 - Meter el menú
-- Añadir timer
+- Meter el menú de selección de nivel
 - Botón de comprobar
 - Refactorizar el código (meter clase GameObject)
+- Terminar reescalado
