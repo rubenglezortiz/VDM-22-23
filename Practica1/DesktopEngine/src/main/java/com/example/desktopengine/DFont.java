@@ -12,16 +12,13 @@ public class DFont implements IFont {
 
     private Font fuente;
 
-    public DFont(String name, float tam, boolean esNeg){
+    public DFont(String name, boolean esNeg){
         try {
             FileInputStream fis = new FileInputStream(name);
             this.fuente = Font.createFont(Font.TRUETYPE_FONT, fis);
-            if (esNeg){
+            if (esNeg) {
                 this.fuente = this.fuente.deriveFont(Font.BOLD);
             }
-            this.fuente = this.fuente.deriveFont(tam);
-
-
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }

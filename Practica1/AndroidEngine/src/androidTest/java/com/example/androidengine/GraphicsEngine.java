@@ -73,8 +73,8 @@ public class GraphicsEngine implements IGraphics {
     }
 
     @Override
-    public IFont newFont(String name, int size, boolean bold) {
-        return new AFont(name, size, bold, this.assetManager);
+    public IFont newFont(String name, boolean bold) {
+        return new AFont(name, bold, this.assetManager);
     }
 
     @Override

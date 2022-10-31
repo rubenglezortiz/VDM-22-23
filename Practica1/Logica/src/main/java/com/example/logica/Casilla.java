@@ -3,22 +3,18 @@ package com.example.logica;
 import com.example.engine.IColor;
 import com.example.engine.IGraphics;
 
-public class Casilla {
-
+public class Casilla extends GameObject {
     enum Estado {DESELECCIONADA, SELECCIONADA, ELIMINADA, INCORRECTA};
 
-
-
     boolean solucion;
-    int x, y, w, h, xGraphic, yGraphic;
+    int row, col;
     Estado state;
 
-    public Casilla(int x_, int y_, boolean sol, IGraphics graphics){
+    public Casilla(int row_, int col_, boolean sol, IGraphics graphics){
+        super(graphics.getWidth()/10, graphics.getWidth()/10);
         state = Estado.DESELECCIONADA;
-        x = x_;
-        y = y_;
-        w = graphics.getWidth()/10;
-        h = w;
+        row = row_;
+        col = col_;
         solucion = sol;
     }
 
@@ -55,7 +51,7 @@ public class Casilla {
         return 0;
     }
 
-    public void render(IGraphics graphics,int numRows, int numCols,int xGraphic_, int yGraphic_){
+    public void render(IGraphics graphics, int xGraphic_, int yGraphic_){
         IColor icolor;
         switch (state){
             case DESELECCIONADA:
@@ -75,21 +71,12 @@ public class Casilla {
                 break;
         }
         //if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
-        this.xGraphic = xGraphic_;
-        this.yGraphic = yGraphic_;
+        this.x = xGraphic_;
+        this.y = yGraphic_;
         if (state == Estado.ELIMINADA) {
             graphics.drawRectangle(xGraphic_, yGraphic_, w, h, icolor);
-            graphics.drawLine(this.xGraphic, this.yGraphic, this.xGraphic+w, this.yGraphic +h, icolor);
+            graphics.drawLine(this.x, this.y, this.x+w, this.y +h, icolor);
         }
         else graphics.fillRectangle(xGraphic_, yGraphic_, w, h, icolor);
     }
-
-    public boolean checkCollisions(int x, int y)
-    {
-        if (x >= this.xGraphic && x <= this.xGraphic+this.w &&
-                y >= this.yGraphic && y <= this.yGraphic+this.h) return true;
-        return false;
-    }
-
-
 }

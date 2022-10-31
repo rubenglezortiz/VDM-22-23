@@ -17,6 +17,7 @@ public class Tablero {
     private int casErroneas = 0;
     private int casRestantes = 0;
     private boolean win = false;
+
     public Tablero(int nC, int nR,IGraphics graphics_){
         numCols = nC;
         numRows = nR;
@@ -34,7 +35,6 @@ public class Tablero {
                     isSol = rnd < numCasillas * 0.65; //En teoría se añaden el 65% de las casillas
                     if (isSol) contador++;
                 }
-
                 tablero[i][j] = new Casilla(i,j, isSol,graphics);
             }
         }
@@ -188,7 +188,7 @@ public class Tablero {
         // Renderizado de casillas
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                tablero[i][j].render(graphics, numRows, numCols,xInicial+i*(casillaW+separacion),yInicial+j*(casillaH+separacion));
+                tablero[i][j].render(graphics,xInicial+i*(casillaW+separacion),yInicial+j*(casillaH+separacion));
             }
         }
 
@@ -226,11 +226,8 @@ public class Tablero {
                 }
                 break;
             case TOUCH_RELEASED:
-                if(mousePressed){
-                    if(((IInput.MouseInputEvent)event).mouseButton == 1){
-                        checkCellsCollision(((IInput.MouseInputEvent)event).x, ((IInput.MouseInputEvent)event).y, false);
-                        mousePressed = false;
-                    }
+                if(((IInput.MouseInputEvent)event).mouseButton == 1){
+                    checkCellsCollision(((IInput.MouseInputEvent)event).x, ((IInput.MouseInputEvent)event).y, false);
                 }
                 break;
             case KEY_DOWN:
@@ -266,6 +263,7 @@ public class Tablero {
             i++;
         }
     }
+
     public boolean checkWin()
     {
         checkPressed = true;

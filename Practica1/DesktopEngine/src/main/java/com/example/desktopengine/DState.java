@@ -2,7 +2,6 @@ package com.example.desktopengine;
 
 import com.example.engine.IScene;
 import com.example.engine.IState;
-import com.example.logica.Scene1;
 
 public class DState implements IState {
     IScene currScene;

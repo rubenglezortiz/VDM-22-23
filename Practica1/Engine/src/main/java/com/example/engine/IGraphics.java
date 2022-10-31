@@ -15,7 +15,7 @@ public interface IGraphics {
     // Create
     public IColor newColor(int r_, int g_, int b_, int a_);
     public IImage newImage(String name);
-    public IFont newFont (String name, int size, boolean bold);
+    public IFont newFont (String name, boolean bold);
 
     // Draw
     public void clear (IColor color);

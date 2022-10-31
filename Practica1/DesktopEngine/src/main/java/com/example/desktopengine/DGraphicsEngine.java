@@ -48,9 +48,8 @@ public class DGraphicsEngine implements IGraphics {
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
         this.window.setIgnoreRepaint(true);
         this.window.setVisible(true);
-
-
     }
+
     public void show(){
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
         this.buffer.show();
@@ -97,8 +96,8 @@ public class DGraphicsEngine implements IGraphics {
     }
 
     @Override
-    public IFont newFont(String name, int size, boolean bold) {
-        return new DFont(name, size, bold);
+    public IFont newFont(String name, boolean bold) {
+        return new DFont(name,bold);
     }
 
     // Draw
@@ -135,7 +134,6 @@ public class DGraphicsEngine implements IGraphics {
     public void drawText(String text, float x, float y, float textSize, IColor color) {
         setColor(color);
         this.canvas.setFont(this.canvas.getFont().deriveFont(textSize));
-
         this.canvas.drawString(text,x,y);
     }
 
