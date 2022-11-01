@@ -26,13 +26,14 @@ public class Tablero {
     private ISound failSound;
 
     public Tablero(int nC, int nR,IGraphics graphics_, IAudio audio_){
-        numCols = nC;
-        numRows = nR;
-        tablero = new Casilla[numRows][numCols];
-        graphics = graphics_;
-        audio = audio_;
+        this.numCols = nC;
+        this.numRows = nR;
+        this.tablero = new Casilla[numRows][numCols];
+        this.graphics = graphics_;
+        this.audio = audio_;
         int numCasillas = nC * nR;
-
+        int casillaSize = Math.min(this.graphics.getWidth(), this.graphics.getHeight());
+        int windowRelativeSize = 3;
         int contador = 0;
         for(int i=0; i < numRows; i++){
             for (int j = 0; j < numCols; j++){
@@ -43,7 +44,8 @@ public class Tablero {
                     isSol = rnd < numCasillas * 0.65; //En teoría se añaden el 65% de las casillas
                     if (isSol) contador++;
                 }
-                tablero[i][j] = new Casilla(i,j, isSol,graphics);
+                tablero[i][j] = new Casilla(i,j, casillaSize/numRows/windowRelativeSize,
+                        casillaSize/numCols/windowRelativeSize, isSol, graphics);
             }
         }
 
@@ -181,8 +183,8 @@ public class Tablero {
     }
 
     public void render(IGraphics graphics) {
-        int width = graphics.getWidth();
-        int height = graphics.getHeight();
+        int width = graphics.getLogicWidth();
+        int height = graphics.getLogicHeight();
         // Ancho y alto de cada casilla
         int casillaW = tablero[0][0].w;
         int casillaH = tablero[0][0].h;
@@ -205,25 +207,49 @@ public class Tablero {
         int textSize = casillaW/2;
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < colsList[i].size() ;j++)
-                graphics.drawText(colsList[i].get(j).toString(), xInicial-colsList[i].size()*textSize+j*textSize,yInicial+casillaH/2+i*(casillaH+separacion)+separacion, textSize, graphics.newColor(0, 0, 0, 255));
+                graphics.drawText(colsList[i].get(j).toString(),
+                        graphics.realToLogicScale(xInicial-colsList[i].size()*textSize+j*textSize),
+                        graphics.realToLogicScale(yInicial+casillaH/2+i*(casillaH+separacion)+separacion),
+                        graphics.realToLogicScale(textSize), graphics.newColor(0, 0, 0, 255));
         }
         // Se dibujan las pistas de las columnas
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < rowsList[i].size() ;j++)
-                graphics.drawText(rowsList[i].get(j).toString(), xInicial+casillaW/2+i*(casillaW+separacion)-separacion,yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2 , textSize, graphics.newColor(0, 0, 0, 255));
+                graphics.drawText(rowsList[i].get(j).toString(),
+                        graphics.realToLogicScale(xInicial+casillaW/2+i*(casillaW+separacion)-separacion),
+                        graphics.realToLogicScale(yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2),
+                        graphics.realToLogicScale(textSize), graphics.newColor(0, 0, 0, 255));
         }
         if (checkPressed)
         {
-            if (win) graphics.drawText("Felicidades, has ganado",xInicial,yInicial/2,textSize, graphics.newColor(0, 200, 0, 255));
+            if (win) graphics.drawText("Felicidades, has ganado",
+                    graphics.realToLogicScale(xInicial),
+                    graphics.realToLogicScale(yInicial/2),
+                    graphics.realToLogicScale(textSize), graphics.newColor(0, 200, 0, 255));
             else
             {
-                if (casRestantes != 0) graphics.drawText("Te faltan " + casRestantes + " casillas",xInicial,yInicial/2 ,textSize, graphics.newColor(200, 0, 0, 255));
-                if (casErroneas != 0) graphics.drawText("Tienes mal " + casErroneas + " casillas",xInicial,yInicial/2+textSize ,textSize, graphics.newColor(200, 0, 0, 255));
+                if (casRestantes != 0) graphics.drawText("Te faltan " + casRestantes + " casillas",
+                        graphics.realToLogicScale(xInicial),
+                        graphics.realToLogicScale(yInicial/2),
+                        graphics.realToLogicScale(textSize), graphics.newColor(0, 200, 0, 255));
+                if (casErroneas != 0) graphics.drawText("Tienes mal " + casErroneas + " casillas",
+                        graphics.realToLogicScale(xInicial),
+                        graphics.realToLogicScale(yInicial/2),
+                        graphics.realToLogicScale(textSize), graphics.newColor(0, 200, 0, 255));
             }
         }
         // Dibujado de rectangulos para el borde
-        graphics.drawRectangle(xInicial,yInicial-4*textSize,anchoTablero,altoTablero+4*textSize,graphics.newColor(0,0,0,255));
-        graphics.drawRectangle(xInicial-4*textSize,yInicial,anchoTablero+4*textSize,altoTablero,graphics.newColor(0,0,0,255));
+        graphics.drawRectangle(graphics.realToLogicScale(xInicial),
+                            graphics.realToLogicScale(yInicial-4*textSize),
+                            graphics.realToLogicScale(anchoTablero),
+                            graphics.realToLogicScale(altoTablero+4*textSize),
+                            graphics.newColor(0,0,0,255));
+
+        graphics.drawRectangle(graphics.realToLogicScale(xInicial-4*textSize),
+                            graphics.realToLogicScale(yInicial),
+                            graphics.realToLogicScale(anchoTablero+4*textSize),
+                            graphics.realToLogicScale(altoTablero),
+                            graphics.newColor(0,0,0,255));
     }
 
     public void handleInputs(IInput.Event event) {

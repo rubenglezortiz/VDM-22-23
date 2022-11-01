@@ -32,6 +32,9 @@ public interface IGraphics {
     public int getLogicWidth();
     public int getLogicHeight();
 
-    public int realToLogic(int x);
+    public int realToLogicX(int x);
+    public int realToLogicY(int y);
+    public int realToLogicScale(int s);
+
 
 }

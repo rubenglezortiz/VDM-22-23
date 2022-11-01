@@ -5,10 +5,8 @@ import com.example.engine.IEngine;
 import com.example.engine.IGraphics;
 import com.example.engine.IInput;
 import com.example.engine.IState;
-import com.example.logica.Tablero;
 
 import javax.swing.JFrame;
-import javax.swing.plaf.synth.Region;
 
 public class DesktopEngine implements IEngine, Runnable {
     private Thread currentThread;
@@ -63,7 +61,7 @@ public class DesktopEngine implements IEngine, Runnable {
                 this.currentState.render();
                 //terminar Frame
                 this.graphics.finishFrame();
-            }while(!this.graphics.cambioBuffer());
+            }while(!this.graphics.changeBuffer());
         }
     }
 

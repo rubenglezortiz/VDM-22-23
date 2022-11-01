@@ -10,8 +10,8 @@ public class Casilla extends GameObject {
     Estado state;
     IGraphics graphics;
 
-    public Casilla(int row_, int col_, boolean sol, IGraphics graphics_){
-        super(graphics_.getWidth()/10, graphics_.getWidth()/10);
+    public Casilla(int row_, int col_, int w, int h, boolean sol, IGraphics graphics_){
+        super(w, h);
         this.graphics = graphics_;
         state = Estado.DESELECCIONADA;
         row = row_;
@@ -73,21 +73,24 @@ public class Casilla extends GameObject {
         }
         //if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
         this.x = xGraphic_;
-        this.y = yGraphic_;
+        this.y = yGraphic_; //System.out.println(this.y);
         if (state == Estado.ELIMINADA) {
-            graphics.drawRectangle(graphics.realToLogic(xGraphic_), graphics.realToLogic(yGraphic_),
-                    graphics.realToLogic(w), graphics.realToLogic(h), icolor);
-            graphics.drawLine(graphics.realToLogic(this.x), graphics.realToLogic(this.y) ,
-                    graphics.realToLogic(this.x+w), graphics.realToLogic(this.y +h), icolor);
+            graphics.drawRectangle(graphics.realToLogicScale(this.x), graphics.realToLogicScale(this.y),
+                    graphics.realToLogicScale(this.w), graphics.realToLogicScale(this.h), icolor);
+            graphics.drawLine(graphics.realToLogicScale(this.x), graphics.realToLogicScale(this.y) ,
+                    graphics.realToLogicScale(this.x)+graphics.realToLogicScale(w),
+                    graphics.realToLogicScale(this.y) + this.graphics.realToLogicScale(this.h), icolor);
         }
-        else graphics.fillRectangle(graphics.realToLogic(xGraphic_), graphics.realToLogic(yGraphic_),
-                graphics.realToLogic(w), graphics.realToLogic(h), icolor);
+        else graphics.fillRectangle(graphics.realToLogicScale(this.x), graphics.realToLogicScale(this.y),
+                graphics.realToLogicScale(this.w), graphics.realToLogicScale(this.h), icolor);
     }
 
     public boolean checkCollisions(int x, int y)
     {
-        if (x >= this.graphics.realToLogic(this.x) && x <= this.graphics.realToLogic(this.x) + this.graphics.realToLogic(this.w) &&
-                y >= this.graphics.realToLogic(this.y)  && y <= this.graphics.realToLogic(this.y) + this.graphics.realToLogic(this.h))
+        if (x >= this.graphics.realToLogicScale(this.x) &&
+                x <= this.graphics.realToLogicScale(this.x) + this.graphics.realToLogicScale(this.w) &&
+                y >= this.graphics.realToLogicScale(this.y)  &&
+                y <= this.graphics.realToLogicScale(this.y) + this.graphics.realToLogicScale(this.h))
             return true;
         return false;
     }

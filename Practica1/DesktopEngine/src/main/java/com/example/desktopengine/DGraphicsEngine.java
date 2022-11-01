@@ -5,7 +5,6 @@ import com.example.engine.IFont;
 import com.example.engine.IGraphics;
 import com.example.engine.IImage;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
@@ -53,19 +52,48 @@ public class DGraphicsEngine implements IGraphics {
         this.window.setVisible(true);
     }
 
-    public void show(){
+    // Canvas
+
+    public void prepareFrame() {
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
-        this.buffer.show();
+        this.clear(newColor(255,255,255,255));
+        this.setResolution(this.window.getWidth(), this.window.getHeight());
     }
 
-    public void dispose(){
-        this.buffer.dispose();
+    public void finishFrame() {
+        this.canvas.dispose();
     }
-    // Canvas
+
+    public boolean changeBuffer() {
+        if (this.buffer.contentsRestored()) {
+            return false;
+        }
+        this.buffer.show();
+        return !this.buffer.contentsLost();
+    }
+
+
     @Override
     public void setResolution(float xScale, float yScale) {
        scaleFactorX = xScale/logicWidth;
        scaleFactorY = yScale/logicHeight;
+       //System.out.println("Canvas Width (i600): " + window.getWidth() + "  Canvas Height (i400): " + window.getHeight());
+       //System.out.println("scaleFactorX: " + scaleFactorX + "  scaleFactorY: " + scaleFactorY);
+    }
+
+    @Override
+    public int realToLogicX(int x) {
+        return (int)(x * scaleFactorX);
+    }
+
+    @Override
+    public int realToLogicY(int y) {
+        return (int)(y * scaleFactorY);
+    }
+
+    @Override
+    public int realToLogicScale(int s) {
+        return (int) (s * Math.min(scaleFactorX, scaleFactorY));
     }
 
     @Override
@@ -75,25 +103,21 @@ public class DGraphicsEngine implements IGraphics {
 
     @Override
     public void setColor(IColor color){
-        //canvas.setColor(Color.decode(color));
         canvas.setColor(((DColor)color).getColor());
     }
 
     @Override
     public void setFont(IFont font) {
-        /*InputStream is = new FileInputrStream(filePath);
-        Font font = Font.createFont(Font.TRUETYPE_FONT, is);
-        font = font.deriveFont(font.getStyle(),size);
-        canvas.setFont(font);*/
         canvas.setFont(((DFont)font).getFont());
     }
+
+    // Create
 
     @Override
     public IColor newColor(int r_, int g_, int b_, int a_) {
         return new DColor(r_, g_, b_, a_);
     }
 
-    // Create
     @Override
     public IImage newImage(String name) {
         return new DImage(name);
@@ -148,16 +172,8 @@ public class DGraphicsEngine implements IGraphics {
         this.canvas.setFont(((DFont)font).getFont());
         this.canvas.drawString(text,x,y);
     }
-  //  protected void renderText() throws IOException, FontFormatException {
-  //      String filePath = new String("font.TTF");
-  //      InputStream is = new FileInputStream(filePath);
-  //      Font awtFont = Font.createFont(Font.TRUETYPE_FONT, is);
-  //      awtFont = awtFont.deriveFont(awtFont.getStyle(),10);
-//
-  //      this.graphics2D.setFont(awtFont);
-  //      this.graphics2D.drawString("holaa",100,100);
-//
-  //  }
+
+
     // Getters
     @Override
     public int getWidth() {
@@ -177,30 +193,8 @@ public class DGraphicsEngine implements IGraphics {
     @Override
     public int getLogicHeight() { return this.logicHeight; }
 
-    @Override
-    public int realToLogic(int x) {
-        float scaleFactor;
-        if(scaleFactorX< scaleFactorY) scaleFactor = scaleFactorX;
-        else scaleFactor = scaleFactorY;
-        return (int)(x * scaleFactor);
-    }
 
-    public void prepareFrame() {
-        this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
-        this.clear(newColor(255,255,255,255));
-        this.setResolution(this.window.getWidth(), this.window.getHeight());
-    }
 
-    public void finishFrame() {
-        this.canvas.dispose();
-    }
 
-    public boolean cambioBuffer() {
-        if (this.buffer.contentsRestored()) {
-            return false;
-        }
-        this.buffer.show();
-        return !this.buffer.contentsLost();
-    }
 
 }
