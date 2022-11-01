@@ -78,22 +78,22 @@ public class DGraphicsEngine implements IGraphics {
        this.scaleFactorX = xScale/logicWidth;
        this.scaleFactorY = yScale/logicHeight;
        float scaleFactor = Math.min(scaleFactorX, scaleFactorY);
-       float x = (this.getWidth()-logicWidth) / (2.0f*scaleFactorX);
-       float y = (this.getHeight()- logicHeight)/ (2.0f*scaleFactorY);
+       float x = (this.getWidth()-logicWidth) / (2.0f);
+       float y = (this.getHeight()- logicHeight)/ (2.0f);
        canvas.translate(x,y);
-       canvas.scale(scaleFactor, scaleFactor);
+       //canvas.scale(scaleFactor, scaleFactor);
        //System.out.println("Canvas Width (i600): " + window.getWidth() + "  Canvas Height (i400): " + window.getHeight());
        //System.out.println("scaleFactorX: " + scaleFactorX + "  scaleFactorY: " + scaleFactorY);
     }
 
     @Override
     public int realToLogicX(int x) {
-        return (int)(x * scaleFactorX);
+        return (int) (x+(this.getWidth()-logicWidth)/ 2) ;
     }
 
     @Override
     public int realToLogicY(int y) {
-        return (int)(y * scaleFactorY);
+        return (int) (y+(this.getHeight()- logicHeight)/2);
     }
 
     @Override
