@@ -75,22 +75,21 @@ public class Casilla extends GameObject {
         this.x = xGraphic_;
         this.y = yGraphic_; //System.out.println(this.y);
         if (state == Estado.ELIMINADA) {
-            graphics.drawRectangle(graphics.realToLogicScale(this.x), graphics.realToLogicScale(this.y),
-                    graphics.realToLogicScale(this.w), graphics.realToLogicScale(this.h), icolor);
-            graphics.drawLine(graphics.realToLogicScale(this.x), graphics.realToLogicScale(this.y) ,
-                    graphics.realToLogicScale(this.x)+graphics.realToLogicScale(w),
-                    graphics.realToLogicScale(this.y) + this.graphics.realToLogicScale(this.h), icolor);
+            graphics.drawRectangle(this.x, this.y,
+                    this.w, this.h, icolor);
+                   graphics.drawLine( this.x, this.y ,
+                    this.x+w,
+                    this.y +this.h, icolor);
         }
-        else graphics.fillRectangle(graphics.realToLogicScale(this.x), graphics.realToLogicScale(this.y),
-                graphics.realToLogicScale(this.w), graphics.realToLogicScale(this.h), icolor);
+        else graphics.fillRectangle(this.x, this.y, this.w, this.h, icolor);
     }
 
     public boolean checkCollisions(int x, int y)
     {
-        if (x >= this.graphics.realToLogicScale(this.x) &&
-                x <= this.graphics.realToLogicScale(this.x) + this.graphics.realToLogicScale(this.w) &&
-                y >= this.graphics.realToLogicScale(this.y)  &&
-                y <= this.graphics.realToLogicScale(this.y) + this.graphics.realToLogicScale(this.h))
+        if (x >= this.x &&
+                x <= this.x + this.w &&
+                y >= this.y  &&
+                y <= this.y + this.h)
             return true;
         return false;
     }

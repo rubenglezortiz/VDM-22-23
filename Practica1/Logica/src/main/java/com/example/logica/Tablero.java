@@ -208,47 +208,47 @@ public class Tablero {
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < colsList[i].size() ;j++)
                 graphics.drawText(colsList[i].get(j).toString(),
-                        graphics.realToLogicScale(xInicial-colsList[i].size()*textSize+j*textSize),
-                        graphics.realToLogicScale(yInicial+casillaH/2+i*(casillaH+separacion)+separacion),
-                        graphics.realToLogicScale(textSize), graphics.newColor(0, 0, 0, 255));
+                        xInicial-colsList[i].size()*textSize+j*textSize,
+                        yInicial+casillaH/2+i*(casillaH+separacion)+separacion,
+                            textSize, graphics.newColor(0, 0, 0, 255));
         }
         // Se dibujan las pistas de las columnas
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < rowsList[i].size() ;j++)
                 graphics.drawText(rowsList[i].get(j).toString(),
-                        graphics.realToLogicScale(xInicial+casillaW/2+i*(casillaW+separacion)-separacion),
-                        graphics.realToLogicScale(yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2),
-                        graphics.realToLogicScale(textSize), graphics.newColor(0, 0, 0, 255));
+                        xInicial+casillaW/2+i*(casillaW+separacion)-separacion,
+                       yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2,
+                        textSize, graphics.newColor(0, 0, 0, 255));
         }
         if (checkPressed)
         {
             if (win) graphics.drawText("Felicidades, has ganado",
-                    graphics.realToLogicScale(xInicial),
-                    graphics.realToLogicScale(yInicial/2),
-                    graphics.realToLogicScale(textSize), graphics.newColor(0, 200, 0, 255));
+                    xInicial,
+                    yInicial/2,
+                    textSize, graphics.newColor(0, 200, 0, 255));
             else
             {
                 if (casRestantes != 0) graphics.drawText("Te faltan " + casRestantes + " casillas",
-                        graphics.realToLogicScale(xInicial),
-                        graphics.realToLogicScale(yInicial/2),
-                        graphics.realToLogicScale(textSize), graphics.newColor(0, 200, 0, 255));
+                        xInicial,
+                        yInicial/2,
+                        textSize, graphics.newColor(0, 200, 0, 255));
                 if (casErroneas != 0) graphics.drawText("Tienes mal " + casErroneas + " casillas",
-                        graphics.realToLogicScale(xInicial),
-                        graphics.realToLogicScale(yInicial/2),
-                        graphics.realToLogicScale(textSize), graphics.newColor(0, 200, 0, 255));
+                       xInicial,
+                        yInicial/2,
+                        textSize, graphics.newColor(0, 200, 0, 255));
             }
         }
         // Dibujado de rectangulos para el borde
-        graphics.drawRectangle(graphics.realToLogicScale(xInicial),
-                            graphics.realToLogicScale(yInicial-4*textSize),
-                            graphics.realToLogicScale(anchoTablero),
-                            graphics.realToLogicScale(altoTablero+4*textSize),
+        graphics.drawRectangle(xInicial,
+                            yInicial-4*textSize,
+                            anchoTablero,
+                            altoTablero+4*textSize,
                             graphics.newColor(0,0,0,255));
 
-        graphics.drawRectangle(graphics.realToLogicScale(xInicial-4*textSize),
-                            graphics.realToLogicScale(yInicial),
-                            graphics.realToLogicScale(anchoTablero+4*textSize),
-                            graphics.realToLogicScale(altoTablero),
+        graphics.drawRectangle(xInicial-4*textSize,
+                            yInicial,
+                           anchoTablero+4*textSize,
+                            altoTablero,
                             graphics.newColor(0,0,0,255));
     }
 
