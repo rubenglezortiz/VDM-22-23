@@ -22,9 +22,9 @@ public class DFont implements IFont {
         } catch (FontFormatException | IOException e) {
             e.printStackTrace();
         }
-
-
     }
+
+    public Font getFont() { return this.fuente; }
 
     @Override
     public float getSize() {
@@ -36,7 +36,6 @@ public class DFont implements IFont {
         return this.fuente.isBold();
     }
 
-    public Font getFont() { return this.fuente; }
     @Override
     public void setSize(float size) { this.fuente.deriveFont(size);}
 }

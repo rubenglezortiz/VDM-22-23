@@ -13,14 +13,11 @@ import javax.sound.sampled.LineUnavailableException;
 public class DSound implements ISound {
     Clip clip;
     public DSound(String name){
-
         try {
             File audioFile = new File(name); //path + filename
             AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
             this.clip = AudioSystem.getClip();
             this.clip.open(audioStream);
-
-
         } catch (Exception e) {
             System.err.println("Couldn't load audio file");
             e.printStackTrace();
@@ -47,8 +44,6 @@ public class DSound implements ISound {
         gainControl.setValue(20f * (float) Math.log10(volume));
 
     }
-
-
 
     public boolean isRunning(){
         return this.clip.isRunning();

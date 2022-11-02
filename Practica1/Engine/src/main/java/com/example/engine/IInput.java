@@ -5,18 +5,8 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public interface IInput {
-    public void keyTyped(KeyEvent e); //KEYEVENT SIRVE TANTO PARA JAVA COMO PARA ANDROID?
-    public void keyPressed(KeyEvent e);
-    public void keyReleased(KeyEvent e);
-
-    public void mouseClicked(MouseEvent mouseEvent);
-    public void mousePressed(MouseEvent mouseEvent);
-    public void mouseReleased(MouseEvent mouseEvent);
-    public void mouseEntered(MouseEvent mouseEvent);
-    public void mouseExited(MouseEvent mouseEvent);
     public ArrayList<Event> getEventList();
     public void clearEventList();
-
 
     public static enum InputType{
         TOUCH_PRESSED,

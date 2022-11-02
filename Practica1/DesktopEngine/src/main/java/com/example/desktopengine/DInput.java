@@ -10,6 +10,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 public class DInput implements IInput, KeyListener, MouseListener, MouseMotionListener {
+    private ArrayList<Event> events = new ArrayList<Event>();
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {
@@ -42,16 +43,10 @@ public class DInput implements IInput, KeyListener, MouseListener, MouseMotionLi
 
     @Override
     public void mouseEntered(MouseEvent mouseEvent) {
-
     }
 
     @Override
     public void mouseExited(MouseEvent mouseEvent) {
-
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent mouseEvent) {
     }
 
     @Override
@@ -59,24 +54,27 @@ public class DInput implements IInput, KeyListener, MouseListener, MouseMotionLi
         addEvent(mouseEvent, InputType.TOUCH_MOVE);
     }
 
+    @Override
+    public void mouseDragged(MouseEvent mouseEvent) {
+    }
+
     public void addEvent(KeyEvent event, InputType tipo){
         Event newEvent = new KeyInputEvent(KeyEvent.getKeyText((event.getKeyCode())).charAt(0), 0, tipo);
-        eventos.add(newEvent);
+        events.add(newEvent);
     }
 
     public void addEvent(MouseEvent event, InputType tipo){
         Event newEvent = new MouseInputEvent(event.getX(), event.getY(), event.getButton(), 0, tipo);
-        eventos.add(newEvent);
+        events.add(newEvent);
     }
 
-    private ArrayList<Event> eventos = new ArrayList<Event>();
-
+    @Override
     public ArrayList<Event> getEventList(){
-        return eventos;
+        return events;
     }
 
     @Override
     public void clearEventList() {
-        eventos.clear();
+        events.clear();
     }
 }

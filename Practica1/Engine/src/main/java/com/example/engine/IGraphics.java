@@ -6,13 +6,19 @@ import java.awt.image.IndexColorModel;
 import java.io.IOException;
 
 public interface IGraphics {
-    // Canvas
+    //Canvas functions
+    public void prepareFrame();
+    public void finishFrame();
+    public boolean changeBuffer();
     public void setResolution(float xScale, float yScale);
     public void translate (int x, int y);
+    public int realToLogicX(int x);
+    public int realToLogicY(int y);
+    public int realToLogicScale(int s);
     public void setColor(IColor color);
     public void setFont(IFont font);
 
-    // Create
+    //Create
     public IColor newColor(int r_, int g_, int b_, int a_);
     public IImage newImage(String name);
     public IFont newFont (String name, boolean bold);
@@ -31,10 +37,6 @@ public interface IGraphics {
     public int getHeight();
     public int getLogicWidth();
     public int getLogicHeight();
-
-    public int realToLogicX(int x);
-    public int realToLogicY(int y);
-    public int realToLogicScale(int s);
 
 
 }

@@ -6,56 +6,55 @@ import com.example.engine.ISound;
 
 import java.util.ArrayList;
 
-public class Tablero {
+public class Board {
     private int numCols, numRows;
-    private Casilla[][] tablero;
+    private Cell[][] board;
     private ArrayList<Integer>[] colsList;
     private ArrayList<Integer>[] rowsList;
-    private boolean mousePressed;
-    private Casilla pressedCell;
+    private Cell pressedCell;
     private IGraphics graphics;
     private IAudio audio;
 
     private boolean checkPressed = false;
-    private int casErroneas = 0;
-    private int casRestantes = 0;
+    private int wrongCells = 0;
+    private int remainingCells = 0;
     private boolean win = false;
 
     private ISound cellSound;
     private ISound winSound;
     private ISound failSound;
 
-    public Tablero(int nC, int nR,IGraphics graphics_, IAudio audio_){
+    public Board(int nC, int nR, IGraphics graphics_, IAudio audio_){
         this.numCols = nC;
         this.numRows = nR;
-        this.tablero = new Casilla[numRows][numCols];
+        this.board = new Cell[numRows][numCols];
         this.graphics = graphics_;
         this.audio = audio_;
-        int numCasillas = nC * nR;
-        int casillaSize = Math.min(this.graphics.getWidth(), this.graphics.getHeight());
+        int numCells = nC * nR;
+        int cellSize = Math.min(this.graphics.getWidth(), this.graphics.getHeight());
         int windowRelativeSize = 3;
-        int contador = 0;
+        int cont = 0;
         for(int i=0; i < numRows; i++){
             for (int j = 0; j < numCols; j++){
                 boolean isSol = false;
 
-                if (contador < numCasillas * 0.75){
-                    int rnd = (int) (Math.random() * numCasillas);
-                    isSol = rnd < numCasillas * 0.65; //En teoría se añaden el 65% de las casillas
-                    if (isSol) contador++;
+                if (cont < numCells * 0.75){
+                    int rnd = (int) (Math.random() * numCells);
+                    isSol = rnd < numCells * 0.65; //En teoría se añaden el 65% de las casillas
+                    if (isSol) cont++;
                 }
-                tablero[i][j] = new Casilla(i,j, casillaSize/numRows/windowRelativeSize,
-                        casillaSize/numCols/windowRelativeSize, isSol, graphics);
+                board[i][j] = new Cell(i,j, cellSize/numRows/windowRelativeSize,
+                        cellSize/numCols/windowRelativeSize, isSol, graphics);
             }
         }
 
-        while (contador < numCasillas * 0.3){
+        while (cont < numCells * 0.3){
             int numRandX = (int) (Math.random() * numCols);
             int numRandY = (int) (Math.random() * numRows);
 
-            if (!tablero[numRandY][numRandX].isSolucion()){
-                tablero[numRandY][numRandX].setSolucion(true);
-                contador++;
+            if (!board[numRandY][numRandX].isSolution()){
+                board[numRandY][numRandX].setSolution(true);
+                cont++;
             }
         }
 
@@ -77,27 +76,27 @@ public class Tablero {
         }
 
 
-        boolean estaCasilla = false;
-        int sumador = 0; //Sumador de casillas consecutivas anteriores a esta
+        boolean thisCell = false;
+        int sum = 0; //Sumador de casillas consecutivas anteriores a esta
 
         //COLUMNAS
         for (int j = 0; j < numCols; j++){
             for (int i = 0; i < numRows; i++){
-                estaCasilla = tablero[i][j].isSolucion();
-                if (estaCasilla) {
-                    sumador++;
+                thisCell = board[i][j].isSolution();
+                if (thisCell) {
+                    sum++;
 
                     //Si ya es la última fila de la columna, se añade a la lista
                     if (i == (numRows - 1)){
-                        colsList[j].add(sumador);
-                        sumador = 0;
+                        colsList[j].add(sum);
+                        sum = 0;
                     }
                 }
                 else{
-                    //Si anteriormente a esta casilla, traía un sumador, se añade a la lista
-                    if (sumador > 0) {
-                        colsList[j].add(sumador);
-                        sumador = 0;
+                    //Si anteriormente a esta casilla, traía un sum, se añade a la lista
+                    if (sum > 0) {
+                        colsList[j].add(sum);
+                        sum = 0;
                     }
                 }
             }
@@ -106,27 +105,25 @@ public class Tablero {
         //FILAS
         for (int i = 0; i < numRows; i++){
             for (int j = 0; j < numCols; j++){
-                estaCasilla = tablero[i][j].isSolucion();
-                if (estaCasilla) {
-                    sumador++;
+                thisCell = board[i][j].isSolution();
+                if (thisCell) {
+                    sum++;
 
                     //Si ya es la última fila de la columna, se añade a la lista
                     if (j == (numCols - 1)){
-                        rowsList[i].add(sumador);
-                        sumador = 0;
+                        rowsList[i].add(sum);
+                        sum = 0;
                     }
                 }
                 else{
-                    //Si anteriormente a esta casilla, traía un sumador, se añade a la lista
-                    if (sumador > 0) {
-                        rowsList[i].add(sumador);
-                        sumador = 0;
+                    //Si anteriormente a esta casilla, traía un sum, se añade a la lista
+                    if (sum > 0) {
+                        rowsList[i].add(sum);
+                        sum = 0;
                     }
                 }
             }
         }
-
-        mousePressed = false;
 
         createSounds();
        // // ----------------------------- RENDER ------------------------------------
@@ -172,9 +169,9 @@ public class Tablero {
 
         for (int i = 0; i < numRows; i++){
             for (int j = 0; j < numCols; j++){
-                contador += tablero[i][j].comprueba();
+                contador += board[i][j].check();
 
-                if (finish && tablero[i][j].pintadaErronea()) finish = false;
+                if (finish && board[i][j].wrongMarked()) finish = false;
             }
         }
 
@@ -186,8 +183,8 @@ public class Tablero {
         int width = graphics.getLogicWidth();
         int height = graphics.getLogicHeight();
         // Ancho y alto de cada casilla
-        int casillaW = tablero[0][0].w;
-        int casillaH = tablero[0][0].h;
+        int casillaW = board[0][0].w;
+        int casillaH = board[0][0].h;
         // Distancia de separación entre casillas
         int separacion = casillaW/10;
         // Ancho y alto del tablero
@@ -199,7 +196,7 @@ public class Tablero {
         // Renderizado de casillas
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                tablero[i][j].render(graphics,xInicial+i*(casillaW+separacion),yInicial+j*(casillaH+separacion));
+                board[i][j].render(graphics,xInicial+i*(casillaW+separacion),yInicial+j*(casillaH+separacion));
             }
         }
 
@@ -228,35 +225,25 @@ public class Tablero {
                     textSize, graphics.newColor(0, 200, 0, 255));
             else
             {
-                if (casRestantes != 0) graphics.drawText("Te faltan " + casRestantes + " casillas",
+                if (remainingCells != 0) graphics.drawText("Te faltan " + remainingCells + " casillas",
                         xInicial,
                         yInicial/2,
                         textSize, graphics.newColor(0, 200, 0, 255));
-                if (casErroneas != 0) graphics.drawText("Tienes mal " + casErroneas + " casillas",
+                if (wrongCells != 0) graphics.drawText("Tienes mal " + wrongCells + " casillas",
                        xInicial,
                         yInicial/2,
                         textSize, graphics.newColor(0, 200, 0, 255));
             }
         }
         // Dibujado de rectangulos para el borde
-        graphics.drawRectangle(xInicial,
-                            yInicial-4*textSize,
-                            anchoTablero,
-                            altoTablero+4*textSize,
-                            graphics.newColor(0,0,0,255));
-
-        graphics.drawRectangle(xInicial-4*textSize,
-                            yInicial,
-                           anchoTablero+4*textSize,
-                            altoTablero,
-                            graphics.newColor(0,0,0,255));
+        graphics.drawRectangle(xInicial,yInicial-4*textSize, anchoTablero, altoTablero+4*textSize, graphics.newColor(0,0,0,255));
+        graphics.drawRectangle(xInicial-4*textSize, yInicial, anchoTablero+4*textSize, altoTablero, graphics.newColor(0,0,0,255));
     }
 
     public void handleInputs(IInput.Event event) {
         switch (event.type) {
             case TOUCH_PRESSED:
                 if(((IInput.MouseInputEvent)event).mouseButton == 1){
-                    mousePressed = true;
                     checkCellsCollision(((IInput.MouseInputEvent)event).x, ((IInput.MouseInputEvent)event).y, true);
                 }
                 break;
@@ -282,16 +269,16 @@ public class Tablero {
             j = 0;
             while(j < numRows && !checked){
                 if(pressed){
-                    if(tablero[i][j].checkCollisions(mouseX, mouseY)){
+                    if(board[i][j].checkCollisions(mouseX, mouseY)){
                         checked = true;
-                        pressedCell = tablero[i][j];
+                        pressedCell = board[i][j];
                     }
                 }
                 else{
-                    if(tablero[i][j].checkCollisions(mouseX, mouseY)){
+                    if(board[i][j].checkCollisions(mouseX, mouseY)){
                         checked = true;
-                        if(pressedCell==tablero[i][j]){
-                            tablero[i][j].cambiaEstado();
+                        if(pressedCell== board[i][j]){
+                            board[i][j].changeState();
                             this.audio.playSound(this.cellSound);
                         }
                     }
@@ -302,21 +289,20 @@ public class Tablero {
         }
     }
 
-    public boolean checkWin()
-    {
+    public boolean checkWin() {
         checkPressed = true;
-        casRestantes = 0;
-        casErroneas = 0;
+        remainingCells = 0;
+        wrongCells = 0;
         for (int i = 0; i < numCols; i++)
         {
             for (int j = 0; j < numRows; j++)
             {
-                int res = tablero[i][j].comprueba();
-                if (res == 2) casErroneas++;
-                else if (res == 1) casRestantes++;
+                int res = board[i][j].check();
+                if (res == 2) wrongCells++;
+                else if (res == 1) remainingCells++;
             }
         }
-        if (casRestantes == 0 && casErroneas == 0) {
+        if (remainingCells == 0 && wrongCells == 0) {
             win = true;
             this.audio.playSound(this.winSound);
             return true;
@@ -347,12 +333,12 @@ public class Tablero {
         checkPressed = false;
 
         int i = 0;
-        while (casErroneas > 0 && i < numCols){
+        while (wrongCells > 0 && i < numCols){
             int j = 0;
-            while (casErroneas > 0 && j < numRows) {
-                if (tablero[i][j].esCorregida()){
-                    tablero[i][j].checkOut();
-                    casErroneas--;
+            while (wrongCells > 0 && j < numRows) {
+                if (board[i][j].isIncorrect()){
+                    board[i][j].checkOut();
+                    wrongCells--;
                 }
                 j++;
             }

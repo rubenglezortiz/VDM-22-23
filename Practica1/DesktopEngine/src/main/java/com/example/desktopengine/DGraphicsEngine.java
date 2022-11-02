@@ -11,16 +11,16 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
 public class DGraphicsEngine implements IGraphics {
-    // Class variables
-    private int logicWidth, logicHeight;
-    private float scaleFactorX, scaleFactorY;
-
     // Java variables
     private JFrame window;
     private BufferStrategy buffer;
     private Graphics2D canvas;
 
-    // Thread (creo q es opcional)
+    // Class variables
+    private int logicWidth, logicHeight;
+    private float scaleFactorX, scaleFactorY;
+
+    // Thread
     private Thread renderThread;
     private boolean running;
 
@@ -52,18 +52,21 @@ public class DGraphicsEngine implements IGraphics {
         this.window.setVisible(true);
     }
 
-    // Canvas
+    ////Canvas functions
 
+    @Override
     public void prepareFrame() {
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
         this.clear(newColor(255,255,255,255));
         this.setResolution(this.window.getWidth(), this.window.getHeight());
     }
 
+    @Override
     public void finishFrame() {
         this.canvas.dispose();
     }
 
+    @Override
     public boolean changeBuffer() {
         if (this.buffer.contentsRestored()) {
             return false;
@@ -71,7 +74,6 @@ public class DGraphicsEngine implements IGraphics {
         this.buffer.show();
         return !this.buffer.contentsLost();
     }
-
 
     @Override
     public void setResolution(float xScale, float yScale) {
@@ -87,6 +89,11 @@ public class DGraphicsEngine implements IGraphics {
     }
 
     @Override
+    public void translate (int x, int y){
+        //NI IDEA
+    }
+
+    @Override
     public int realToLogicX(int x) {
         return (int) (x+(this.getWidth()-logicWidth)/ 2) ;
     }
@@ -99,11 +106,6 @@ public class DGraphicsEngine implements IGraphics {
     @Override
     public int realToLogicScale(int s) {
         return (int) (s * Math.min(scaleFactorX, scaleFactorY));
-    }
-
-    @Override
-    public void translate (int x, int y){
-        //NI IDEA
     }
 
     @Override

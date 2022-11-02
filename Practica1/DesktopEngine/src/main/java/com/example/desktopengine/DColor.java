@@ -9,7 +9,7 @@ public class DColor implements IColor {
 
     public DColor(int r_,int g_,int b_){
         miColor = new Color(r_,g_,b_);
-    }
+    } //a = 255
     public DColor(int r_,int g_,int b_,int a_){
         miColor = new Color(r_,g_,b_,a_);
     }

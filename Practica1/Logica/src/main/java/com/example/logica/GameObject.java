@@ -12,7 +12,7 @@ public class GameObject {
         this.h = h_;
     }
 
-    public  GameObject(int w_, int h_){
+    public GameObject(int w_, int h_){
         this.x = this.y = 0;
         this.w = w_; this.h = h_;
     }

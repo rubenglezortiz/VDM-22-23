@@ -36,13 +36,13 @@ public class DesktopEngine implements IEngine, Runnable {
     public IGraphics getGraphics() { return this.graphics;}
 
     @Override
-    public IAudio getAudio() { return this.audio;}
+    public IInput getInput() {return this.input;}
 
     @Override
     public IState getState() { return this.currentState;}
 
     @Override
-    public IInput getInput() {return this.input;}
+    public IAudio getAudio() { return this.audio;}
 
     @Override
     public void run() {
