@@ -3,7 +3,7 @@ package com.example.androidengine;
 import com.example.engine.IScene;
 import com.example.engine.IState;
 
-public class StateEngine implements IState {
+public class AState implements IState {
 
     @Override
     public void update() {

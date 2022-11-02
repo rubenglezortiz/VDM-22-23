@@ -9,13 +9,13 @@ import com.example.engine.IState;
 import javax.swing.JFrame;
 
 public class DesktopEngine implements IEngine, Runnable {
-    private Thread currentThread;
     private DGraphicsEngine graphics;
     private DAudioEngine audio;
     private DInput input;
     private DState currentState;
 
     private JFrame window;
+    private Thread currentThread;
 
     public DesktopEngine(JFrame window_){
         this.window = window_;
@@ -39,7 +39,7 @@ public class DesktopEngine implements IEngine, Runnable {
     public IInput getInput() {return this.input;}
 
     @Override
-    public IState getState() { return this.currentState;}
+    public IState getCurrentState() { return this.currentState;}
 
     @Override
     public IAudio getAudio() { return this.audio;}

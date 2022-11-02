@@ -42,11 +42,11 @@ public class BoardSelectionScene implements IScene {
                 case KEY_DOWN:
                     int boardSize;
                     if(((IInput.KeyInputEvent)event).key == '1')
-                        this.engine.getState().addScene(new MainScene(this.engine,3,3));
+                        this.engine.getCurrentState().addScene(new MainScene(this.engine,3,3));
                     else if (((IInput.KeyInputEvent)event).key == '2')
-                        this.engine.getState().addScene(new MainScene(this.engine,5,5));
+                        this.engine.getCurrentState().addScene(new MainScene(this.engine,5,5));
                     else if (((IInput.KeyInputEvent)event).key == '3')
-                        this.engine.getState().addScene(new MainScene(this.engine,10,10));
+                        this.engine.getCurrentState().addScene(new MainScene(this.engine,10,10));
                     break;
                 default:
                     break;

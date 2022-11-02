@@ -1,7 +1,6 @@
 package com.example.desktopgame;
 
 import com.example.desktopengine.DesktopEngine;
-import com.example.logica.MainScene;
 import com.example.logica.TitleScene;
 
 import javax.swing.JFrame;
@@ -16,6 +15,6 @@ public class main {
 
         DesktopEngine myEngine = new DesktopEngine(window);
         TitleScene titelScene = new TitleScene(myEngine);
-        myEngine.getState().addScene(titelScene);
+        myEngine.getCurrentState().addScene(titelScene);
     }
 }

@@ -52,7 +52,7 @@ public class DGraphicsEngine implements IGraphics {
         this.window.setVisible(true);
     }
 
-    ////Canvas functions
+    // Canvas functions
 
     @Override
     public void prepareFrame() {
@@ -199,9 +199,4 @@ public class DGraphicsEngine implements IGraphics {
 
     @Override
     public int getLogicHeight() { return this.logicHeight; }
-
-
-
-
-
 }

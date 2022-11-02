@@ -58,7 +58,7 @@ public class MainScene implements IScene {
                 case KEY_DOWN:
                     board.handleInputs(event);
                     if(((IInput.KeyInputEvent)event).key=='Q')
-                        this.engine.getState().removeScene(2);
+                        this.engine.getCurrentState().removeScene(2);
                     //this.engine.getAudio().stopSound(this.backgroundMusic);
                     break;
                 default:

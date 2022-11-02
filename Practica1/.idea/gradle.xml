@@ -15,7 +15,7 @@
             <option value="$PROJECT_DIR$/DesktopGame" />
             <option value="$PROJECT_DIR$/Engine" />
             <option value="$PROJECT_DIR$/Logica" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/androidgame" />
           </set>
         </option>
       </GradleProjectSettings>

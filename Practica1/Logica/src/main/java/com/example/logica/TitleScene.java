@@ -2,15 +2,11 @@ package com.example.logica;
 
 import com.example.engine.IEngine;
 import com.example.engine.IFont;
-import com.example.engine.IGraphics;
-import com.example.engine.IImage;
 import com.example.engine.IInput;
 import com.example.engine.IScene;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import jdk.tools.jmod.Main;
 
 public class TitleScene implements IScene {
     private IFont font;
@@ -40,7 +36,7 @@ public class TitleScene implements IScene {
             IInput.Event event = it.next();
             switch (event.type) {
                 case KEY_DOWN:
-                    engine.getState().addScene(new BoardSelectionScene(this.engine));
+                    engine.getCurrentState().addScene(new BoardSelectionScene(this.engine));
                     break;
                 default:
                     break;

@@ -5,7 +5,7 @@ import android.content.res.AssetManager;
 import com.example.engine.IAudio;
 import com.example.engine.ISound;
 
-public class AudioEngine implements IAudio {
+public class AAudio implements IAudio {
 
     AssetManager assetManager;
     @Override
