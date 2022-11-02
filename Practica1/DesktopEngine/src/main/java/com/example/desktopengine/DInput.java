@@ -51,7 +51,7 @@ public class DInput implements IInput, KeyListener, MouseListener, MouseMotionLi
 
     @Override
     public void mouseMoved(MouseEvent mouseEvent) {
-        addEvent(mouseEvent, InputType.TOUCH_MOVE);
+        //addEvent(mouseEvent, InputType.TOUCH_MOVE);
     }
 
     @Override

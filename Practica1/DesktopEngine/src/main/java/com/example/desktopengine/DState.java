@@ -31,12 +31,14 @@ public class DState implements IState {
     }
 
     @Override
-    public void addScene(IScene scene) {
-        scenes.push(scene);
-    }
+    public void addScene(IScene scene) { scenes.push(scene); }
 
     @Override
-    public void removeScene() {
-        scenes.pop();
+    public void removeScene(int numScenes) {
+        int i = 0;
+        while (scenes.size()>1&& i<numScenes) {
+            scenes.pop();
+            i++;
+        }
     }
 }

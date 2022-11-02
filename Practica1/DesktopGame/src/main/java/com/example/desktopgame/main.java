@@ -9,13 +9,13 @@ import javax.swing.JFrame;
 public class main {
 
     public static void main(String[] args) {
-        JFrame window = new JFrame("jueguito");
+        JFrame window = new JFrame("Nonograms");
         window.setSize(600, 400);
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
 
         DesktopEngine myEngine = new DesktopEngine(window);
-        MainScene d = new MainScene(myEngine,3,3);
-        //TitleScene titelScene = new TitleScene(myEngine);
+        TitleScene titelScene = new TitleScene(myEngine);
+        myEngine.getState().addScene(titelScene);
     }
 }

@@ -21,7 +21,6 @@ public class MainScene implements IScene {
         board = new Board(numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
         this.timer = 0.0f;
         createMusic();
-        engine.getState().addScene(this);
     }
 
     @Override
@@ -54,10 +53,13 @@ public class MainScene implements IScene {
             switch (event.type) {
                 case TOUCH_PRESSED:
                 case TOUCH_RELEASED:
+                    board.handleInputs(event);
+                    break;
                 case KEY_DOWN:
                     board.handleInputs(event);
+                    if(((IInput.KeyInputEvent)event).key=='Q')
+                        this.engine.getState().removeScene(2);
                     //this.engine.getAudio().stopSound(this.backgroundMusic);
-                    //this.engine.getState().removeScene();
                     break;
                 default:
                     break;
