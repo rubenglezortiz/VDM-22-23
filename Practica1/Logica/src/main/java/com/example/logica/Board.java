@@ -160,26 +160,7 @@ public class Board {
        // }
        // System.out.println("");
     }
-
-    //Método que devuelve la cantidad de casillas que te faltan por pintar, y en caso de que no te falten, si
-    //la solución es correcta o no.
-
-    public int comprueba(boolean finish){
-        int contador = 0;
-        finish = true;
-
-        for (int i = 0; i < numRows; i++){
-            for (int j = 0; j < numCols; j++){
-                contador += board[i][j].check();
-
-                if (finish && board[i][j].wrongMarked()) finish = false;
-            }
-        }
-
-        if (contador > 0) finish = false;
-        return contador;
-    }
-
+    
     public void render(IGraphics graphics) {
         int width = graphics.getLogicWidth();
         int height = graphics.getLogicHeight();
