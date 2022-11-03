@@ -11,12 +11,12 @@ import java.util.Iterator;
 public class MainScene implements IScene {
     private IEngine engine;
     private Board board;
-
+    private boolean backToMenu;
     private ISound backgroundMusic;
     private float timer;
-    private long lastUpdateTime;
 
     public MainScene(IEngine engine_, int numRows, int numCols){
+        this.backToMenu = false;
         this.engine = engine_;
         board = new Board(numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
         this.timer = 0.0f;
@@ -25,18 +25,15 @@ public class MainScene implements IScene {
 
     @Override
     public void update() {
-        //Borrar el mensaje de correción al cabo de un tiempo
-        if (board.getCheckPressed()){
-            long actualTime = System.nanoTime() / 1000000; //Miliseconds
-             timer = timer + ((actualTime - lastUpdateTime) / 1000.0f); //Timer is in seconds
-            if (timer > 5.0f){
-                board.checkOut();
-                timer = 0.0f;
-            }
-            lastUpdateTime = actualTime;
+        long actualTime = System.nanoTime() / 1000000; //Miliseconds
+        if(board.getCheckPressed()){
+            timer = (actualTime/1000.0f) + 5.0f;
+            board.pressedOut();
         }
-        else lastUpdateTime = System.nanoTime() / 1000000; //Miliseconds
 
+        if ((actualTime/1000.0f) > timer) board.checkOut();
+
+        if(this.backToMenu) this.engine.getCurrentState().removeScene(2);
     }
 
     @Override
@@ -58,8 +55,8 @@ public class MainScene implements IScene {
                 case KEY_DOWN:
                     board.handleInputs(event);
                     if(((IInput.KeyInputEvent)event).key=='Q')
-                        this.engine.getCurrentState().removeScene(2);
-                    //this.engine.getAudio().stopSound(this.backgroundMusic);
+                        this.backToMenu = true;
+                        //this.engine.getAudio().stopSound(this.backgroundMusic);
                     break;
                 default:
                     break;

@@ -16,6 +16,7 @@ public class Board {
     private IAudio audio;
 
     private boolean checkPressed = false;
+    private  boolean showLevelInfo = false;
     private int wrongCells = 0;
     private int remainingCells = 0;
     private boolean win = false;
@@ -159,26 +160,7 @@ public class Board {
        // }
        // System.out.println("");
     }
-
-    //Método que devuelve la cantidad de casillas que te faltan por pintar, y en caso de que no te falten, si
-    //la solución es correcta o no.
-
-    public int comprueba(boolean finish){
-        int contador = 0;
-        finish = true;
-
-        for (int i = 0; i < numRows; i++){
-            for (int j = 0; j < numCols; j++){
-                contador += board[i][j].check();
-
-                if (finish && board[i][j].wrongMarked()) finish = false;
-            }
-        }
-
-        if (contador > 0) finish = false;
-        return contador;
-    }
-
+    
     public void render(IGraphics graphics) {
         int width = graphics.getLogicWidth();
         int height = graphics.getLogicHeight();
@@ -217,7 +199,7 @@ public class Board {
                        yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2,
                         textSize, graphics.newColor(0, 0, 0, 255));
         }
-        if (checkPressed)
+        if (showLevelInfo)
         {
             if (win) graphics.drawText("Felicidades, has ganado",
                     xInicial,
@@ -253,8 +235,9 @@ public class Board {
                 }
                 break;
             case KEY_DOWN:
-                if (((IInput.KeyInputEvent)event).key == 'A')
+                if (((IInput.KeyInputEvent)event).key == 'A') {
                     checkWin();
+                }
                 break;
             default:
                 break;
@@ -290,7 +273,8 @@ public class Board {
     }
 
     public boolean checkWin() {
-        checkPressed = true;
+        this.checkPressed = true;
+        this.showLevelInfo = true;
         remainingCells = 0;
         wrongCells = 0;
         for (int i = 0; i < numCols; i++)
@@ -314,23 +298,8 @@ public class Board {
         }
     }
 
-    private void createSounds(){
-        //Cell sound
-        this.cellSound = this.audio.newSound("cell.wav");
-
-        //Win sound
-        this.winSound = this.audio.newSound("win.wav");
-        this.audio.setVolume(this.winSound, 0.75f);
-
-        //Fail sound
-        this.failSound = this.audio.newSound("fail.wav");
-        this.audio.setVolume(this.failSound, 0.5f);
-    }
-
-    public boolean getCheckPressed() { return checkPressed; }
-
     public void checkOut() {
-        checkPressed = false;
+        this.showLevelInfo = false;
 
         int i = 0;
         while (wrongCells > 0 && i < numCols){
@@ -344,5 +313,24 @@ public class Board {
             }
             i++;
         }
+    }
+
+    public boolean getCheckPressed() { return checkPressed; }
+
+    public void pressedOut() {
+        this.checkPressed = false;
+    }
+
+    private void createSounds(){
+        //Cell sound
+        this.cellSound = this.audio.newSound("cell.wav");
+
+        //Win sound
+        this.winSound = this.audio.newSound("win.wav");
+        this.audio.setVolume(this.winSound, 0.75f);
+
+        //Fail sound
+        this.failSound = this.audio.newSound("fail.wav");
+        this.audio.setVolume(this.failSound, 0.5f);
     }
 }

@@ -9,17 +9,24 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class BoardSelectionScene implements IScene {
-
     private IFont font;
     private IEngine engine;
+    private boolean changeScene;
+    private int boardSize;
     public BoardSelectionScene(IEngine engine_){
+        this.changeScene = false; this.boardSize = 0;
         this.engine = engine_;
         this.font = this.engine.getGraphics().newFont("font.TTF", false);
     }
 
     @Override
     public void update() {
-
+        if(this.changeScene){
+            this.changeScene = false;
+            if(this.boardSize == 1) this.engine.getCurrentState().addScene(new MainScene(this.engine,3,3));
+            else if (this.boardSize == 2) this.engine.getCurrentState().addScene(new MainScene(this.engine,5,5));
+            else if (this.boardSize == 3) this.engine.getCurrentState().addScene(new MainScene(this.engine,10,10));
+        }
     }
 
     @Override
@@ -40,13 +47,10 @@ public class BoardSelectionScene implements IScene {
             IInput.Event event = it.next();
             switch (event.type) {
                 case KEY_DOWN:
-                    int boardSize;
-                    if(((IInput.KeyInputEvent)event).key == '1')
-                        this.engine.getCurrentState().addScene(new MainScene(this.engine,3,3));
-                    else if (((IInput.KeyInputEvent)event).key == '2')
-                        this.engine.getCurrentState().addScene(new MainScene(this.engine,5,5));
-                    else if (((IInput.KeyInputEvent)event).key == '3')
-                        this.engine.getCurrentState().addScene(new MainScene(this.engine,10,10));
+                    this.changeScene = true;
+                    if(((IInput.KeyInputEvent)event).key == '1') this.boardSize = 1;
+                    else if (((IInput.KeyInputEvent)event).key == '2') this.boardSize = 2;
+                    else if (((IInput.KeyInputEvent)event).key == '3') this.boardSize = 3;
                     break;
                 default:
                     break;
