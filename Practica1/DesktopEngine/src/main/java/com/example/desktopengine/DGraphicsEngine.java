@@ -84,6 +84,9 @@ public class DGraphicsEngine implements IGraphics {
     public void setResolution(float newX, float newY) {
        this.scaleFactorX = newX/ this.logicWidth;
        this.scaleFactorY = newY/ this.logicHeight;
+
+       scaleInX = getWidth() * 3 > getHeight() * 2;
+
        float scaleFactor = getScaleFactor();
 
         int w,h;
@@ -222,11 +225,5 @@ public class DGraphicsEngine implements IGraphics {
     @Override
     public int getLogicHeight() { return this.logicHeight; }
 
-
-    public float getScaleFactor() { 
-        float scaleFactor = Math.min(scaleFactorX, scaleFactorY);
-
-        scaleInX = getWidth() * 3 > getHeight() * 2;
-        return scaleFactor;
-    }
+    public float getScaleFactor() { return Math.min(scaleFactorX, scaleFactorY); }
 }
