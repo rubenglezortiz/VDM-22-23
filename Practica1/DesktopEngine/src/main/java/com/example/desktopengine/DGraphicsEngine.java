@@ -20,6 +20,7 @@ public class DGraphicsEngine implements IGraphics {
     private int logicWidth, logicHeight;
     private float scaleFactorX, scaleFactorY;
     private boolean scaleInX;
+    private int offsetX, offsetY;
 
     // Thread
     private Thread renderThread;
@@ -61,7 +62,7 @@ public class DGraphicsEngine implements IGraphics {
     public void prepareFrame() {
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
         this.setResolution(this.window.getWidth(), this.window.getHeight());
-        this.clear(newColor(255,0,0,255));
+        this.clear(newColor(220,220,220,255));
 
     }
 
@@ -85,19 +86,19 @@ public class DGraphicsEngine implements IGraphics {
        this.scaleFactorY = newY/ this.logicHeight;
        float scaleFactor = getScaleFactor();
 
-        int x,y,w,h;
+        int w,h;
         if (this.scaleInX){
-            x = (int)((getWidth() / 2.0f) - (((float) this.logicWidth / 2.0f) * scaleFactor));
-            y = 0;
+            this.offsetX = (int)((getWidth() / 2.0f) - (((float) this.logicWidth / 2.0f) * scaleFactor));
+            this.offsetY = 0;
         }
         else{
-            x = 0;
-            y = (int)((getHeight() / 2.0f) - (((float) this.logicHeight / 2.0f)  * scaleFactor));
+            this.offsetX = 0;
+            this.offsetY = (int)((getHeight() / 2.0f) - (((float) this.logicHeight / 2.0f)  * scaleFactor));
         }
         w = (int)(this.logicWidth * scaleFactor);
         h = (int)(this.logicHeight * scaleFactor);
 
-        this.canvas.clipRect(x,y,w,h);
+        this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
 
        //translate((int)x, (int)y);
        //System.out.println("Canvas Width (i600): " + window.getWidth() + "  Canvas Height (i400): " + window.getHeight());
@@ -152,7 +153,9 @@ public class DGraphicsEngine implements IGraphics {
     @Override
     public void clear (IColor color){
         setColor(color);
-        this.canvas.fillRect(0, 0, getWidth(), getHeight());
+        this.canvas.fillRect(this.offsetX, this.offsetY,
+                (int)((float)this.logicWidth * getScaleFactor()),
+                (int)((float)this.logicHeight * getScaleFactor()));
     }
 
     @Override
@@ -164,33 +167,39 @@ public class DGraphicsEngine implements IGraphics {
     @Override
     public void drawRectangle(float x, float y, float w, float h, IColor color) {
         setColor(color);
-        canvas.drawRect((int)x, (int)y, (int)w, (int)h);
+        this.canvas.drawRect((int)((x * getScaleFactor()) + this.offsetX),
+                (int)((y * getScaleFactor()) + this.offsetY),
+                (int)(w * getScaleFactor()), (int)(h * getScaleFactor()));
     }
 
     @Override
     public void fillRectangle(float x, float y, float w, float h, IColor  color) {
         setColor(color);
-        this.canvas.fillRect((int)x, (int)y, (int)w, (int)h);
+        this.canvas.fillRect((int)((x * getScaleFactor()) + this.offsetX),
+                (int)((y * getScaleFactor()) + this.offsetY),
+                (int)(w * getScaleFactor()), (int)(h * getScaleFactor()));
     }
 
     @Override
     public void drawImage(IImage image, int x, int y, int w, int h) {
-        canvas.drawImage(((DImage)image).getImage(), x, y, w, h,null);
+        canvas.drawImage(((DImage)image).getImage(), (int)((float)x * getScaleFactor() + this.offsetX),
+                (int)((float)y * getScaleFactor() + this.offsetY),
+                (int)((float)w * getScaleFactor()),(int)((float) h* getScaleFactor()),null);
     }
 
     @Override
     public void drawText(String text, float x, float y, float textSize, IColor color) {
         setColor(color);
-        this.canvas.setFont(this.canvas.getFont().deriveFont(textSize));
-        this.canvas.drawString(text,x,y);
+        this.canvas.setFont(this.canvas.getFont().deriveFont(textSize * getScaleFactor()));
+        this.canvas.drawString(text,(x * getScaleFactor()) + this.offsetX,(y * getScaleFactor()) + this.offsetY);
     }
 
     @Override
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
-        font.setSize(textSize);
+        font.setSize(textSize * getScaleFactor());
         setColor(color);
         this.canvas.setFont(((DFont)font).getFont());
-        this.canvas.drawString(text,x,y);
+        this.canvas.drawString(text,(x * getScaleFactor()) + this.offsetX,(y * getScaleFactor()) + this.offsetY);
     }
 
 
