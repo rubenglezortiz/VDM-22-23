@@ -1,6 +1,5 @@
-package com.example.androidengine;
+package com.example.aengine;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;

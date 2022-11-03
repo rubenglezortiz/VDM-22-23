@@ -43,7 +43,7 @@ public class MainScene implements IScene {
 
     @Override
     public synchronized void handleInputs() {
-        ArrayList<IInput.Event> eventList = this.engine.getInput().getEventList();
+        ArrayList<IInput.Event> eventList = (ArrayList<IInput.Event>) this.engine.getInput().getEventList().clone();
         Iterator<IInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
             IInput.Event event = it.next();

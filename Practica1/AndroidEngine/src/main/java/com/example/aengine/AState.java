@@ -1,4 +1,4 @@
-package com.example.androidengine;
+package com.example.aengine;
 
 import com.example.engine.IScene;
 import com.example.engine.IState;
@@ -25,8 +25,9 @@ public class AState implements IState {
 
     }
 
+
     @Override
-    public void removeScene() {
+    public void removeScene(int n) {
 
     }
 }

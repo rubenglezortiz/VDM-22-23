@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.SurfaceView;
 
+import com.example.aengine.AndroidEngine;
 import com.example.logica.MainScene;
 
 public class Main extends AppCompatActivity {
@@ -16,6 +17,6 @@ public class Main extends AppCompatActivity {
         setContentView(this.myView);
 
         AndroidEngine myEngine = new AndroidEngine(this.myView);
-        MainScene mainScene = new MainScene();
+        //MainScene mainScene = new MainScene();
     }
 }

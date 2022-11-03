@@ -160,7 +160,7 @@ public class Board {
        // }
        // System.out.println("");
     }
-    
+
     public void render(IGraphics graphics) {
         int width = graphics.getLogicWidth();
         int height = graphics.getLogicHeight();
