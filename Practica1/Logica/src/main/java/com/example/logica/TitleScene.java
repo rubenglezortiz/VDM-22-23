@@ -11,13 +11,19 @@ import java.util.Iterator;
 public class TitleScene implements IScene {
     private IFont font;
     private IEngine engine;
+    private boolean changeScene;
     public TitleScene(IEngine engine_){
+        this.changeScene = false;
         this.engine = engine_;
         this.font = this.engine.getGraphics().newFont("font.TTF", false);
     }
 
     @Override
     public void update() {
+        if (changeScene) {
+            changeScene = false;
+            engine.getCurrentState().addScene(new BoardSelectionScene(this.engine));
+        }
 
     }
 
@@ -36,7 +42,7 @@ public class TitleScene implements IScene {
             IInput.Event event = it.next();
             switch (event.type) {
                 case KEY_DOWN:
-                    engine.getCurrentState().addScene(new BoardSelectionScene(this.engine));
+                    changeScene = true;
                     break;
                 default:
                     break;

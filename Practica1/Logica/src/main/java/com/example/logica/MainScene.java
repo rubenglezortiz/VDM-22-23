@@ -11,12 +11,13 @@ import java.util.Iterator;
 public class MainScene implements IScene {
     private IEngine engine;
     private Board board;
-
+    private boolean backToMenu;
     private ISound backgroundMusic;
     private float timer;
     private long lastUpdateTime;
 
     public MainScene(IEngine engine_, int numRows, int numCols){
+        this.backToMenu = false;
         this.engine = engine_;
         board = new Board(numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
         this.timer = 0.0f;
@@ -36,6 +37,9 @@ public class MainScene implements IScene {
             lastUpdateTime = actualTime;
         }
         else lastUpdateTime = System.nanoTime() / 1000000; //Miliseconds
+
+        if(this.backToMenu) this.engine.getCurrentState().removeScene(2);
+
 
     }
 
@@ -58,7 +62,7 @@ public class MainScene implements IScene {
                 case KEY_DOWN:
                     board.handleInputs(event);
                     if(((IInput.KeyInputEvent)event).key=='Q')
-                        this.engine.getCurrentState().removeScene(2);
+                        this.backToMenu = true;
                     //this.engine.getAudio().stopSound(this.backgroundMusic);
                     break;
                 default:

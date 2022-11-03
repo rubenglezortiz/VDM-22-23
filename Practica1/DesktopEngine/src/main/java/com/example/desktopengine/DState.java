@@ -25,7 +25,7 @@ public class DState implements IState {
     }
 
     @Override
-    public synchronized void handleInputs() {
+    public void handleInputs() {
         if(scenes.size() > 0)
             scenes.peek().handleInputs();
     }

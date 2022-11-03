@@ -58,23 +58,23 @@ public class DInput implements IInput, KeyListener, MouseListener, MouseMotionLi
     public void mouseDragged(MouseEvent mouseEvent) {
     }
 
-    public void addEvent(KeyEvent event, InputType tipo){
+    public synchronized void addEvent(KeyEvent event, InputType tipo){
         Event newEvent = new KeyInputEvent(KeyEvent.getKeyText((event.getKeyCode())).charAt(0), 0, tipo);
         events.add(newEvent);
     }
 
-    public void addEvent(MouseEvent event, InputType tipo){
+    public synchronized void addEvent(MouseEvent event, InputType tipo){
         Event newEvent = new MouseInputEvent(event.getX(), event.getY(), event.getButton(), 0, tipo);
         events.add(newEvent);
     }
 
     @Override
-    public ArrayList<Event> getEventList(){
+    public synchronized ArrayList<Event> getEventList(){
         return events;
     }
 
     @Override
-    public void clearEventList() {
+    public synchronized void clearEventList() {
         events.clear();
     }
 }
