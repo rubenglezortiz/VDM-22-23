@@ -210,11 +210,11 @@ public class Board {
                 if (remainingCells != 0) graphics.drawText("Te faltan " + remainingCells + " casillas",
                         xInicial,
                         yInicial/2,
-                        textSize, graphics.newColor(0, 200, 0, 255));
+                        textSize, graphics.newColor(200, 0, 0, 255));
                 if (wrongCells != 0) graphics.drawText("Tienes mal " + wrongCells + " casillas",
                        xInicial,
                         yInicial/2,
-                        textSize, graphics.newColor(0, 200, 0, 255));
+                        textSize, graphics.newColor(200, 0, 0, 255));
             }
         }
         // Dibujado de rectangulos para el borde

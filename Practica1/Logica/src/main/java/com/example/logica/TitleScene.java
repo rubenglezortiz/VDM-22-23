@@ -4,6 +4,7 @@ import com.example.engine.IEngine;
 import com.example.engine.IFont;
 import com.example.engine.IInput;
 import com.example.engine.IScene;
+import com.example.engine.ISound;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,10 +13,13 @@ public class TitleScene implements IScene {
     private IFont font;
     private IEngine engine;
     private boolean changeScene;
+    private ISound backgroundMusic;
+
     public TitleScene(IEngine engine_){
         this.changeScene = false;
         this.engine = engine_;
         this.font = this.engine.getGraphics().newFont("font.TTF", false);
+        createMusic();
     }
 
     @Override
@@ -49,5 +53,13 @@ public class TitleScene implements IScene {
             }
         }
         this.engine.getInput().clearEventList();
+    }
+
+    private void createMusic(){
+        //Background music
+        this.backgroundMusic = this.engine.getAudio().newSound("music.wav");
+        this.engine.getAudio().setLooping(this.backgroundMusic, true);
+        this.engine.getAudio().setVolume(this.backgroundMusic, 0.25f);
+        this.engine.getAudio().playSound(this.backgroundMusic);
     }
 }
