@@ -10,7 +10,7 @@ public interface IGraphics {
     public void prepareFrame();
     public void finishFrame();
     public boolean changeBuffer();
-    public void setResolution(float xScale, float yScale);
+    public void setResolution(float newX, float newY);
     public void translate (int x, int y);
     public int realToLogicX(int x);
     public int realToLogicY(int y);

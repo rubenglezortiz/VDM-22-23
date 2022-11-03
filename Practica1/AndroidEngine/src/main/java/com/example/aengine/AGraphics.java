@@ -55,7 +55,7 @@ public class AGraphics implements IGraphics {
     }
 
     @Override
-    public void setResolution(float xScale, float yScale){
+    public void setResolution(float newX, float newY){
         //NI IDEA
     }
 
