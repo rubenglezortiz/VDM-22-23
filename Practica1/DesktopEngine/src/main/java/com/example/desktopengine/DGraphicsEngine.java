@@ -77,12 +77,13 @@ public class DGraphicsEngine implements IGraphics {
 
     @Override
     public void setResolution(float xScale, float yScale) {
-       this.scaleFactorX = xScale/logicWidth;
+       /*this.scaleFactorX = xScale/logicWidth;
        this.scaleFactorY = yScale/logicHeight;
        float scaleFactor = Math.min(scaleFactorX, scaleFactorY);
        float x = (this.getWidth()-logicWidth) / (2.0f);
        float y = (this.getHeight()- logicHeight)/ (2.0f);
        canvas.translate(x,y);
+        */
        //canvas.scale(scaleFactor, scaleFactor);
        //System.out.println("Canvas Width (i600): " + window.getWidth() + "  Canvas Height (i400): " + window.getHeight());
        //System.out.println("scaleFactorX: " + scaleFactorX + "  scaleFactorY: " + scaleFactorY);
