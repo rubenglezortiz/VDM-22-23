@@ -27,8 +27,8 @@ public class AGraphics implements IGraphics {
     private Thread renderThread;
     private boolean running;
 
-    public AGraphics(SurfaceView myView){
-        this.myView = myView;
+    public AGraphics(SurfaceView myView_){
+        this.myView = myView_;
         this.holder = this.myView.getHolder();
         this.paint = new Paint();
         this.paint.setColor(0xFFFFFFFF);
@@ -39,7 +39,7 @@ public class AGraphics implements IGraphics {
     @Override
     public void prepareFrame() {
         this.canvas = this.holder.lockCanvas();
-        this.clear(newColor(0,255,255,255));
+        this.clear(newColor(255,255,255,255));
         //set resolution, translate etc
     }
 
@@ -50,8 +50,7 @@ public class AGraphics implements IGraphics {
 
     @Override
     public boolean changeBuffer() {
-        if(!this.holder.getSurface().isValid()) return false;
-        return true;
+        return (this.holder.getSurface().isValid());
     }
 
     @Override
@@ -74,7 +73,9 @@ public class AGraphics implements IGraphics {
     public int realToLogicScale(int s) {return 0;}
 
     @Override
-    public void setColor(IColor color){ this.paint.setColor(((AColor)color).getARGBColor());}
+    public void setColor(IColor color){
+        this.paint.setColor(((AColor)color).getARGBColor());
+    }
 
     @Override
     public void setFont(IFont font){
@@ -102,6 +103,7 @@ public class AGraphics implements IGraphics {
 
     @Override
     public void clear(IColor color) {
+        setColor(color);
         drawRectangle(0,0, getWidth(), getHeight(), color);
     }
 
