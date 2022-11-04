@@ -64,7 +64,6 @@ public class DGraphicsEngine implements IGraphics {
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
         this.setResolution(this.window.getWidth(), this.window.getHeight());
         this.clear(newColor(220,220,220,255));
-
     }
 
     @Override

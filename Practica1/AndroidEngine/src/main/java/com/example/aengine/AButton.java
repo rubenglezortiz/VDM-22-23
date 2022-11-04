@@ -5,8 +5,8 @@ import android.widget.Button;
 import com.example.engine.IButton;
 
 public class AButton implements IButton {
-    String text;
-    int posX, posY, width, height;
+    private String text;
+    private int posX, posY, width, height;
 
     public AButton(String buttonText, int x, int y, int w, int h) {
         text = buttonText;

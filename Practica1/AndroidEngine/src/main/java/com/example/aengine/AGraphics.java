@@ -93,13 +93,12 @@ public class AGraphics implements IGraphics {
 
     @Override
     public IImage newImage(String name) {
-        return null;
+        return new AImage(name, this.assetManager);
     }
 
     @Override
     public IFont newFont(String name, boolean bold) {
-        return null;
-        //AFont(name, bold, this.assetManager);
+        return new AFont(name, bold, this.assetManager);
     }
 
     @Override
@@ -109,7 +108,7 @@ public class AGraphics implements IGraphics {
     @Override
     public void clear(IColor color) {
         setColor(color);
-        drawRectangle(0,0, getWidth(), getHeight(), color);
+        fillRectangle(0,0, getWidth(), getHeight(), color);
     }
 
     @Override
@@ -121,37 +120,42 @@ public class AGraphics implements IGraphics {
     @Override
     public void drawRectangle(float x, float y, float w, float h, IColor color) {
         setColor(color);
-        canvas.drawRect(x, y, w, h, paint);
+        canvas.drawLine(x,y,x+w,y,this.paint);
+        canvas.drawLine(x,y,x,y + h,this.paint);
+        canvas.drawLine(x,y+h,x+w,y+h,this.paint);
+        canvas.drawLine(x+w,y,x+w,y+h,this.paint);
     }
 
     @Override
     public void fillRectangle(float x, float y, float w, float h,IColor color){
         setColor(color);
-        //NI IDEA
+        canvas.drawRect(x, y, w, h, paint);
     }
 
     @Override
     public void drawImage(IImage image, int x, int y, int w, int h) {
-        drawImage(image, x, y, w, h, 0);
-    }
-
-    public void drawImage(IImage image, int x, int y, int w, int h, int rotation) {
         //INTENTAR METER VALORES POR DEFECTO
-        ((AImage)image).setWidth(w);
-        ((AImage)image).setHeight(h);
+        //((AImage)image).setWidth(w);
+        //((AImage)image).setHeight(h);
         canvas.drawBitmap(((AImage)image).getBitmap(), x,y, this.paint);
     }
 
+
     @Override
     public void drawText(String text, float x, float y, float textSize, IColor color) {
-
+        float prevTextSize = this.paint.getTextSize();
+        this.paint.setTextSize(textSize);
+        this.paint.setColor(((AColor)color).getARGBColor());
+        canvas.drawText(text,x,y, this.paint);
+        this.paint.setTextSize(prevTextSize);
     }
 
     @Override
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
         setColor(color);
-        paint.setTextSize(textSize);
-        canvas.drawText(text, x, y, paint);
+        this.paint.setTypeface(((AFont)font).getTypeface());
+        this.paint.setTextSize(textSize);
+        this.canvas.drawText(text, x, y, paint);
     }
 
     // Getters

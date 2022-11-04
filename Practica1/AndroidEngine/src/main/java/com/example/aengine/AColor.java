@@ -7,8 +7,9 @@ import com.example.engine.IColor;
 
 
 public class AColor implements IColor {
-    Color miColor;
-    int r,g,b,a;
+    private Color miColor;
+    private int r,g,b,a;
+
     public AColor(int r_,int g_,int b_){
         this.r = r_; this.g = g; this.b = b_; this.a = 255;
         miColor = new Color();

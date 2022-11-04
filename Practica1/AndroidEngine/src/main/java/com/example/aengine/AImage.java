@@ -10,42 +10,23 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class AImage implements IImage {
-    Bitmap bitmap;
+    private Bitmap bitmap;
     //INTENTAR METER VALORES POR DEFECTO
     //InputStream is = assetManager.open(filePath);
     //Bitmap bitmap = BitmapFactory.decodeStream(is);
     //bitmap.setWidth(w); bitmap.setHeight(h); //COMPROBAR Q ESTO FUNCIONE
 
-    public AImage(String name, int width, int height, AssetManager assetMan){
+    public AImage(String name, AssetManager assetMan){
         InputStream is = null;
         try {
             is = assetMan.open(name);
             bitmap = BitmapFactory.decodeStream(is);
-            bitmap.setWidth(width); //COMPROBAR Q ESTO FUNCIONE
-            bitmap.setHeight(height);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public int getWidth() {
-        return bitmap.getWidth();
-    }
-
-    public int getHeight() {
-        return bitmap.getHeight();
-    }
-
     public Bitmap getBitmap(){
         return bitmap;
     }
-
-    public void setWidth(int width){
-        bitmap.setWidth(width);
-    }
-
-    public void setHeight(int height){
-        bitmap.setHeight(height);
-    }
-
 }

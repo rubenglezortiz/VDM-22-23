@@ -11,7 +11,7 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 
 public class DSound implements ISound {
-    Clip clip;
+    private Clip clip;
     public DSound(String name){
         try {
             File audioFile = new File(name); //path + filename

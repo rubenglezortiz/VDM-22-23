@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class ASound implements ISound {
 
-    MediaPlayer mPlayer;
+    private MediaPlayer mPlayer;
     public ASound(String file, AssetManager assetManager){
         this.mPlayer = new MediaPlayer();
         this.mPlayer.reset();
