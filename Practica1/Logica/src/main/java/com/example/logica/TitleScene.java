@@ -39,6 +39,11 @@ public class TitleScene implements IScene {
         this.engine.getGraphics().setFont(this.font);
         this.engine.getGraphics().drawText("NONOGRAMS",this.engine.getGraphics().getLogicWidth()/2.0f - ((10*30)/2.0f),
                 100, 27, this.engine.getGraphics().newColor(0,0,0,255));
+
+        this.engine.getGraphics().drawButton(this.startButton,
+                this.engine.getGraphics().newColor(0,0,0,255),
+                this.engine.getGraphics().newColor(255,255,255,255));
+
     }
 
     @Override
@@ -48,10 +53,18 @@ public class TitleScene implements IScene {
         while (it.hasNext()) {
             IInput.Event event = it.next();
             switch (event.type) {
-                case KEY_DOWN:
-                    changeScene = true;
+                //case KEY_DOWN:
+                //    changeScene = true;
+                //   break;
+                case TOUCH_RELEASED:
+                    if(((IInput.MouseInputEvent)event).mouseButton == 1){
+                        if (this.startButton.checkCollision(this.engine.getGraphics().logicToRealX(((IInput.MouseInputEvent)event).x),
+                                this.engine.getGraphics().logicToRealY(((IInput.MouseInputEvent)event).y))){
+                            changeScene = true;
+                        }
+                    }
                     break;
-                    //case CLICK EN BOTONES
+
                 default:
                     break;
             }
@@ -68,10 +81,16 @@ public class TitleScene implements IScene {
     }
 
     private void createButton(){
+        int x,y,w,h;
+        x = this.engine.getGraphics().getLogicWidth() / 2;
+        y = this.engine.getGraphics().getLogicHeight() * 2 / 3;
+        w = this.engine.getGraphics().getLogicWidth() / 3;
+        h = this.engine.getGraphics().getLogicHeight() / 10;
         this.startButton = this.engine.getGraphics().newButton("Start",
-                this.engine.getGraphics().getLogicWidth() / 2,
-                this.engine.getGraphics().getLogicHeight() * 5 / 6,
-                this.engine.getGraphics().getLogicWidth() / 6,
-                this.engine.getGraphics().getLogicHeight() / 12 );
+                x - (w / 2), y - (h / 2), w, h,
+                10,35, 18,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(255, 255, 255, 255));
     }
 }
