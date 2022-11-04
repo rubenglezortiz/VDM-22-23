@@ -102,7 +102,9 @@ public class AGraphics implements IGraphics {
     }
 
     @Override
-    public IButton newButton(String text, int x, int y, int w, int h) { return new AButton(text, x, y, w, h); }
+    public IButton newButton(String text, int x, int y, int w, int h, int tX, int tY, int tSize, IFont f, IColor mColor, IColor bgColor) {
+        return new AButton(text, x, y, w, h, tX, tY, tSize, (AFont)f, (AColor) mColor, (AColor) bgColor);
+    }
 
 
     @Override
@@ -156,6 +158,15 @@ public class AGraphics implements IGraphics {
         this.paint.setTypeface(((AFont)font).getTypeface());
         this.paint.setTextSize(textSize);
         this.canvas.drawText(text, x, y, paint);
+    }
+
+    @Override
+    public void drawButton(IButton button, IColor mainColor, IColor backgroundColor) {
+        int x = button.getPosX();
+        int y = button.getPosY();
+        int w = button.getWidth();
+
+
     }
 
     // Getters

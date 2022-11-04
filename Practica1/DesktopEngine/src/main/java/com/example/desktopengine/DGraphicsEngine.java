@@ -115,14 +115,23 @@ public class DGraphicsEngine implements IGraphics {
     }
 
     @Override
-    public int realToLogicX(int x) { return (int) ((float)x+(this.getWidth()-logicWidth) / 2.0f) ; }
+    public int realToLogicX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ; }
 
     @Override
-    public int realToLogicY(int y) { return (int) ((float)y+(this.getHeight()- logicHeight) / 2.0f); }
+    public int realToLogicY(int y) { return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
 
 
     @Override
     public int realToLogicScale(int s) {  return (int) ((float)s * getScaleFactor()); }
+
+    @Override
+    public int logicToRealX(int x) { return (int) ((float)(x - this.offsetX) / getScaleFactor());}
+
+    @Override
+    public int logicToRealY(int y) { return (int) ((float)(y - this.offsetY) / getScaleFactor());}
+
+    @Override
+    public int logicToRealScale(int s) { return (int) ((float) s/ getScaleFactor()); }
 
 
     @Override
@@ -153,8 +162,8 @@ public class DGraphicsEngine implements IGraphics {
     }
 
     @Override
-    public IButton newButton(String text, int x, int y, int w, int h) {
-        return new DButton(text, x, y, w, h);
+    public IButton newButton(String text, int x, int y, int w, int h, int tX, int tY, int tSize, IFont f, IColor mColor, IColor bgColor) {
+        return new DButton(text, x, y, w, h, tX, tY, tSize, (DFont)f, (DColor)mColor, (DColor)bgColor);
     }
 
 
@@ -163,44 +172,41 @@ public class DGraphicsEngine implements IGraphics {
     public void clear (IColor color){
         setColor(color);
         this.canvas.fillRect(this.offsetX, this.offsetY,
-                (int)((float)this.logicWidth * getScaleFactor()),
-                (int)((float)this.logicHeight * getScaleFactor()));
+                realToLogicScale(this.logicWidth),
+                realToLogicScale(this.logicHeight));
     }
 
     @Override
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color){
         setColor(color);
-        canvas.drawLine((int)x, (int)y, (int)x_stop, (int)y_stop);
+        canvas.drawLine(realToLogicX((int)x), realToLogicY((int)y), realToLogicX((int)x_stop), realToLogicY((int)y_stop));
     }
 
     @Override
     public void drawRectangle(float x, float y, float w, float h, IColor color) {
         setColor(color);
-        this.canvas.drawRect((int)((x * getScaleFactor()) + this.offsetX),
-                (int)((y * getScaleFactor()) + this.offsetY),
-                (int)(w * getScaleFactor()), (int)(h * getScaleFactor()));
+        this.canvas.drawRect(realToLogicX((int)x), realToLogicY((int)y),
+                realToLogicScale((int)w), realToLogicScale((int)h));
     }
 
     @Override
     public void fillRectangle(float x, float y, float w, float h, IColor  color) {
         setColor(color);
-        this.canvas.fillRect((int)((x * getScaleFactor()) + this.offsetX),
-                (int)((y * getScaleFactor()) + this.offsetY),
-                (int)(w * getScaleFactor()), (int)(h * getScaleFactor()));
+        this.canvas.fillRect(realToLogicX((int)x), realToLogicY((int)y),
+                realToLogicScale((int)w), realToLogicScale((int)h));
     }
 
     @Override
     public void drawImage(IImage image, int x, int y, int w, int h) {
-        canvas.drawImage(((DImage)image).getImage(), (int)((float)x * getScaleFactor() + this.offsetX),
-                (int)((float)y * getScaleFactor() + this.offsetY),
-                (int)((float)w * getScaleFactor()),(int)((float) h* getScaleFactor()),null);
+        canvas.drawImage(((DImage)image).getImage(), realToLogicX(x), realToLogicY(y),
+                realToLogicScale(w),realToLogicScale(h),null);
     }
 
     @Override
     public void drawText(String text, float x, float y, float textSize, IColor color) {
         setColor(color);
         this.canvas.setFont(this.canvas.getFont().deriveFont(textSize * getScaleFactor()));
-        this.canvas.drawString(text,(x * getScaleFactor()) + this.offsetX,(y * getScaleFactor()) + this.offsetY);
+        this.canvas.drawString(text,realToLogicX((int)x),realToLogicY((int)y));
     }
 
     @Override
@@ -208,7 +214,22 @@ public class DGraphicsEngine implements IGraphics {
         font.setSize(textSize * getScaleFactor());
         setColor(color);
         this.canvas.setFont(((DFont)font).getFont());
-        this.canvas.drawString(text,(x * getScaleFactor()) + this.offsetX,(y * getScaleFactor()) + this.offsetY);
+        this.canvas.drawString(text,realToLogicX((int)x),realToLogicY((int)y));
+    }
+
+    @Override
+    public void drawButton(IButton button, IColor mainColor, IColor backgroundColor) {
+        float butX = (float) button.getPosX();
+        float butY = (float) button.getPosY();
+        float butW = (float) button.getWidth();
+        float butH = (float) button.getHeight();
+
+        this.fillRectangle(butX,butY,butW,butH, backgroundColor);
+        this.drawRectangle(butX,butY,butW,butH, mainColor);
+
+        //this.setFont(button.getFont());
+        this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), mainColor);
+
     }
 
 

@@ -15,6 +15,9 @@ public interface IGraphics {
     public int realToLogicX(int x);
     public int realToLogicY(int y);
     public int realToLogicScale(int s);
+    public int logicToRealX(int x);
+    public int logicToRealY(int y);
+    public int logicToRealScale(int s);
     public void setColor(IColor color);
     public void setFont(IFont font);
 
@@ -22,7 +25,7 @@ public interface IGraphics {
     public IColor newColor(int r_, int g_, int b_, int a_);
     public IImage newImage(String name);
     public IFont newFont (String name, boolean bold);
-    public IButton newButton(String text, int x, int y, int w, int h);
+    public IButton newButton(String text, int x, int y, int w, int h, int tX, int tY, int tSize, IFont f, IColor mColor, IColor bgColor);
 
     // Draw
     public void clear (IColor color);
@@ -32,6 +35,7 @@ public interface IGraphics {
     public void drawImage(IImage image, int x, int y, int w, int h);
     public void drawText(String text, float x, float y, float textSize, IColor color);
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color);
+    public void drawButton(IButton button, IColor mainColor, IColor backgroundColor);
 
     // Getters
     public int getWidth();
