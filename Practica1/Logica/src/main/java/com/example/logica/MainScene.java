@@ -3,7 +3,6 @@ package com.example.logica;
 import com.example.engine.IEngine;
 import com.example.engine.IInput;
 import com.example.engine.IScene;
-import com.example.engine.ISound;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,7 +11,7 @@ public class MainScene implements IScene {
     private IEngine engine;
     private Board board;
     private boolean backToMenu;
-    private ISound backgroundMusic;
+
     private float timer;
 
     public MainScene(IEngine engine_, int numRows, int numCols){
@@ -20,7 +19,7 @@ public class MainScene implements IScene {
         this.engine = engine_;
         board = new Board(numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
         this.timer = 0.0f;
-        createMusic();
+
     }
 
     @Override
@@ -63,13 +62,5 @@ public class MainScene implements IScene {
             }
         }
         this.engine.getInput().clearEventList();
-    }
-
-    private void createMusic(){
-        //Background music
-        this.backgroundMusic = this.engine.getAudio().newSound("music.wav");
-        this.engine.getAudio().setLooping(this.backgroundMusic, true);
-        this.engine.getAudio().setVolume(this.backgroundMusic, 0.25f);
-        this.engine.getAudio().playSound(this.backgroundMusic);
     }
 }
