@@ -1,5 +1,6 @@
 package com.example.desktopengine;
 
+import com.example.engine.IButton;
 import com.example.engine.IColor;
 import com.example.engine.IFont;
 import com.example.engine.IGraphics;
@@ -151,6 +152,12 @@ public class DGraphicsEngine implements IGraphics {
     public IFont newFont(String name, boolean bold) {
         return new DFont(name,bold);
     }
+
+    @Override
+    public IButton newButton(String text, int x, int y, int w, int h) {
+        return new DButton(text, x, y, w, h);
+    }
+
 
     // Draw
     @Override

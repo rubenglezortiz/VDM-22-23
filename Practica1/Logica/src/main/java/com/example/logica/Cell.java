@@ -82,12 +82,10 @@ public class Cell extends GameObject {
     }
 
     public boolean checkCollisions(int x, int y) {
-        if (x >= graphics.realToLogicX(this.x) &&
+        return (x >= graphics.realToLogicX(this.x) &&
                 x <= graphics.realToLogicX(this.x + this.w) &&
                 y >= graphics.realToLogicY(this.y)  &&
-                y <= graphics.realToLogicY(this.y + this.h))
-            return true;
-        return false;
+                y <= graphics.realToLogicY(this.y + this.h));
     }
 
     public boolean isIncorrect(){

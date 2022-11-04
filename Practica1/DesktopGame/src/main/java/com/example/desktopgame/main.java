@@ -14,7 +14,7 @@ public class main {
         window.setVisible(true);
 
         DesktopEngine myEngine = new DesktopEngine(window);
-        TitleScene titelScene = new TitleScene(myEngine);
-        myEngine.getCurrentState().addScene(titelScene);
+        TitleScene titleScene = new TitleScene(myEngine);
+        myEngine.getCurrentState().addScene(titleScene);
     }
 }

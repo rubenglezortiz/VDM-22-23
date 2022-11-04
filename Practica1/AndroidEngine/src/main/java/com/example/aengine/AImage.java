@@ -28,14 +28,12 @@ public class AImage implements IImage {
         }
     }
 
-    @Override
     public int getWidth() {
         return bitmap.getWidth();
     }
 
-    @Override
     public int getHeight() {
-        return getHeight();
+        return bitmap.getHeight();
     }
 
     public Bitmap getBitmap(){

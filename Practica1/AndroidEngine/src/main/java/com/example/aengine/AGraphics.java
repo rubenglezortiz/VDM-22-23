@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.example.engine.IButton;
 import com.example.engine.IColor;
 import com.example.engine.IFont;
 import com.example.engine.IGraphics;
@@ -99,6 +100,10 @@ public class AGraphics implements IGraphics {
         return null;
         //AFont(name, bold, this.assetManager);
     }
+
+    @Override
+    public IButton newButton(String text, int x, int y, int w, int h) { return new AButton(text, x, y, w, h); }
+
 
     @Override
     public void clear(IColor color) {
