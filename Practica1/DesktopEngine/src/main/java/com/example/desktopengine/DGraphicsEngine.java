@@ -252,5 +252,6 @@ public class DGraphicsEngine implements IGraphics {
     @Override
     public int getLogicHeight() { return this.logicHeight; }
 
+    @Override
     public float getScaleFactor() { return Math.min(scaleFactorX, scaleFactorY); }
 }

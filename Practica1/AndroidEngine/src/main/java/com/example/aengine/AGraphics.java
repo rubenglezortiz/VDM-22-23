@@ -211,4 +211,7 @@ public class AGraphics implements IGraphics {
     public int getLogicHeight() {
         return this.logicHeight;
     } //REVISAR
+
+    @Override
+    public float getScaleFactor() { return 0; }
 }

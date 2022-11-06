@@ -42,6 +42,7 @@ public interface IGraphics {
     public int getHeight();
     public int getLogicWidth();
     public int getLogicHeight();
+    public float getScaleFactor();
 
 
 }

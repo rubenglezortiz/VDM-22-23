@@ -32,8 +32,9 @@ public class Board {
         this.graphics = graphics_;
         this.audio = audio_;
         int numCells = nC * nR;
-        int cellSize = Math.min(this.graphics.getWidth(), this.graphics.getHeight());
-        int windowRelativeSize = 3;
+        int margin = 50;
+        int cellSize = Math.min(this.graphics.getLogicWidth() - margin, this.graphics.getLogicHeight() - margin);
+
         int cont = 0;
         for(int i=0; i < numRows; i++){
             for (int j = 0; j < numCols; j++){
@@ -44,8 +45,8 @@ public class Board {
                     isSol = rnd < numCells * 0.65; //En teoría se añaden el 65% de las casillas
                     if (isSol) cont++;
                 }
-                board[i][j] = new Cell(i,j, cellSize/numRows/windowRelativeSize,
-                        cellSize/numCols/windowRelativeSize, isSol, graphics);
+                board[i][j] = new Cell(i,j, cellSize/numRows,
+                        cellSize/numCols, isSol, graphics);
             }
         }
 
