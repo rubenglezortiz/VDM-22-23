@@ -20,7 +20,8 @@ public class Board {
     private int wrongCells = 0;
     private int remainingCells = 0;
     private boolean win = false;
-
+    private int margin = 50;
+    private int textMessagesSize;
     private ISound cellSound;
     private ISound winSound;
     private ISound failSound;
@@ -31,9 +32,9 @@ public class Board {
         this.board = new Cell[numRows][numCols];
         this.graphics = graphics_;
         this.audio = audio_;
+        this.textMessagesSize = this.graphics.getLogicWidth()/20;
         int numCells = nC * nR;
-        int margin = 50;
-        int cellSize = Math.min(this.graphics.getLogicWidth() - margin, this.graphics.getLogicHeight() - margin);
+        int cellSize = Math.min(this.graphics.getLogicWidth() - margin*3, this.graphics.getLogicHeight() - margin*3);
 
         int cont = 0;
         for(int i=0; i < numRows; i++){
@@ -174,7 +175,7 @@ public class Board {
         int anchoTablero = numCols*casillaW + (numCols-1)*separacion;
         int altoTablero = numRows*casillaH + (numRows-1)*separacion;
         // Posición desde la que se generan las casillas; partimos de la mitad de la pantalla y restamos la mitad de lo que ocupa el tablero para que este quede centrado
-        int xInicial = width/2-anchoTablero/2;
+        int xInicial = width/2-anchoTablero/2+this.margin/2;
         int yInicial = height/2-altoTablero/2;
         // Renderizado de casillas
         for (int i = 0; i < numRows; i++) {
@@ -184,16 +185,20 @@ public class Board {
         }
 
         // Se dibujan las pistas de las filas
+        int mayorFilas = 1;
         int textSize = casillaW/2;
         for (int i = 0; i < numRows; i++) {
+            if (mayorFilas < colsList[i].size()) mayorFilas = colsList[i].size();
             for (int j = 0; j < colsList[i].size() ;j++)
                 graphics.drawText(colsList[i].get(j).toString(),
                         xInicial-colsList[i].size()*textSize+j*textSize,
                         yInicial+casillaH/2+i*(casillaH+separacion)+separacion,
                             textSize, graphics.newColor(0, 0, 0, 255));
         }
+        int mayorCols = 1;
         // Se dibujan las pistas de las columnas
         for (int i = 0; i < numRows; i++) {
+            if (mayorCols < rowsList[i].size()) mayorCols = rowsList[i].size();
             for (int j = 0; j < rowsList[i].size() ;j++)
                 graphics.drawText(rowsList[i].get(j).toString(),
                         xInicial+casillaW/2+i*(casillaW+separacion)-separacion,
@@ -204,23 +209,25 @@ public class Board {
         {
             if (win) graphics.drawText("Felicidades, has ganado",
                     xInicial,
-                    yInicial/2,
-                    textSize, graphics.newColor(0, 200, 0, 255));
+                    yInicial+numRows*(casillaH+separacion)+textMessagesSize,
+                    textMessagesSize, graphics.newColor(0, 200, 0, 255));
             else
             {
                 if (remainingCells != 0) graphics.drawText("Te faltan " + remainingCells + " casillas",
                         xInicial,
-                        yInicial/2,
-                        textSize, graphics.newColor(200, 0, 0, 255));
+                        yInicial+numRows*(casillaH+separacion)+textMessagesSize,
+                        textMessagesSize, graphics.newColor(200, 0, 0, 255));
                 if (wrongCells != 0) graphics.drawText("Tienes mal " + wrongCells + " casillas",
                        xInicial,
-                        yInicial/2,
-                        textSize, graphics.newColor(200, 0, 0, 255));
+                        yInicial+numRows*(casillaH+separacion)+textMessagesSize+textMessagesSize,
+                        textMessagesSize, graphics.newColor(200, 0, 0, 255));
             }
         }
         // Dibujado de rectangulos para el borde
-        graphics.drawRectangle(xInicial,yInicial-4*textSize, anchoTablero, altoTablero+4*textSize, graphics.newColor(0,0,0,255));
-        graphics.drawRectangle(xInicial-4*textSize, yInicial, anchoTablero+4*textSize, altoTablero, graphics.newColor(0,0,0,255));
+        // Arriba
+        graphics.drawRectangle(xInicial,yInicial-(mayorCols+1)*textSize, anchoTablero, altoTablero+(mayorCols+1)*textSize, graphics.newColor(0,0,0,255));
+        // Abajo
+        graphics.drawRectangle(xInicial-(mayorFilas+1)*textSize, yInicial, anchoTablero+(mayorFilas+1)*textSize, altoTablero, graphics.newColor(0,0,0,255));
     }
 
     public void handleInputs(IInput.Event event) {
