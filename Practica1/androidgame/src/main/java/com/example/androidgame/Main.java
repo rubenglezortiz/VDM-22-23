@@ -21,7 +21,7 @@ public class Main extends AppCompatActivity {
         setContentView(this.myView);
 
         this.myEngine = new AndroidEngine(this.myView);
-        TitleScene titleScene = new TitleScene (this.myEngine);
+        MainScene titleScene = new MainScene (this.myEngine,5,5);
 
         myEngine.getCurrentState().addScene(titleScene);
     }

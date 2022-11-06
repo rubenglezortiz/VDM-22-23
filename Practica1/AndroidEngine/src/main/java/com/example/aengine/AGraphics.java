@@ -42,10 +42,9 @@ public class AGraphics implements IGraphics {
         this.logicWidth = 400;
         this.logicHeight = 600;
 
-        DisplayMetrics metrics = new DisplayMetrics();
+        DisplayMetrics metrics = this.myView.getContext().getResources().getDisplayMetrics();
         this.screenHeight = metrics.heightPixels;
         this.screenWidth = metrics.widthPixels;
-
         setResolution((float)this.screenWidth, (float)this.screenHeight);
     }
 
@@ -53,7 +52,6 @@ public class AGraphics implements IGraphics {
     @Override
     public void prepareFrame() {
         this.canvas = this.holder.lockCanvas();
-
         int w = (int)((float)this.logicWidth * this.scaleFactor);
         int h = (int)((float)this.logicHeight * this.scaleFactor);
 
@@ -88,10 +86,9 @@ public class AGraphics implements IGraphics {
             this.offsetX = 0;
             this.offsetY = (int)(((float)getHeight() / 2.0f) - (((float) this.logicHeight / 2.0f)  * this.scaleFactor));
         }
-        w = (int)((float)this.logicWidth * this.scaleFactor);
-        h = (int)((float)this.logicHeight * this.scaleFactor);
-
-        this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
+        //w = (int)((float)this.logicWidth * this.scaleFactor);
+        //h = (int)((float)this.logicHeight * this.scaleFactor);
+        //this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
     }
 
     @Override

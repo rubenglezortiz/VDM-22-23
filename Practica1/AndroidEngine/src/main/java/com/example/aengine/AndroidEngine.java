@@ -65,9 +65,8 @@ public class AndroidEngine implements IEngine, Runnable {
                 //inputs
                 this.currentState.handleInputs();
 
-                while (!this.graphics.changeBuffer()){
-                    System.out.println("aafdfe");
-                } ;
+                while (!this.graphics.changeBuffer());
+
                 //preparar Frame
                 this.graphics.prepareFrame();
                 //render
