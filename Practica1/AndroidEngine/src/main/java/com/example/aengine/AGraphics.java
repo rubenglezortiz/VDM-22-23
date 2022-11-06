@@ -52,11 +52,6 @@ public class AGraphics implements IGraphics {
     @Override
     public void prepareFrame() {
         this.canvas = this.holder.lockCanvas();
-        int w = (int)((float)this.logicWidth * this.scaleFactor);
-        int h = (int)((float)this.logicHeight * this.scaleFactor);
-
-        this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
-
         this.clear(newColor(220,220,220,255));
     }
 
@@ -77,7 +72,6 @@ public class AGraphics implements IGraphics {
 
         scaleInX = getWidth() * 3 > getHeight() * 2;
 
-        int w,h;
         if (this.scaleInX){
             this.offsetX = (int)(((float)getWidth() / 2.0f) - (((float) this.logicWidth / 2.0f) * this.scaleFactor));
             this.offsetY = 0;
@@ -86,14 +80,11 @@ public class AGraphics implements IGraphics {
             this.offsetX = 0;
             this.offsetY = (int)(((float)getHeight() / 2.0f) - (((float) this.logicHeight / 2.0f)  * this.scaleFactor));
         }
-        //w = (int)((float)this.logicWidth * this.scaleFactor);
-        //h = (int)((float)this.logicHeight * this.scaleFactor);
-        //this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
     }
 
     @Override
     public void translate(int x, int y) {
-        //NI IDEA
+        this.canvas.translate(x, y);
     }
 
     @Override
@@ -151,30 +142,30 @@ public class AGraphics implements IGraphics {
     @Override
     public void clear(IColor color) {
         setColor(color);
-        fillRectangle(0,0, getLogicWidth(), getLogicHeight(), color);
+        this.canvas.drawRect(0,0, getWidth(), getHeight(), this.paint);
     }
 
     @Override
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color) {
         setColor(color);
-        canvas.drawLine(realToLogicX((int)x), realToLogicY((int)y),
+        this.canvas.drawLine(realToLogicX((int)x), realToLogicY((int)y),
                 realToLogicScale((int)x_stop), realToLogicScale((int)y_stop), paint);
     }
 
     @Override
     public void drawRectangle(float x, float y, float w, float h, IColor color) {
         setColor(color);
-        canvas.drawLine(x,y,x+w,y,this.paint);
-        canvas.drawLine(x,y,x,y + h,this.paint);
-        canvas.drawLine(x,y+h,x+w,y+h,this.paint);
-        canvas.drawLine(x+w,y,x+w,y+h,this.paint);
+        this.canvas.drawLine(x,y,x+w,y,this.paint);
+        this.canvas.drawLine(x,y,x,y + h,this.paint);
+        this.canvas.drawLine(x,y+h,x+w,y+h,this.paint);
+        this.canvas.drawLine(x+w,y,x+w,y+h,this.paint);
     }
 
     @Override
     public void fillRectangle(float x, float y, float w, float h,IColor color){
         setColor(color);
-        canvas.drawRect(realToLogicX((int)x), realToLogicY((int)y),
-                realToLogicScale((int)w), realToLogicScale((int)h), paint);
+        this.canvas.drawRect(realToLogicX((int)x), realToLogicY((int)y),
+                realToLogicScale((int)w), realToLogicScale((int)h), this.paint);
     }
 
     @Override
@@ -182,7 +173,7 @@ public class AGraphics implements IGraphics {
         //INTENTAR METER VALORES POR DEFECTO
         ((AImage)image).setWidth(realToLogicScale(w));
         ((AImage)image).setHeight(realToLogicScale(h));
-        canvas.drawBitmap(((AImage)image).getBitmap(),realToLogicX(x), realToLogicY(y), this.paint);
+        this.canvas.drawBitmap(((AImage)image).getBitmap(),realToLogicX(x), realToLogicY(y), this.paint);
     }
 
 
