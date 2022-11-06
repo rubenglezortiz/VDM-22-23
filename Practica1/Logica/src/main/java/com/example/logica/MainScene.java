@@ -24,13 +24,13 @@ public class MainScene implements IScene {
 
     @Override
     public void update() {
-        long actualTime = System.nanoTime() / 1000000; //Miliseconds
+        long actualTime = this.engine.getTime();
         if(board.getCheckPressed()){
-            timer = (actualTime/1000.0f) + 5.0f;
+            timer = (actualTime) + 5.0f;
             board.pressedOut();
         }
 
-        if ((actualTime/1000.0f) > timer) board.checkOut();
+        if ((actualTime) > timer) board.checkOut();
 
         if(this.backToMenu) this.engine.getCurrentState().removeScene(2);
     }

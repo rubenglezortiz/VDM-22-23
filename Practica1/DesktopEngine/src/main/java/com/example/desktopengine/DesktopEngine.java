@@ -45,6 +45,13 @@ public class DesktopEngine implements IEngine, Runnable {
     public IAudio getAudio() { return this.audio;}
 
     @Override
+    public int getTime() {
+        long time = System.nanoTime() / 1000000;
+        time /= 1000.0f;
+        return (int)time;
+    }
+
+    @Override
     public void run() {
         if(this.currentThread!=Thread.currentThread()){
             //lanzar error
@@ -73,4 +80,5 @@ public class DesktopEngine implements IEngine, Runnable {
     public void stop() throws InterruptedException {
         this.currentThread.join();
     }
+
 }

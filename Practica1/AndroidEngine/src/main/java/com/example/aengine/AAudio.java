@@ -6,11 +6,13 @@ import com.example.engine.IAudio;
 import com.example.engine.ISound;
 
 public class AAudio implements IAudio {
+    private AssetManager assetManager;
 
-    AssetManager assetManager;
+    public AAudio(AssetManager aM){this.assetManager = aM;}
+
     @Override
     public ISound newSound(String file) {
-        return new ASound(file, assetManager);
+        return new ASound(file, this.assetManager);
     }
 
     @Override

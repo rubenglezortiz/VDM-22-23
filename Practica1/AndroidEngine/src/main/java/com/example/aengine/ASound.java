@@ -9,8 +9,8 @@ import com.example.engine.ISound;
 import java.io.IOException;
 
 public class ASound implements ISound {
-
     private MediaPlayer mPlayer;
+
     public ASound(String file, AssetManager assetManager){
         this.mPlayer = new MediaPlayer();
         this.mPlayer.reset();
@@ -23,7 +23,6 @@ public class ASound implements ISound {
             System.err.println("Couldn't load audio file");
             e.printStackTrace();
         }
-
     }
 
     @Override

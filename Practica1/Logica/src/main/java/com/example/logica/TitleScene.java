@@ -21,7 +21,7 @@ public class TitleScene implements IScene {
         this.changeScene = false;
         this.engine = engine_;
         this.font = this.engine.getGraphics().newFont("font.TTF", false);
-        //createMusic();
+        createMusic();
         createButton();
     }
 

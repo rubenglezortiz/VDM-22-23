@@ -5,4 +5,6 @@ public interface IEngine  {
     public abstract IInput getInput();
     public abstract IState getCurrentState();
     public abstract IAudio getAudio();
+
+    public abstract int getTime();
 }

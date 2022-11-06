@@ -38,7 +38,7 @@ public class AGraphics implements IGraphics {
         this.holder = this.myView.getHolder();
         this.paint = new Paint();
         this.paint.setColor(0xFFFFFFFF);
-        this.assetManager = this.myView.getContext().getAssets(); //DA ERROR
+        this.assetManager = this.myView.getContext().getAssets();
         this.logicWidth = 400;
         this.logicHeight = 600;
 
@@ -55,9 +55,8 @@ public class AGraphics implements IGraphics {
         int w = (int)((float)this.logicWidth * this.scaleFactor);
         int h = (int)((float)this.logicHeight * this.scaleFactor);
 
-        this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
-
         this.clear(newColor(220,220,220,255));
+        this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
     }
 
     @Override
