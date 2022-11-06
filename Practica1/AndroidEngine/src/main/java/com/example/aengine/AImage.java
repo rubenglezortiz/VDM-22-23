@@ -29,4 +29,8 @@ public class AImage implements IImage {
     public Bitmap getBitmap(){
         return bitmap;
     }
+
+    public void setWidth(int width) { this.bitmap.setWidth(width); }
+
+    public void setHeight(int height) { this.bitmap.setHeight(height); }
 }

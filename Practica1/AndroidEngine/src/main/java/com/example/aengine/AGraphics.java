@@ -3,6 +3,7 @@ package com.example.aengine;
 import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -21,8 +22,12 @@ public class AGraphics implements IGraphics {
     private AssetManager assetManager;
 
     // Class Variables
+    private int screenWidth, screenHeight;
     private int logicWidth, logicHeight;
-    private float scaleFactorX, scaleFactorY;
+    private float scaleFactorX, scaleFactorY, scaleFactor;
+    private int offsetX, offsetY;
+    boolean scaleInX;
+
 
     // Thread
     private Thread renderThread;
@@ -36,14 +41,25 @@ public class AGraphics implements IGraphics {
         this.assetManager = this.myView.getContext().getAssets(); //DA ERROR
         this.logicWidth = 400;
         this.logicHeight = 600;
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        this.screenHeight = metrics.heightPixels;
+        this.screenWidth = metrics.widthPixels;
+
+        setResolution((float)this.screenWidth, (float)this.screenHeight);
     }
 
     // Android functions
     @Override
     public void prepareFrame() {
         this.canvas = this.holder.lockCanvas();
-        this.clear(newColor(255,255,255,255));
-        //set resolution, translate etc
+
+        int w = (int)((float)this.logicWidth * this.scaleFactor);
+        int h = (int)((float)this.logicHeight * this.scaleFactor);
+
+        this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
+
+        this.clear(newColor(220,220,220,255));
     }
 
     @Override
@@ -52,13 +68,30 @@ public class AGraphics implements IGraphics {
     }
 
     @Override
-    public boolean changeBuffer() {
-        return (this.holder.getSurface().isValid());
-    }
+    public boolean changeBuffer() { return (this.holder.getSurface().isValid()); }
 
     @Override
     public void setResolution(float newX, float newY){
         //NI IDEA
+        this.scaleFactorX = (float)this.screenWidth / (float) this.logicWidth;
+        this.scaleFactorY = (float)this.screenHeight / (float) this.logicHeight;
+        this.scaleFactor = Math.min(scaleFactorX, scaleFactorY);
+
+        scaleInX = getWidth() * 3 > getHeight() * 2;
+
+        int w,h;
+        if (this.scaleInX){
+            this.offsetX = (int)((getWidth() / 2.0f) - (((float) this.logicWidth / 2.0f) * this.scaleFactor));
+            this.offsetY = 0;
+        }
+        else{
+            this.offsetX = 0;
+            this.offsetY = (int)((getHeight() / 2.0f) - (((float) this.logicHeight / 2.0f)  * this.scaleFactor));
+        }
+        w = (int)((float)this.logicWidth * this.scaleFactor);
+        h = (int)((float)this.logicHeight * this.scaleFactor);
+
+        this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
     }
 
     @Override
@@ -67,28 +100,22 @@ public class AGraphics implements IGraphics {
     }
 
     @Override
-    public int realToLogicX(int x) {return 0;}
+    public int realToLogicX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ; }
 
     @Override
-    public int realToLogicY(int y) {return 0;}
+    public int realToLogicY(int y) { return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
 
     @Override
-    public int realToLogicScale(int s) {return 0;}
+    public int realToLogicScale(int s) {  return (int) ((float)s * getScaleFactor()); }
 
     @Override
-    public int logicToRealX(int x) {
-        return 0;
-    }
+    public int logicToRealX(int x) { return (int) ((float)(x - this.offsetX) / getScaleFactor());}
 
     @Override
-    public int logicToRealY(int y) {
-        return 0;
-    }
+    public int logicToRealY(int y){ return (int) ((float)(y - this.offsetY) / getScaleFactor());}
 
     @Override
-    public int logicToRealScale(int s) {
-        return 0;
-    }
+    public int logicToRealScale(int s){ return (int) ((float) s/ getScaleFactor()); }
 
     @Override
     public void setColor(IColor color){
@@ -127,13 +154,14 @@ public class AGraphics implements IGraphics {
     @Override
     public void clear(IColor color) {
         setColor(color);
-        fillRectangle(0,0, getWidth(), getHeight(), color);
+        fillRectangle(0,0, getLogicWidth(), getLogicHeight(), color);
     }
 
     @Override
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color) {
         setColor(color);
-        canvas.drawLine(x,y,x_stop, y_stop, paint);
+        canvas.drawLine(realToLogicX((int)x), realToLogicY((int)y),
+                realToLogicScale((int)x_stop), realToLogicScale((int)y_stop), paint);
     }
 
     @Override
@@ -148,24 +176,25 @@ public class AGraphics implements IGraphics {
     @Override
     public void fillRectangle(float x, float y, float w, float h,IColor color){
         setColor(color);
-        canvas.drawRect(x, y, w, h, paint);
+        canvas.drawRect(realToLogicX((int)x), realToLogicY((int)y),
+                realToLogicScale((int)w), realToLogicScale((int)h), paint);
     }
 
     @Override
     public void drawImage(IImage image, int x, int y, int w, int h) {
         //INTENTAR METER VALORES POR DEFECTO
-        //((AImage)image).setWidth(w);
-        //((AImage)image).setHeight(h);
-        canvas.drawBitmap(((AImage)image).getBitmap(), x,y, this.paint);
+        ((AImage)image).setWidth(realToLogicScale(w));
+        ((AImage)image).setHeight(realToLogicScale(h));
+        canvas.drawBitmap(((AImage)image).getBitmap(),realToLogicX(x), realToLogicY(y), this.paint);
     }
 
 
     @Override
     public void drawText(String text, float x, float y, float textSize, IColor color) {
         float prevTextSize = this.paint.getTextSize();
-        this.paint.setTextSize(textSize);
+        this.paint.setTextSize(textSize * getScaleFactor());
         this.paint.setColor(((AColor)color).getARGBColor());
-        canvas.drawText(text,x,y, this.paint);
+        this.canvas.drawText(text,realToLogicX((int)x),realToLogicY((int)y), this.paint);
         this.paint.setTextSize(prevTextSize);
     }
 
@@ -173,45 +202,43 @@ public class AGraphics implements IGraphics {
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
         setColor(color);
         this.paint.setTypeface(((AFont)font).getTypeface());
-        this.paint.setTextSize(textSize);
-        this.canvas.drawText(text, x, y, paint);
+        this.paint.setTextSize(textSize * getScaleFactor());
+        this.canvas.drawText(text,realToLogicX((int)x),realToLogicY((int)y), this.paint);
     }
 
     @Override
-    public void drawButton(IButton button, IColor mainColor, IColor backgroundColor) {
+    public void drawButton(IButton button) {
         float butX = (float) button.getPosX();
         float butY = (float) button.getPosY();
         float butW = (float) button.getWidth();
         float butH = (float) button.getHeight();
 
-        this.fillRectangle(butX,butY,butW,butH, backgroundColor);
-        this.drawRectangle(butX,butY,butW,butH, mainColor);
+        this.fillRectangle(butX,butY,butW,butH, button.getBackgroundColor());
+        this.drawRectangle(butX,butY,butW,butH, button.getMainColor());
 
         //this.setFont(button.getFont());
-        this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), mainColor);
+        this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
     }
 
     // Getters
     @Override
-    public int getWidth() {
-        return this.canvas.getWidth();
-    } //NO ESTOY SEGURO
+    public int getWidth() { return this.screenWidth; }
 
     @Override
     public int getHeight() {
-        return this.canvas.getHeight();
-    }  //NO ESTOY SEGURO
+        return this.screenHeight;
+    }
 
     @Override
     public int getLogicWidth() {
        return this.logicWidth;
-    } //REVISAR
+    }
 
     @Override
     public int getLogicHeight() {
         return this.logicHeight;
-    } //REVISAR
+    }
 
     @Override
-    public float getScaleFactor() { return 0; }
+    public float getScaleFactor() { return this.scaleFactor; }
 }

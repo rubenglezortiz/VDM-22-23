@@ -63,7 +63,7 @@ public class DGraphicsEngine implements IGraphics {
     public void prepareFrame() {
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
         this.setResolution(this.window.getWidth(), this.window.getHeight());
-        this.clear(newColor(220,220,220,255));
+        this.clear(newColor(255,255,255,255));
     }
 
     @Override
@@ -82,8 +82,8 @@ public class DGraphicsEngine implements IGraphics {
 
     @Override
     public void setResolution(float newX, float newY) {
-       this.scaleFactorX = newX/ this.logicWidth;
-       this.scaleFactorY = newY/ this.logicHeight;
+       this.scaleFactorX = newX / (float) this.logicWidth;
+       this.scaleFactorY = newY / (float) this.logicHeight;
 
        scaleInX = getWidth() * 3 > getHeight() * 2;
 
@@ -98,8 +98,8 @@ public class DGraphicsEngine implements IGraphics {
             this.offsetX = 0;
             this.offsetY = (int)((getHeight() / 2.0f) - (((float) this.logicHeight / 2.0f)  * scaleFactor));
         }
-        w = (int)(this.logicWidth * scaleFactor);
-        h = (int)(this.logicHeight * scaleFactor);
+        w = (int)((float)this.logicWidth * scaleFactor);
+        h = (int)((float)this.logicHeight * scaleFactor);
 
         this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
 
@@ -218,17 +218,17 @@ public class DGraphicsEngine implements IGraphics {
     }
 
     @Override
-    public void drawButton(IButton button, IColor mainColor, IColor backgroundColor) {
+    public void drawButton(IButton button) {
         float butX = (float) button.getPosX();
         float butY = (float) button.getPosY();
         float butW = (float) button.getWidth();
         float butH = (float) button.getHeight();
 
-        this.fillRectangle(butX,butY,butW,butH, backgroundColor);
-        this.drawRectangle(butX,butY,butW,butH, mainColor);
+        this.fillRectangle(butX,butY,butW,butH, button.getBackgroundColor());
+        this.drawRectangle(butX,butY,butW,butH, button.getMainColor());
 
         //this.setFont(button.getFont());
-        this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), mainColor);
+        this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
 
     }
 

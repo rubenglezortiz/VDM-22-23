@@ -65,7 +65,6 @@ public class AButton implements IButton {
     @Override
     public IColor getBackgroundColor() { return this.backgroundColor; }
 
-
     @Override
     public boolean checkCollision(int coordX, int coordY) {
         return (coordX >= this.posX &&

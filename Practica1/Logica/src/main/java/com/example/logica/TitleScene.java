@@ -40,9 +40,7 @@ public class TitleScene implements IScene {
         this.engine.getGraphics().drawText("NONOGRAMS",this.engine.getGraphics().getLogicWidth()/2.0f - ((10*30)/2.0f),
                 100, 27, this.engine.getGraphics().newColor(0,0,0,255));
 
-        this.engine.getGraphics().drawButton(this.startButton,
-                this.engine.getGraphics().newColor(0,0,0,255),
-                this.engine.getGraphics().newColor(255,255,255,255));
+        this.engine.getGraphics().drawButton(this.startButton);
     }
 
     @Override

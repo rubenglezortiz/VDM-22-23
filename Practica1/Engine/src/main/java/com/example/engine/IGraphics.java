@@ -35,7 +35,7 @@ public interface IGraphics {
     public void drawImage(IImage image, int x, int y, int w, int h);
     public void drawText(String text, float x, float y, float textSize, IColor color);
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color);
-    public void drawButton(IButton button, IColor mainColor, IColor backgroundColor);
+    public void drawButton(IButton button);
 
     // Getters
     public int getWidth();
