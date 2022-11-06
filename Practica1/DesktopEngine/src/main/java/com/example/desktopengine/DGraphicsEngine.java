@@ -52,7 +52,6 @@ public class DGraphicsEngine implements IGraphics {
 
         this.buffer = this.window.getBufferStrategy();
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
-        this.canvas.clipRect(300, 0, (int)this.logicWidth, (int)this.logicHeight);
         this.window.setIgnoreRepaint(true);
         this.window.setVisible(true);
     }
@@ -98,10 +97,10 @@ public class DGraphicsEngine implements IGraphics {
             this.offsetX = 0;
             this.offsetY = (int)(((float)getHeight() / 2.0f) - (((float) this.logicHeight / 2.0f)  * scaleFactor));
         }
-        w = (int)((float)this.logicWidth * scaleFactor);
-        h = (int)((float)this.logicHeight * scaleFactor);
+        //w = (int)((float)this.logicWidth * scaleFactor);
+        //h = (int)((float)this.logicHeight * scaleFactor);
 
-        this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
+        //this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
 
        //translate((int)x, (int)y);
        //System.out.println("Canvas Width (i600): " + window.getWidth() + "  Canvas Height (i400): " + window.getHeight());
@@ -171,9 +170,7 @@ public class DGraphicsEngine implements IGraphics {
     @Override
     public void clear (IColor color){
         setColor(color);
-        this.canvas.fillRect(this.offsetX, this.offsetY,
-                realToLogicScale(this.logicWidth),
-                realToLogicScale(this.logicHeight));
+        this.canvas.fillRect(0,0,getWidth(), getHeight());
     }
 
     @Override
@@ -240,9 +237,8 @@ public class DGraphicsEngine implements IGraphics {
     }
 
     @Override
-    public int getHeight() {
-        return this.window.getHeight();
-    }
+    public int getHeight() { return this.window.getHeight(); }
+
 
     @Override
     public int getLogicWidth() {

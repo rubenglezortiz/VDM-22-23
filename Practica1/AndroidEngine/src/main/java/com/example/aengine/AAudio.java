@@ -32,6 +32,4 @@ public class AAudio implements IAudio {
     @Override
     public void setVolume(ISound sound, float volume) { sound.setVolume(volume); }
 
-
-
 }
