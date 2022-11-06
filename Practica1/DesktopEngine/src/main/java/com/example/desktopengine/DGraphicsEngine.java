@@ -91,12 +91,12 @@ public class DGraphicsEngine implements IGraphics {
 
         int w,h;
         if (this.scaleInX){
-            this.offsetX = (int)((getWidth() / 2.0f) - (((float) this.logicWidth / 2.0f) * scaleFactor));
+            this.offsetX = (int)(((float)getWidth() / 2.0f) - (((float) this.logicWidth / 2.0f) * scaleFactor));
             this.offsetY = 0;
         }
         else{
             this.offsetX = 0;
-            this.offsetY = (int)((getHeight() / 2.0f) - (((float) this.logicHeight / 2.0f)  * scaleFactor));
+            this.offsetY = (int)(((float)getHeight() / 2.0f) - (((float) this.logicHeight / 2.0f)  * scaleFactor));
         }
         w = (int)((float)this.logicWidth * scaleFactor);
         h = (int)((float)this.logicHeight * scaleFactor);
