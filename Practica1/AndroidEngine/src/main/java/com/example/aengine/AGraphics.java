@@ -149,12 +149,16 @@ public class AGraphics implements IGraphics {
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color) {
         setColor(color);
         this.canvas.drawLine(realToLogicX((int)x), realToLogicY((int)y),
-                realToLogicScale((int)x_stop), realToLogicScale((int)y_stop), paint);
+                realToLogicX((int)x_stop), realToLogicY((int)y_stop), this.paint);
     }
 
     @Override
-    public void drawRectangle(float x, float y, float w, float h, IColor color) {
+    public void drawRectangle(float x_, float y_, float w_, float h_, IColor color) {
         setColor(color);
+        int x = realToLogicX((int)x_);
+        int y = realToLogicY((int)y_);
+        int w = realToLogicScale((int)w_);
+        int h = realToLogicScale((int)h_);
         this.canvas.drawLine(x,y,x+w,y,this.paint);
         this.canvas.drawLine(x,y,x,y + h,this.paint);
         this.canvas.drawLine(x,y+h,x+w,y+h,this.paint);
@@ -162,10 +166,13 @@ public class AGraphics implements IGraphics {
     }
 
     @Override
-    public void fillRectangle(float x, float y, float w, float h,IColor color){
+    public void fillRectangle(float x_, float y_, float w_, float h_,IColor color){
         setColor(color);
-        this.canvas.drawRect(realToLogicX((int)x), realToLogicY((int)y),
-                realToLogicScale((int)w), realToLogicScale((int)h), this.paint);
+        int x = realToLogicX((int)x_);
+        int y = realToLogicY((int)y_);
+        int w = realToLogicScale((int)w_);
+        int h = realToLogicScale((int)h_);
+        this.canvas.drawRect(x,y,x+w, y+h, this.paint);
     }
 
     @Override

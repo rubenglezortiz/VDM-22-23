@@ -46,8 +46,8 @@ public class Board {
                     isSol = rnd < numCells * 0.65; //En teoría se añaden el 65% de las casillas
                     if (isSol) cont++;
                 }
-                board[i][j] = new Cell(i,j, cellSize/numRows,
-                        cellSize/numCols, isSol, graphics);
+                board[i][j] = new Cell(i,j, cellSize/numCols,
+                        cellSize/numRows, isSol, graphics);
             }
         }
 
