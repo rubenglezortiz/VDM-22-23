@@ -1,6 +1,7 @@
 package com.example.aengine;
 
 
+import android.annotation.SuppressLint;
 import android.view.SurfaceView;
 
 import com.example.engine.IAudio;
@@ -21,12 +22,14 @@ public class AndroidEngine implements IEngine, Runnable {
 
     private Thread currentThread;
 
+    @SuppressLint("ClickableViewAccessibility")
     public AndroidEngine(SurfaceView myView_){
         this.myView = myView_;
         this.graphics = new AGraphics(this.myView); //DESDE DÓNDE SE PASA EL SURFACE VIEW???
         this.audio = new AAudio();
+        this.input = new AInput();
+        this.myView.setOnTouchListener(this.input);
         this.currentState = new AState();
-
         this.currentThread = new Thread(this);
         this.currentThread.start();
     }
