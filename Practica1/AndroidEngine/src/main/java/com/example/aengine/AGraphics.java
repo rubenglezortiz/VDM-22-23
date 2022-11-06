@@ -33,7 +33,9 @@ public class AGraphics implements IGraphics {
         this.holder = this.myView.getHolder();
         this.paint = new Paint();
         this.paint.setColor(0xFFFFFFFF);
-        //this.assetManager = getAssets(); //DA ERROR
+        this.assetManager = this.myView.getContext().getAssets(); //DA ERROR
+        this.logicWidth = 400;
+        this.logicHeight = 600;
     }
 
     // Android functions
@@ -72,6 +74,21 @@ public class AGraphics implements IGraphics {
 
     @Override
     public int realToLogicScale(int s) {return 0;}
+
+    @Override
+    public int logicToRealX(int x) {
+        return 0;
+    }
+
+    @Override
+    public int logicToRealY(int y) {
+        return 0;
+    }
+
+    @Override
+    public int logicToRealScale(int s) {
+        return 0;
+    }
 
     @Override
     public void setColor(IColor color){
@@ -162,16 +179,23 @@ public class AGraphics implements IGraphics {
 
     @Override
     public void drawButton(IButton button, IColor mainColor, IColor backgroundColor) {
-        int x = button.getPosX();
-        int y = button.getPosY();
-        int w = button.getWidth();
+        float butX = (float) button.getPosX();
+        float butY = (float) button.getPosY();
+        float butW = (float) button.getWidth();
+        float butH = (float) button.getHeight();
 
+        this.fillRectangle(butX,butY,butW,butH, backgroundColor);
+        this.drawRectangle(butX,butY,butW,butH, mainColor);
 
+        //this.setFont(button.getFont());
+        this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), mainColor);
     }
 
     // Getters
     @Override
-    public int getWidth() { return this.canvas.getWidth(); } //NO ESTOY SEGURO
+    public int getWidth() {
+        return this.canvas.getWidth();
+    } //NO ESTOY SEGURO
 
     @Override
     public int getHeight() {
@@ -180,11 +204,11 @@ public class AGraphics implements IGraphics {
 
     @Override
     public int getLogicWidth() {
-        return 0;
-    }
+       return this.logicWidth;
+    } //REVISAR
 
     @Override
     public int getLogicHeight() {
-        return 0;
-    }
+        return this.logicHeight;
+    } //REVISAR
 }

@@ -14,7 +14,7 @@ public class DFont implements IFont {
 
     public DFont(String name, boolean esNeg){
         try {
-            FileInputStream fis = new FileInputStream(name);
+            FileInputStream fis = new FileInputStream("data/"+ name);
             this.fuente = Font.createFont(Font.TRUETYPE_FONT, fis);
             if (esNeg) {
                 this.fuente = this.fuente.deriveFont(Font.BOLD);

@@ -20,9 +20,9 @@ public class TitleScene implements IScene {
     public TitleScene(IEngine engine_){
         this.changeScene = false;
         this.engine = engine_;
-        //this.font = this.engine.getGraphics().newFont("font.TTF", false);
+        this.font = this.engine.getGraphics().newFont("font.TTF", false);
         //createMusic();
-        //createButton();
+        createButton();
     }
 
     @Override
@@ -36,14 +36,13 @@ public class TitleScene implements IScene {
 
     @Override
     public void render() {
-        //this.engine.getGraphics().setFont(this.font);
+        this.engine.getGraphics().setFont(this.font);
         this.engine.getGraphics().drawText("NONOGRAMS",this.engine.getGraphics().getLogicWidth()/2.0f - ((10*30)/2.0f),
                 100, 27, this.engine.getGraphics().newColor(0,0,0,255));
 
         this.engine.getGraphics().drawButton(this.startButton,
                 this.engine.getGraphics().newColor(0,0,0,255),
                 this.engine.getGraphics().newColor(255,255,255,255));
-
     }
 
     @Override
@@ -86,6 +85,7 @@ public class TitleScene implements IScene {
         y = this.engine.getGraphics().getLogicHeight() * 2 / 3;
         w = this.engine.getGraphics().getLogicWidth() / 3;
         h = this.engine.getGraphics().getLogicHeight() / 10;
+
         this.startButton = this.engine.getGraphics().newButton("Start",
                 x - (w / 2), y - (h / 2), w, h,
                 10,35, 18,
