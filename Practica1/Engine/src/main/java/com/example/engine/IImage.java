@@ -1,4 +1,3 @@
 package com.example.engine;
 
-public interface IImage {
-}
+public interface IImage {}

@@ -54,19 +54,19 @@ public class DesktopEngine implements IEngine, Runnable {
     @Override
     public void run() {
         if(this.currentThread!=Thread.currentThread()){
-            //lanzar error
+            throw new RuntimeException("this.currentThread not equal to Thrad.currentThread()");
         }
         while(this.currentState != null) {
-            //update
+            //Update
             this.currentState.update();
-            //inputs
+            //Inputs
             this.currentState.handleInputs();
             do {
-                //preparar Frame
+                //Pre frame
                 this.graphics.prepareFrame();
-                //render
+                //Render
                 this.currentState.render();
-                //terminar Frame
+                //Post frame
                 this.graphics.finishFrame();
             }while(!this.graphics.changeBuffer());
         }

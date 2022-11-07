@@ -100,28 +100,16 @@ public class DGraphicsEngine implements IGraphics {
             this.offsetX = 0;
             this.offsetY = (int)(((float)getHeight() / 2.0f) - (((float) this.logicHeight / 2.0f)  * scaleFactor));
         }
-        //w = (int)((float)this.logicWidth * scaleFactor);
-        //h = (int)((float)this.logicHeight * scaleFactor);
-
-        //this.canvas.clipRect(this.offsetX,this.offsetY,w,h);
-
-       //translate((int)x, (int)y);
-       //System.out.println("Canvas Width (i600): " + window.getWidth() + "  Canvas Height (i400): " + window.getHeight());
-       //System.out.println("scaleFactorX: " + scaleFactorX + "  scaleFactorY: " + scaleFactorY);
     }
 
     @Override
-    public void translate (int x, int y){
-        //NI IDEA
-        this.canvas.translate(x,y);
-    }
+    public void translate (int x, int y){ this.canvas.translate(x,y);}
 
     @Override
     public int realToLogicX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ; }
 
     @Override
     public int realToLogicY(int y) { return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
-
 
     @Override
     public int realToLogicScale(int s) {  return (int) ((float)s * getScaleFactor()); }
@@ -147,7 +135,6 @@ public class DGraphicsEngine implements IGraphics {
     }
 
     // Create
-
     @Override
     public IColor newColor(int r_, int g_, int b_, int a_) {
         return new DColor(r_, g_, b_, a_);
@@ -167,7 +154,6 @@ public class DGraphicsEngine implements IGraphics {
     public IButton newButton(String text, int x, int y, int w, int h, int tX, int tY, int tSize, IFont f, IColor mColor, IColor bgColor) {
         return new DButton(text, x, y, w, h, tX, tY, tSize, (DFont)f, (DColor)mColor, (DColor)bgColor);
     }
-
 
     // Draw
     @Override
@@ -227,13 +213,11 @@ public class DGraphicsEngine implements IGraphics {
         this.fillRectangle(butX,butY,butW,butH, button.getBackgroundColor());
         this.drawRectangle(butX,butY,butW,butH, button.getMainColor());
 
-        //this.setFont(button.getFont());
         if(button.getFont()!=null)
             this.drawText(button.getFont(), button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
         else this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
 
     }
-
 
     // Getters
     @Override
@@ -243,7 +227,6 @@ public class DGraphicsEngine implements IGraphics {
 
     @Override
     public int getHeight() { return this.window.getHeight(); }
-
 
     @Override
     public int getLogicWidth() {

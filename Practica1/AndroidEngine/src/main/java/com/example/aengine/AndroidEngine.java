@@ -18,11 +18,11 @@ public class AndroidEngine implements IEngine, Runnable {
     private AAudio audio;
     private AInput input;
     private AState currentState;
+
     private SurfaceView myView;
+    private Thread currentThread;
 
     private boolean running;
-
-    private Thread currentThread;
 
     @SuppressLint("ClickableViewAccessibility")
     public AndroidEngine(SurfaceView myView_){
@@ -66,35 +66,28 @@ public class AndroidEngine implements IEngine, Runnable {
         };
 
         while(this.running) {
-            //while (this.currentThread != null) {
-                //update
-                this.currentState.update();
-                //inputs
-                this.currentState.handleInputs();
-
-                while (!this.graphics.changeBuffer());
-
-                //preparar Frame
-                this.graphics.prepareFrame();
-                //render
-                this.currentState.render();
-                //terminar Frame
-                this.graphics.finishFrame();
-            //}
+            //Update
+            this.currentState.update();
+            //Inputs
+            this.currentState.handleInputs();
+            while (!this.graphics.changeBuffer());
+            //Pre frame
+            this.graphics.prepareFrame();
+            //Render
+            this.currentState.render();
+            //Post frame
+            this.graphics.finishFrame();
         }
-
     }
-        public void resume(){
-            if (!this.running) {
-                this.running = true;
-                this.audio.resumeAllSounds();
-                // Solo hacemos algo si no nos estábamos ejecutando ya
-                // (programación defensiva)
-                // Lanzamos la ejecución de nuestro método run() en un nuevo Thread.
-                this.currentThread = new Thread(this);
-                this.currentThread.start();
-            }
+
+    public void resume(){
+        if (!this.running) {
+            this.running = true;
+            this.audio.resumeAllSounds();
+            this.currentThread = new Thread(this);
+            this.currentThread.start();
         }
+    }
 
     public void pause() {
         if (this.running) {
@@ -105,9 +98,7 @@ public class AndroidEngine implements IEngine, Runnable {
                     this.currentThread.join();
                     this.currentThread = null;
                     break;
-                } catch (InterruptedException ie) {
-                    // Esto no debería ocurrir nunca...
-                }
+                } catch (InterruptedException ie) {}
             }
         }
     }

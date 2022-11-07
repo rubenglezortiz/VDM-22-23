@@ -4,7 +4,6 @@ import com.example.engine.IAudio;
 import com.example.engine.ISound;
 
 public class DAudio implements IAudio {
-
     String path = "./Assets/Sounds/";
     private ISound backgroundMusic;
 
@@ -12,11 +11,6 @@ public class DAudio implements IAudio {
 
     @Override
     public ISound newSound(String file) { return new DSound(path + file); }
-
-    @Override
-    public ISound getSound(String id) {
-        return null;
-    }
 
     @Override
     public void playSound(ISound sound) {
@@ -32,10 +26,8 @@ public class DAudio implements IAudio {
     @Override
     public void setLooping(ISound sound, boolean looping) {
         int n;
-
         if (looping) n = -1;
         else n = 0;
-
         loopSound(((DSound)sound), n);
     }
 
@@ -49,6 +41,5 @@ public class DAudio implements IAudio {
 
     public void loopSound(DSound sound, int n){ sound.loop(n);}
 
-    public boolean soundIsRunning(DSound sound){ return sound.isRunning(); }
-
+    //public boolean soundIsRunning(DSound sound){ return sound.isRunning(); }
 }

@@ -22,10 +22,5 @@ public class AFont implements IFont {
     @Override
     public boolean isBold() { return this.typeface.isBold(); }
 
-    @Override
-    public void setSize(float size) {
-
-    }
-
     public Typeface getTypeface() { return typeface; };
 }

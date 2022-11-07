@@ -17,16 +17,12 @@ public class AAudio implements IAudio {
     public ISound newSound(String file) { return new ASound(file, this.assetManager);}
 
     @Override
-    public ISound getSound(String id) {
-        return null;
-    }
-
-    @Override
     public void playSound(ISound sound) { sound.play();}
 
     @Override
     public void stopSound(ISound sound) { sound.stop(); }
 
+    @Override
     public void pauseSound(ISound sound) { sound.pause();}
 
     @Override
@@ -36,9 +32,7 @@ public class AAudio implements IAudio {
     public void setVolume(ISound sound, float volume) { sound.setVolume(volume); }
 
     @Override
-    public void setBackgroundMusic(ISound backgroundMusic) {
-        this.backgroundMusic = backgroundMusic;
-    }
+    public void setBackgroundMusic(ISound backgroundMusic) { this.backgroundMusic = backgroundMusic; }
 
     public void pauseAllSounds(){ this.backgroundMusic.pause();}
 

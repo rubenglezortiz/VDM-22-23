@@ -23,8 +23,6 @@ public class Board {
     private int margin = 50;
     private int textMessagesSize;
     private ISound cellSound;
-    private ISound winSound;
-    private ISound failSound;
 
     public Board(int nC, int nR, IGraphics graphics_, IAudio audio_){
         this.numCols = nC;
@@ -127,40 +125,7 @@ public class Board {
                 }
             }
         }
-
         createSounds();
-       // // ----------------------------- RENDER ------------------------------------
-       // for (int i = 0; i < numRows; i++){
-       //     for (int j = 0; j < numCols; j++) {
-       //         if (tablero[i][j].isSolucion()) System.out.print(" x ");
-       //         else System.out.print(" . ");
-       //     }
-       //     System.out.println("");
-       // }
-
-       // System.out.println("LISTAS COLUMNAS");
-       // System.out.println("");
-
-       // for (int i = 0; i < numCols; i++){
-       //     for (int j = 0; j < colsList[i].size(); j++) {
-       //         System.out.print(colsList[i].get(j));
-       //         System.out.print(" ");
-       //     }
-       //     System.out.println("");
-       // }
-       // System.out.println("");
-
-       // System.out.println("LISTAS FILAS");
-       // System.out.println("");
-
-       // for (int i = 0; i < numRows; i++){
-       //     for (int j = 0; j < rowsList[i].size(); j++) {
-       //         System.out.print(rowsList[i].get(j));
-       //         System.out.print(" ");
-       //     }
-       //     System.out.println("");//
-       // }
-       // System.out.println("");
     }
 
     public void render(IGraphics graphics) {
@@ -205,22 +170,22 @@ public class Board {
                        yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2,
                         textSize, graphics.newColor(0, 0, 0, 255));
         }
-        if (showLevelInfo)
+        if (this.showLevelInfo)
         {
-            if (win) graphics.drawText("Felicidades, has ganado",
+            if (this.win) graphics.drawText("Felicidades, has ganado",
                     xInicial,
-                    yInicial+numRows*(casillaH+separacion)+textMessagesSize,
-                    textMessagesSize, graphics.newColor(0, 200, 0, 255));
+                    yInicial+numRows*(casillaH+separacion)+this.textMessagesSize,
+                    this.textMessagesSize, graphics.newColor(0, 200, 0, 255));
             else
             {
-                if (remainingCells != 0) graphics.drawText("Te faltan " + remainingCells + " casillas",
+                if (this.remainingCells != 0) graphics.drawText("Te faltan " + this.remainingCells + " casillas",
                         xInicial,
-                        yInicial+numRows*(casillaH+separacion)+textMessagesSize,
-                        textMessagesSize, graphics.newColor(200, 0, 0, 255));
-                if (wrongCells != 0) graphics.drawText("Tienes mal " + wrongCells + " casillas",
+                        yInicial+this.numRows*(casillaH+separacion)+this.textMessagesSize,
+                        this.textMessagesSize, graphics.newColor(200, 0, 0, 255));
+                if (this.wrongCells != 0) graphics.drawText("Tienes mal " + this.wrongCells + " casillas",
                        xInicial,
-                        yInicial+numRows*(casillaH+separacion)+textMessagesSize+textMessagesSize,
-                        textMessagesSize, graphics.newColor(200, 0, 0, 255));
+                        yInicial+this.numRows*(casillaH+separacion)+this.textMessagesSize+this.textMessagesSize,
+                        this.textMessagesSize, graphics.newColor(200, 0, 0, 255));
             }
         }
         // Dibujado de rectangulos para el borde
@@ -278,27 +243,19 @@ public class Board {
     public boolean checkWin() {
         this.checkPressed = true;
         this.showLevelInfo = true;
-        remainingCells = 0;
-        wrongCells = 0;
+        this.remainingCells = 0;
+        this.wrongCells = 0;
         for (int i = 0; i < numCols; i++)
         {
-            for (int j = 0; j < numRows; j++)
+            for (int j = 0; j < this.numRows; j++)
             {
-                int res = board[i][j].check();
-                if (res == 2) wrongCells++;
-                else if (res == 1) remainingCells++;
+                int res = this.board[i][j].check();
+                if (res == 2) this.wrongCells++;
+                else if (res == 1) this.remainingCells++;
             }
         }
-        if (remainingCells == 0 && wrongCells == 0) {
-            win = true;
-            this.audio.playSound(this.winSound);
-            return true;
-        }
-        else {
-            win = false;
-            this.audio.playSound(this.failSound);
-            return false;
-        }
+        this.win = (this.remainingCells == 0 && this.wrongCells == 0);
+        return this.win;
     }
 
     public void checkOut() {
@@ -325,15 +282,6 @@ public class Board {
     }
 
     private void createSounds(){
-        //Cell sound
         this.cellSound = this.audio.newSound("cell.wav");
-
-        //Win sound
-        this.winSound = this.audio.newSound("win.wav");
-        this.audio.setVolume(this.winSound, 0.75f);
-
-        //Fail sound
-        this.failSound = this.audio.newSound("fail.wav");
-        this.audio.setVolume(this.failSound, 0.5f);
     }
 }

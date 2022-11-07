@@ -9,12 +9,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class DFont implements IFont {
-
     private Font fuente;
+    String path = "./Assets/Fonts/";
 
     public DFont(String name, boolean esNeg){
         try {
-            FileInputStream fis = new FileInputStream("data/"+ name);
+            FileInputStream fis = new FileInputStream(path + name);
             this.fuente = Font.createFont(Font.TRUETYPE_FONT, fis);
             if (esNeg) {
                 this.fuente = this.fuente.deriveFont(Font.BOLD);
@@ -36,6 +36,6 @@ public class DFont implements IFont {
         return this.fuente.isBold();
     }
 
-    @Override
-    public void setSize(float size) { this.fuente.deriveFont(size);}
+    /*@Override
+    public void setSize(float size) { this.fuente.deriveFont(size);}*/
 }

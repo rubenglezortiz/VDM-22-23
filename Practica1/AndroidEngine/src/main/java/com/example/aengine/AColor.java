@@ -11,7 +11,7 @@ public class AColor implements IColor {
     private int r,g,b,a;
 
     public AColor(int r_,int g_,int b_){
-        this.r = r_; this.g = g; this.b = b_; this.a = 255;
+        this.r = r_; this.g = g_; this.b = b_; this.a = 255;
         miColor = new Color();
         miColor.red(this.r);
         miColor.blue(this.b);
