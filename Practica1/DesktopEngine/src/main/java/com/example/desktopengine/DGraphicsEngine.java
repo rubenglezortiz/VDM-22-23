@@ -87,11 +87,10 @@ public class DGraphicsEngine implements IGraphics {
        this.scaleFactorX = newX / (float) this.logicWidth;
        this.scaleFactorY = newY / (float) this.logicHeight;
 
-       scaleInX = getWidth() * 3 > getHeight() * 2;
+       this.scaleInX = getWidth() * 3 > getHeight() * 2;
 
        float scaleFactor = getScaleFactor();
 
-        int w,h;
         if (this.scaleInX){
             this.offsetX = (int)(((float)getWidth() / 2.0f) - (((float) this.logicWidth / 2.0f) * scaleFactor));
             this.offsetY = 0;

@@ -69,7 +69,6 @@ public class AGraphics implements IGraphics {
 
     @Override
     public void setResolution(float newX, float newY){
-        //NI IDEA
         this.scaleFactorX = (float)this.screenWidth / (float) this.logicWidth;
         this.scaleFactorY = (float)this.screenHeight / (float) this.logicHeight;
         this.scaleFactor = Math.min(scaleFactorX, scaleFactorY);
