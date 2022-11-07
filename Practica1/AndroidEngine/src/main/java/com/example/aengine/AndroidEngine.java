@@ -86,9 +86,10 @@ public class AndroidEngine implements IEngine, Runnable {
     }
         public void resume(){
             if (!this.running) {
+                this.running = true;
+                this.audio.resumeAllSounds();
                 // Solo hacemos algo si no nos estábamos ejecutando ya
                 // (programación defensiva)
-                this.running = true;
                 // Lanzamos la ejecución de nuestro método run() en un nuevo Thread.
                 this.currentThread = new Thread(this);
                 this.currentThread.start();
@@ -100,6 +101,7 @@ public class AndroidEngine implements IEngine, Runnable {
             this.running = false;
             while (true) {
                 try {
+                    this.audio.pauseAllSounds();
                     this.currentThread.join();
                     this.currentThread = null;
                     break;

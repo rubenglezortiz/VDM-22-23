@@ -70,6 +70,7 @@ public class TitleScene implements IScene {
         this.engine.getAudio().setLooping(this.backgroundMusic, true);
         this.engine.getAudio().setVolume(this.backgroundMusic, 0.25f);
         this.engine.getAudio().playSound(this.backgroundMusic);
+        this.engine.getAudio().setBackgroundMusic(this.backgroundMusic);
     }
 
     private void createButton(){

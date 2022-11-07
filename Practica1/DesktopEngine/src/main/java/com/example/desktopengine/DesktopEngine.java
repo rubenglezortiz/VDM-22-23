@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 
 public class DesktopEngine implements IEngine, Runnable {
     private DGraphicsEngine graphics;
-    private DAudioEngine audio;
+    private DAudio audio;
     private DInput input;
     private DState currentState;
 
@@ -20,7 +20,7 @@ public class DesktopEngine implements IEngine, Runnable {
     public DesktopEngine(JFrame window_){
         this.window = window_;
         this.graphics = new DGraphicsEngine(window);
-        this.audio = new DAudioEngine();
+        this.audio = new DAudio();
         this.input = new DInput();
         this.window.addKeyListener(this.input);
         this.window.addMouseListener(this.input);

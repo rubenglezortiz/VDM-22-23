@@ -29,7 +29,12 @@ public class ASound implements ISound {
     public void play() {  mPlayer.start(); }
 
     @Override
-    public void stop() { mPlayer.stop(); }
+    public void stop() { mPlayer.stop();}
+
+    @Override
+    public void pause(){
+        mPlayer.pause();
+    }
 
     @Override
     public void setVolume(float volume) { mPlayer.setVolume(volume, volume); }

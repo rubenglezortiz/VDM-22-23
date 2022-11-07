@@ -37,6 +37,11 @@ public class DSound implements ISound {
     }
 
     @Override
+    public void pause() {
+
+    }
+
+    @Override
     public void setVolume(float volume) {
         if (volume < 0f || volume > 1f)
             throw new IllegalArgumentException("Volume not valid: " + volume);
