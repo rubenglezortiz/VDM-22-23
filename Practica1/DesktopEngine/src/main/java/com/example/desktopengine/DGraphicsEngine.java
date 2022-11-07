@@ -6,6 +6,7 @@ import com.example.engine.IFont;
 import com.example.engine.IGraphics;
 import com.example.engine.IImage;
 
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
@@ -22,6 +23,7 @@ public class DGraphicsEngine implements IGraphics {
     private float scaleFactorX, scaleFactorY;
     private boolean scaleInX;
     private int offsetX, offsetY;
+    private Font defaultFont;
 
     // Thread
     private Thread renderThread;
@@ -54,6 +56,7 @@ public class DGraphicsEngine implements IGraphics {
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
         this.window.setIgnoreRepaint(true);
         this.window.setVisible(true);
+        this.defaultFont = this.canvas.getFont();
     }
 
     // Canvas functions
@@ -204,13 +207,13 @@ public class DGraphicsEngine implements IGraphics {
         setColor(color);
         this.canvas.setFont(this.canvas.getFont().deriveFont(textSize * getScaleFactor()));
         this.canvas.drawString(text,realToLogicX((int)x),realToLogicY((int)y));
+        this.canvas.setFont(this.defaultFont);
     }
 
     @Override
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
-        font.setSize(textSize * getScaleFactor());
         setColor(color);
-        this.canvas.setFont(((DFont)font).getFont());
+        this.canvas.setFont(((DFont)font).getFont().deriveFont(textSize * getScaleFactor()));
         this.canvas.drawString(text,realToLogicX((int)x),realToLogicY((int)y));
     }
 
@@ -225,7 +228,9 @@ public class DGraphicsEngine implements IGraphics {
         this.drawRectangle(butX,butY,butW,butH, button.getMainColor());
 
         //this.setFont(button.getFont());
-        this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
+        if(button.getFont()!=null)
+            this.drawText(button.getFont(), button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
+        else this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
 
     }
 

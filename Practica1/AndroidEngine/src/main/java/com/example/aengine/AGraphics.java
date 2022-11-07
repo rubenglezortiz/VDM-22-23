@@ -2,7 +2,10 @@ package com.example.aengine;
 
 import android.content.res.AssetManager;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.fonts.Font;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -27,7 +30,7 @@ public class AGraphics implements IGraphics {
     private float scaleFactorX, scaleFactorY, scaleFactor;
     private int offsetX, offsetY;
     boolean scaleInX;
-
+    Typeface defaultFont;
 
     // Thread
     private Thread renderThread;
@@ -46,6 +49,7 @@ public class AGraphics implements IGraphics {
         this.screenHeight = metrics.heightPixels;
         this.screenWidth = metrics.widthPixels;
         setResolution((float)this.screenWidth, (float)this.screenHeight);
+        this.defaultFont = this.paint.getTypeface();
     }
 
     // Android functions
@@ -199,6 +203,7 @@ public class AGraphics implements IGraphics {
         this.paint.setTypeface(((AFont)font).getTypeface());
         this.paint.setTextSize(textSize * getScaleFactor());
         this.canvas.drawText(text,realToLogicX((int)x),realToLogicY((int)y), this.paint);
+        this.paint.setTypeface(this.defaultFont);
     }
 
     @Override
@@ -211,8 +216,10 @@ public class AGraphics implements IGraphics {
         this.fillRectangle(butX,butY,butW,butH, button.getBackgroundColor());
         this.drawRectangle(butX,butY,butW,butH, button.getMainColor());
 
-        //this.setFont(button.getFont());
-        this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
+        if(button.getFont()!=null)
+            this.drawText(button.getFont(), button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
+        else this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
+
     }
 
     // Getters

@@ -242,11 +242,6 @@ public class Board {
                     checkCellsCollision(((IInput.MouseInputEvent)event).x, ((IInput.MouseInputEvent)event).y, false);
                 }
                 break;
-            case KEY_DOWN:
-                if (((IInput.KeyInputEvent)event).key == 'A') {
-                    checkWin();
-                }
-                break;
             default:
                 break;
         }

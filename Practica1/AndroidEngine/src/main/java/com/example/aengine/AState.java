@@ -26,8 +26,8 @@ public class AState implements IState {
 
     @Override
     public void handleInputs() {
-       // if(scenes.size() > 0)
-         //   scenes.peek().handleInputs();
+        if(scenes.size() > 0)
+           scenes.peek().handleInputs();
     }
 
     @Override

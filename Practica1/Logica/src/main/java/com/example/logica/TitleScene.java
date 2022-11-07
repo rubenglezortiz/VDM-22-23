@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class TitleScene implements IScene {
-    private IFont font;
     private IEngine engine;
-    private boolean changeScene;
-    private ISound backgroundMusic;
     private IButton startButton;
+    private ISound backgroundMusic;
+    private IFont font;
+    private boolean changeScene;
 
     public TitleScene(IEngine engine_){
         this.changeScene = false;
@@ -31,13 +31,11 @@ public class TitleScene implements IScene {
             changeScene = false;
             engine.getCurrentState().addScene(new BoardSelectionScene(this.engine));
         }
-
     }
 
     @Override
     public void render() {
-        this.engine.getGraphics().setFont(this.font);
-        this.engine.getGraphics().drawText("NONOGRAMS",this.engine.getGraphics().getLogicWidth()/2.0f - ((10*30)/2.0f),
+        this.engine.getGraphics().drawText(this.font, "NONOGRAMS", this.engine.getGraphics().getLogicWidth()/2.0f - ((10*30)/2.0f),
                 100, 27, this.engine.getGraphics().newColor(0,0,0,255));
 
         this.engine.getGraphics().drawButton(this.startButton);
@@ -45,14 +43,11 @@ public class TitleScene implements IScene {
 
     @Override
     public synchronized void handleInputs() {
-        ArrayList<IInput.Event> eventList = this.engine.getInput().getEventList();
+        ArrayList<IInput.Event> eventList = (ArrayList<IInput.Event>) this.engine.getInput().getEventList().clone();
         Iterator<IInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
             IInput.Event event = it.next();
             switch (event.type) {
-                //case KEY_DOWN:
-                //    changeScene = true;
-                //   break;
                 case TOUCH_RELEASED:
                     if(((IInput.MouseInputEvent)event).mouseButton == 1){
                         if (this.startButton.checkCollision(this.engine.getGraphics().logicToRealX(((IInput.MouseInputEvent)event).x),
