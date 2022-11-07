@@ -50,7 +50,9 @@ public class AndroidEngine implements IEngine, Runnable {
 
     @Override
     public int getTime() {
-        return 0;
+        long time = System.nanoTime() / 1000000;
+        time /= 1000.0f;
+        return (int)time;
     }
 
     @Override
