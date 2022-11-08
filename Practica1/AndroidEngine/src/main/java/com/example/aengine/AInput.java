@@ -30,8 +30,8 @@ public class AInput implements IInput, View.OnTouchListener {
 
 
     @Override
-    public ArrayList<Event> getEventList() {return events;}
+    public ArrayList<Event> getEventList() {return this.events;}
 
     @Override
-    public void clearEventList() {events.clear();}
+    public void clearEventList() {this.events.clear();}
 }
