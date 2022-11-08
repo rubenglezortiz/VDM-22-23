@@ -70,11 +70,11 @@ public class DInput implements IInput, KeyListener, MouseListener, MouseMotionLi
 
     @Override
     public synchronized ArrayList<Event> getEventList(){
-        return events;
+        return this.events;
     }
 
     @Override
     public synchronized void clearEventList() {
-        events.clear();
+        this.events.clear();
     }
 }

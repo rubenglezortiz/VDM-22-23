@@ -5,47 +5,45 @@ import com.example.engine.IGraphics;
 
 public class Cell extends GameObject {
     enum State {UNMARKED, MARKED, REMOVED, INCORRECT};
-    boolean solution;
-    int row, col;
-    State state;
-    IGraphics graphics;
+    private boolean solution;
+    private int row, col;
+    private State state;
+    private IGraphics graphics;
 
     public Cell(int row_, int col_, int w, int h, boolean sol, IGraphics graphics_){
         super(w, h);
         this.graphics = graphics_;
-        state = State.UNMARKED;
-        row = row_;
-        col = col_;
-        solution = sol;
+        this.state = State.UNMARKED;
+        this.row = row_;
+        this.col = col_;
+        this.solution = sol;
     }
 
     public boolean isSolution() {
-        return solution;
+        return this.solution;
     }
 
-    public void setSolution(boolean solution_) {
-        solution = solution_;
-    }
+    public void setSolution(boolean solution_) { this.solution = solution_; }
 
     public void changeState(){
         switch (state){
-            case UNMARKED: state = State.MARKED; break;
-            case MARKED: state = State.REMOVED; break;
-            case REMOVED: state = State.UNMARKED; break;
-            case INCORRECT: state = State.UNMARKED; break;
+            case UNMARKED: this.state = State.MARKED; break;
+            case MARKED: this.state = State.REMOVED; break;
+            case REMOVED: this.state = State.UNMARKED; break;
+            case INCORRECT: this.state = State.UNMARKED; break;
         }
     }
 
     public boolean wrongMarked(){
-        return (state == State.MARKED && !solution) || (state == State.INCORRECT);
+        return (this.state == State.MARKED && !solution) || (state == State.INCORRECT);
     }
 
     public int check(){
-        if (solution && (state == State.UNMARKED || state == State.REMOVED))
+        if (this.solution && (this.state == State.UNMARKED || state == State.REMOVED))
             return 1; //Devuelve 1 para sumar esta casilla a la cantidad que faltan por pintar
 
         if (wrongMarked()) {
-            state = State.INCORRECT;
+            this.state = State.INCORRECT;
             return 2;
         }
 
@@ -74,7 +72,7 @@ public class Cell extends GameObject {
         //if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
         this.x = xGraphic_;
         this.y = yGraphic_; //System.out.println(this.y);
-        if (state == State.REMOVED) {
+        if (this.state == State.REMOVED) {
             graphics.drawRectangle(this.x, this.y, this.w, this.h, icolor);
             graphics.drawLine( this.x, this.y,this.x+w, this.y +this.h, icolor);
         }
@@ -82,18 +80,18 @@ public class Cell extends GameObject {
     }
 
     public boolean checkCollisions(int x, int y) {
-        return (x >= graphics.realToLogicX(this.x) &&
-                x <= graphics.realToLogicX(this.x + this.w) &&
-                y >= graphics.realToLogicY(this.y)  &&
-                y <= graphics.realToLogicY(this.y + this.h));
+        return (x >= this.graphics.realToLogicX(this.x) &&
+                x <= this.graphics.realToLogicX(this.x + this.w) &&
+                y >= this.graphics.realToLogicY(this.y)  &&
+                y <= this.graphics.realToLogicY(this.y + this.h));
     }
 
     public boolean isIncorrect(){
-        return state == State.INCORRECT;
+        return this.state == State.INCORRECT;
     }
 
     public void checkOut(){
-        state = State.MARKED;
+        this.state = State.MARKED;
     }
 
 }

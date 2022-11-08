@@ -22,7 +22,7 @@ public class Main extends AppCompatActivity {
 
         this.myEngine = new AndroidEngine(this.myView);
         TitleScene titleScene = new TitleScene (this.myEngine);
-        myEngine.getCurrentState().addScene(titleScene);
+        this.myEngine.getCurrentState().addScene(titleScene);
     }
 
     @Override

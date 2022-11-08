@@ -11,7 +11,7 @@ public class AFont implements IFont {
 
     public AFont(String name, boolean isB, AssetManager assetMan){
         this.typeface = Typeface.createFromAsset(assetMan, name);
-        if (isB) this.typeface = Typeface.create(typeface, Typeface.BOLD);
+        if (isB) this.typeface = Typeface.create(this.typeface, Typeface.BOLD);
     }
 
     @Override
@@ -22,5 +22,5 @@ public class AFont implements IFont {
     @Override
     public boolean isBold() { return this.typeface.isBold(); }
 
-    public Typeface getTypeface() { return typeface; };
+    public Typeface getTypeface() { return this.typeface; };
 }

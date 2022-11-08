@@ -26,18 +26,18 @@ public class ASound implements ISound {
     }
 
     @Override
-    public void play() {  mPlayer.start(); }
+    public void play() { this.mPlayer.start(); }
 
     @Override
-    public void stop() { mPlayer.stop();}
+    public void stop() { this.mPlayer.stop();}
 
     @Override
     public void pause(){
-        mPlayer.pause();
+        this.mPlayer.pause();
     }
 
     @Override
-    public void setVolume(float volume) { mPlayer.setVolume(volume, volume); }
+    public void setVolume(float volume) { this.mPlayer.setVolume(volume, volume); }
 
 
 

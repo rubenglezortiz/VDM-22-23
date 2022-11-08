@@ -10,11 +10,11 @@ import java.io.IOException;
 
 public class DFont implements IFont {
     private Font fuente;
-    String path = "./Assets/Fonts/";
+    private String path = "./Assets/Fonts/";
 
     public DFont(String name, boolean esNeg){
         try {
-            FileInputStream fis = new FileInputStream(path + name);
+            FileInputStream fis = new FileInputStream(this.path + name);
             this.fuente = Font.createFont(Font.TRUETYPE_FONT, fis);
             if (esNeg) {
                 this.fuente = this.fuente.deriveFont(Font.BOLD);

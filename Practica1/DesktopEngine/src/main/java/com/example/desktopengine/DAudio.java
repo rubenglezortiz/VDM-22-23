@@ -4,13 +4,13 @@ import com.example.engine.IAudio;
 import com.example.engine.ISound;
 
 public class DAudio implements IAudio {
-    String path = "./Assets/Sounds/";
+    private String path = "./Assets/Sounds/";
     private ISound backgroundMusic;
 
     public DAudio(){}
 
     @Override
-    public ISound newSound(String file) { return new DSound(path + file); }
+    public ISound newSound(String file) { return new DSound(this.path + file); }
 
     @Override
     public void playSound(ISound sound) {

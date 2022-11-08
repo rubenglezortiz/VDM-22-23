@@ -25,13 +25,13 @@ public class AInput implements IInput, View.OnTouchListener {
 
     public synchronized void addEvent(MotionEvent event, InputType type){
         Event newEvent = new MouseInputEvent((int)event.getX(), (int)event.getY(), 1, 0, type);
-        events.add(newEvent);
+        this.events.add(newEvent);
     }
 
 
     @Override
-    public ArrayList<Event> getEventList() {return events;}
+    public ArrayList<Event> getEventList() {return this.events;}
 
     @Override
-    public void clearEventList() {events.clear();}
+    public void clearEventList() {this.events.clear();}
 }

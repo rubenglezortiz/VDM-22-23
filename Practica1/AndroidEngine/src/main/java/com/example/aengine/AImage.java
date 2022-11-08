@@ -16,14 +16,14 @@ public class AImage implements IImage {
         InputStream is = null;
         try {
             is = assetMan.open(name);
-            bitmap = BitmapFactory.decodeStream(is);
+            this.bitmap = BitmapFactory.decodeStream(is);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public Bitmap getBitmap(){
-        return bitmap;
+        return this.bitmap;
     }
 
     public void setWidth(int width) { this.bitmap.setWidth(width); }
