@@ -34,12 +34,12 @@ public class MainScene implements IScene {
     @Override
     public void update() {
         long actualTime = this.engine.getTime();
-        if(board.getCheckPressed()){
-            timer = (actualTime) + 5.0f;
-            board.pressedOut();
+        if(this.board.getCheckPressed()){
+            this.timer = (actualTime) + 5.0f;
+            this.board.pressedOut();
         }
 
-        if ((actualTime) > timer) board.checkOut();
+        if ((actualTime) > this.timer) this.board.checkOut();
 
         if(this.backToMenu) this.engine.getCurrentState().removeScene(2);
     }

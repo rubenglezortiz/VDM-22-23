@@ -29,8 +29,8 @@ public class AGraphics implements IGraphics {
     private int logicWidth, logicHeight;
     private float scaleFactorX, scaleFactorY, scaleFactor;
     private int offsetX, offsetY;
-    boolean scaleInX;
-    Typeface defaultFont;
+    private boolean scaleInX;
+    private Typeface defaultFont;
 
     // Thread
     private Thread renderThread;
@@ -61,7 +61,7 @@ public class AGraphics implements IGraphics {
 
     @Override
     public void finishFrame() {
-        this.holder.unlockCanvasAndPost(canvas);
+        this.holder.unlockCanvasAndPost(this.canvas);
     }
 
     @Override
@@ -71,9 +71,9 @@ public class AGraphics implements IGraphics {
     public void setResolution(float newX, float newY){
         this.scaleFactorX = (float)this.screenWidth / (float) this.logicWidth;
         this.scaleFactorY = (float)this.screenHeight / (float) this.logicHeight;
-        this.scaleFactor = Math.min(scaleFactorX, scaleFactorY);
+        this.scaleFactor = Math.min(this.scaleFactorX, this.scaleFactorY);
 
-        scaleInX = getWidth() * 3 > getHeight() * 2;
+        this.scaleInX = getWidth() * 3 > getHeight() * 2;
 
         if (this.scaleInX){
             this.offsetX = (int)(((float)getWidth() / 2.0f) - (((float) this.logicWidth / 2.0f) * this.scaleFactor));

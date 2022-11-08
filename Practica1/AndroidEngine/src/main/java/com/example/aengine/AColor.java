@@ -12,18 +12,18 @@ public class AColor implements IColor {
 
     public AColor(int r_,int g_,int b_){
         this.r = r_; this.g = g_; this.b = b_; this.a = 255;
-        miColor = new Color();
-        miColor.red(this.r);
-        miColor.blue(this.b);
-        miColor.green(this.g);
+        this.miColor = new Color();
+        this.miColor.red(this.r);
+        this.miColor.blue(this.b);
+        this.miColor.green(this.g);
     }
     public AColor(int r_,int g_,int b_,int a_){
         this.r = r_; this.g = g_; this.b = b_; this.a = a_;
-        miColor = new Color();
-        miColor.red(this.r);
-        miColor.green(this.g);
-        miColor.blue(this.b);
-        miColor.alpha(this.a);
+        this.miColor = new Color();
+        this.miColor.red(this.r);
+        this.miColor.green(this.g);
+        this.miColor.blue(this.b);
+        this.miColor.alpha(this.a);
     }
 
     public Color getColor(){

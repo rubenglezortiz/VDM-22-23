@@ -27,9 +27,9 @@ public class TitleScene implements IScene {
 
     @Override
     public void update() {
-        if (changeScene) {
-            changeScene = false;
-            engine.getCurrentState().addScene(new BoardSelectionScene(this.engine));
+        if (this.changeScene) {
+            this.changeScene = false;
+            this.engine.getCurrentState().addScene(new BoardSelectionScene(this.engine));
         }
     }
 
@@ -52,7 +52,7 @@ public class TitleScene implements IScene {
                     if(((IInput.MouseInputEvent)event).mouseButton == 1){
                         if (this.startButton.checkCollision(this.engine.getGraphics().logicToRealX(((IInput.MouseInputEvent)event).x),
                                 this.engine.getGraphics().logicToRealY(((IInput.MouseInputEvent)event).y))){
-                            changeScene = true;
+                            this.changeScene = true;
                         }
                     }
                     break;

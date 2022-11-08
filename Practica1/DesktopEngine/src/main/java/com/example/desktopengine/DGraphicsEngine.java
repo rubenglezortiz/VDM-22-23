@@ -164,7 +164,7 @@ public class DGraphicsEngine implements IGraphics {
     @Override
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color){
         setColor(color);
-        canvas.drawLine(realToLogicX((int)x), realToLogicY((int)y), realToLogicX((int)x_stop), realToLogicY((int)y_stop));
+        this.canvas.drawLine(realToLogicX((int)x), realToLogicY((int)y), realToLogicX((int)x_stop), realToLogicY((int)y_stop));
     }
 
     @Override
@@ -183,7 +183,7 @@ public class DGraphicsEngine implements IGraphics {
 
     @Override
     public void drawImage(IImage image, int x, int y, int w, int h) {
-        canvas.drawImage(((DImage)image).getImage(), realToLogicX(x), realToLogicY(y),
+        this.canvas.drawImage(((DImage)image).getImage(), realToLogicX(x), realToLogicY(y),
                 realToLogicScale(w),realToLogicScale(h),null);
     }
 
@@ -236,5 +236,5 @@ public class DGraphicsEngine implements IGraphics {
     public int getLogicHeight() { return this.logicHeight; }
 
     @Override
-    public float getScaleFactor() { return Math.min(scaleFactorX, scaleFactorY); }
+    public float getScaleFactor() { return Math.min(this.scaleFactorX, this.scaleFactorY); }
 }
