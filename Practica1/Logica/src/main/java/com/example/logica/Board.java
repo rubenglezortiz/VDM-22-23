@@ -145,31 +145,43 @@ public class Board {
         // Renderizado de casillas
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numCols; j++) {
-                board[i][j].render(graphics,xInicial+i*(casillaW+separacion),yInicial+j*(casillaH+separacion));
+                if (!win || board[i][j].isSolution())
+                    board[i][j].render(graphics,xInicial+i*(casillaW+separacion),yInicial+j*(casillaH+separacion));
             }
         }
 
-        // Se dibujan las pistas de las filas
-        int mayorFilas = 1;
-        int textSize = casillaW/2;
-        for (int i = 0; i < numRows; i++) {
-            if (mayorFilas < colsList[i].size()) mayorFilas = colsList[i].size();
-            for (int j = 0; j < colsList[i].size() ;j++)
-                graphics.drawText(colsList[i].get(j).toString(),
-                        xInicial-colsList[i].size()*textSize+j*textSize,
-                        yInicial+casillaH/2+i*(casillaH+separacion)+separacion,
+
+        if (!win){
+            // Se dibujan las pistas de las filas
+            int mayorFilas = 1;
+            int textSize = casillaW/2;
+            for (int i = 0; i < numRows; i++) {
+                if (mayorFilas < colsList[i].size()) mayorFilas = colsList[i].size();
+                for (int j = 0; j < colsList[i].size() ;j++)
+                    graphics.drawText(colsList[i].get(j).toString(),
+                            xInicial-colsList[i].size()*textSize+j*textSize,
+                            yInicial+casillaH/2+i*(casillaH+separacion)+separacion,
                             textSize, graphics.newColor(0, 0, 0, 255));
+            }
+            int mayorCols = 1;
+            // Se dibujan las pistas de las columnas
+            for (int i = 0; i < numRows; i++) {
+                if (mayorCols < rowsList[i].size()) mayorCols = rowsList[i].size();
+                for (int j = 0; j < rowsList[i].size() ;j++)
+                    graphics.drawText(rowsList[i].get(j).toString(),
+                            xInicial+casillaW/2+i*(casillaW+separacion)-separacion,
+                            yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2,
+                            textSize, graphics.newColor(0, 0, 0, 255));
+            }
+
+            // Dibujado de rectangulos para el borde
+            // Arriba
+            graphics.drawRectangle(xInicial,yInicial-(mayorCols+1)*textSize, anchoTablero, altoTablero+(mayorCols+1)*textSize, graphics.newColor(0,0,0,255));
+            // Abajo
+            graphics.drawRectangle(xInicial-(mayorFilas+1)*textSize, yInicial, anchoTablero+(mayorFilas+1)*textSize, altoTablero, graphics.newColor(0,0,0,255));
+
         }
-        int mayorCols = 1;
-        // Se dibujan las pistas de las columnas
-        for (int i = 0; i < numRows; i++) {
-            if (mayorCols < rowsList[i].size()) mayorCols = rowsList[i].size();
-            for (int j = 0; j < rowsList[i].size() ;j++)
-                graphics.drawText(rowsList[i].get(j).toString(),
-                        xInicial+casillaW/2+i*(casillaW+separacion)-separacion,
-                       yInicial-rowsList[i].size()*textSize+j*textSize+textSize/2,
-                        textSize, graphics.newColor(0, 0, 0, 255));
-        }
+
         if (this.showLevelInfo)
         {
             if (this.win) graphics.drawText("Felicidades, has ganado",
@@ -181,18 +193,13 @@ public class Board {
                 if (this.remainingCells != 0) graphics.drawText("Te faltan " + this.remainingCells + " casillas",
                         xInicial,
                         yInicial+this.numRows*(casillaH+separacion)+this.textMessagesSize,
-                        this.textMessagesSize, graphics.newColor(200, 0, 0, 255));
+                    this.textMessagesSize, graphics.newColor(200, 0, 0, 255));
                 if (this.wrongCells != 0) graphics.drawText("Tienes mal " + this.wrongCells + " casillas",
                        xInicial,
                         yInicial+this.numRows*(casillaH+separacion)+this.textMessagesSize+this.textMessagesSize,
                         this.textMessagesSize, graphics.newColor(200, 0, 0, 255));
             }
         }
-        // Dibujado de rectangulos para el borde
-        // Arriba
-        graphics.drawRectangle(xInicial,yInicial-(mayorCols+1)*textSize, anchoTablero, altoTablero+(mayorCols+1)*textSize, graphics.newColor(0,0,0,255));
-        // Abajo
-        graphics.drawRectangle(xInicial-(mayorFilas+1)*textSize, yInicial, anchoTablero+(mayorFilas+1)*textSize, altoTablero, graphics.newColor(0,0,0,255));
     }
 
     public void handleInputs(IInput.Event event) {
