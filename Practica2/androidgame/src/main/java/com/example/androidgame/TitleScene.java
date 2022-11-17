@@ -12,23 +12,28 @@ import java.util.Iterator;
 
 public class TitleScene extends AScene {
     private AndroidEngine engine;
-    private AButton startButton;
+    private AButton storyButton;
+    private AButton quickGameButton;
     private ASound backgroundMusic;
     private AFont font;
-    private boolean changeScene;
+    private int changeScene;
 
     public TitleScene(AndroidEngine engine_){
-        this.changeScene = false;
+        this.changeScene = 0;
         this.engine = engine_;
         this.font = this.engine.getGraphics().newFont("font.TTF", false);
         createMusic();
-        createButton();
+        createButtons();
     }
 
     public void update() {
-        if (this.changeScene) {
-            this.changeScene = false;
-            this.engine.getCurrentState().addScene(new BoardSelectionScene(this.engine));
+        if (this.changeScene != 0) {
+            if (this.changeScene == 1)
+                this.engine.getCurrentState().addScene(new SelectCategoryScene(this.engine));
+            else
+                this.engine.getCurrentState().addScene(new BoardSelectionScene(this.engine));
+
+            this.changeScene = 0;
         }
     }
 
@@ -36,7 +41,8 @@ public class TitleScene extends AScene {
         this.engine.getGraphics().drawText(this.font, "NONOGRAMS", this.engine.getGraphics().getLogicWidth()/2.0f - ((10*30)/2.0f),
                 100, 27, this.engine.getGraphics().newColor(0,0,0,255));
 
-        this.engine.getGraphics().drawButton(this.startButton);
+        this.engine.getGraphics().drawButton(this.storyButton);
+        this.engine.getGraphics().drawButton(this.quickGameButton);
     }
 
     public synchronized void handleInputs() {
@@ -47,9 +53,13 @@ public class TitleScene extends AScene {
             switch (event.type) {
                 case TOUCH_RELEASED:
                     if(((AInput.MouseInputEvent)event).mouseButton == 1){
-                        if (this.startButton.checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
+                        if (this.storyButton.checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
                                 this.engine.getGraphics().logicToRealY(((AInput.MouseInputEvent)event).y))){
-                            this.changeScene = true;
+                            this.changeScene = 1;
+                        }
+                        if (this.quickGameButton.checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
+                                this.engine.getGraphics().logicToRealY(((AInput.MouseInputEvent)event).y))){
+                            this.changeScene = 2;
                         }
                     }
                     break;
@@ -70,15 +80,23 @@ public class TitleScene extends AScene {
         this.engine.getAudio().setBackgroundMusic(this.backgroundMusic);
     }
 
-    private void createButton(){
-        int x,y,w,h;
+    private void createButtons(){
+        int x,y1, y2, w,h;
         x = this.engine.getGraphics().getLogicWidth() / 2;
-        y = this.engine.getGraphics().getLogicHeight() * 2 / 3;
+        y1 = this.engine.getGraphics().getLogicHeight() * 2 / 4;
         w = this.engine.getGraphics().getLogicWidth() / 3;
         h = this.engine.getGraphics().getLogicHeight() / 10;
 
-        this.startButton = this.engine.getGraphics().newButton("Start",
-                x - (w / 2), y - (h / 2), w, h,
+        this.storyButton = this.engine.getGraphics().newButton("Modo Historia",
+                x - (w / 2), y1 - (h / 2), w, h,
+                10,35, 18,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(255, 255, 255, 255));
+
+        y2 = this.engine.getGraphics().getLogicHeight() * 3 / 4;
+        this.quickGameButton = this.engine.getGraphics().newButton("Partida Rápida",
+                x - (w / 2), y2 - (h / 2), w, h,
                 10,35, 18,
                 this.font,
                 this.engine.getGraphics().newColor(0, 0, 0, 255),
