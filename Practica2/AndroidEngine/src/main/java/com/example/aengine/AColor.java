@@ -3,10 +3,7 @@ package com.example.aengine;
 import android.graphics.Color;
 import android.os.Build;
 
-import com.example.engine.IColor;
-
-
-public class AColor implements IColor {
+public class AColor {
     private Color miColor;
     private int r,g,b,a;
 

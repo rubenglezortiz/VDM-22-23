@@ -4,12 +4,10 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.example.engine.IImage;
-
 import java.io.IOException;
 import java.io.InputStream;
 
-public class AImage implements IImage {
+public class AImage  {
     private Bitmap bitmap;
 
     public AImage(String name, AssetManager assetMan){

@@ -6,14 +6,7 @@ import android.icu.util.Calendar;
 import android.text.format.Time;
 import android.view.SurfaceView;
 
-import com.example.engine.IAudio;
-import com.example.engine.IEngine;
-import com.example.engine.IGraphics;
-import com.example.engine.IInput;
-import com.example.engine.IState;
-
-
-public class AndroidEngine implements IEngine, Runnable {
+public class AndroidEngine implements Runnable {
     private AGraphics graphics;
     private AAudio audio;
     private AInput input;
@@ -36,19 +29,14 @@ public class AndroidEngine implements IEngine, Runnable {
         this.currentThread.start();
     }
 
-    @Override
-    public IGraphics getGraphics() { return this.graphics;}
+    public AGraphics getGraphics() { return this.graphics;}
 
-    @Override
-    public IInput getInput() {return this.input;}
+    public AInput getInput() {return this.input;}
 
-    @Override
-    public IState getCurrentState() { return this.currentState;}
+    public AState getCurrentState() { return this.currentState;}
 
-    @Override
-    public IAudio getAudio() { return this.audio;}
+    public AAudio getAudio() { return this.audio;}
 
-    @Override
     public int getTime() {
         long time = System.nanoTime() / 1000000;
         time /= 1000.0f;

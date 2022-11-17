@@ -4,11 +4,9 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.MediaPlayer;
 
-import com.example.engine.ISound;
-
 import java.io.IOException;
 
-public class ASound implements ISound {
+public class ASound  {
     private MediaPlayer mPlayer;
 
     public ASound(String file, AssetManager assetManager){
@@ -25,23 +23,15 @@ public class ASound implements ISound {
         }
     }
 
-    @Override
     public void play() { this.mPlayer.start(); }
 
-    @Override
     public void stop() { this.mPlayer.stop();}
 
-    @Override
     public void pause(){
         this.mPlayer.pause();
     }
 
-    @Override
     public void setVolume(float volume) { this.mPlayer.setVolume(volume, volume); }
 
-
-
     public void setLooping(boolean looping){ this.mPlayer.setLooping(looping);}
-
-
 }

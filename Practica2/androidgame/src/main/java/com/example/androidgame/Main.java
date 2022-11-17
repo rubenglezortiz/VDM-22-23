@@ -6,9 +6,6 @@ import android.os.Bundle;
 import android.view.SurfaceView;
 
 import com.example.aengine.AndroidEngine;
-import com.example.logica.BoardSelectionScene;
-import com.example.logica.MainScene;
-import com.example.logica.TitleScene;
 
 public class Main extends AppCompatActivity {
     private SurfaceView myView;

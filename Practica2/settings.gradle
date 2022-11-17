@@ -13,9 +13,5 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Practica1"
-include ':Logica'
-include ':Engine'
-include ':DesktopEngine'
-include ':DesktopGame'
 include ':androidgame'
 include ':AndroidEngine'

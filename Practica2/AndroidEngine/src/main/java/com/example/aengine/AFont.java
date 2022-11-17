@@ -3,9 +3,8 @@ package com.example.aengine;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
-import com.example.engine.IFont;
 
-public class AFont implements IFont {
+public class AFont  {
 
     private Typeface typeface;
 
@@ -14,12 +13,10 @@ public class AFont implements IFont {
         if (isB) this.typeface = Typeface.create(this.typeface, Typeface.BOLD);
     }
 
-    @Override
     public float getSize() {
         return this.typeface.getStyle();
     }
 
-    @Override
     public boolean isBold() { return this.typeface.isBold(); }
 
     public Typeface getTypeface() { return this.typeface; };

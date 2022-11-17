@@ -3,11 +3,41 @@ package com.example.aengine;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.example.engine.IInput;
-
 import java.util.ArrayList;
 
-public class AInput implements IInput, View.OnTouchListener {
+public class AInput implements View.OnTouchListener {
+    public static enum InputType{
+        TOUCH_PRESSED,
+        TOUCH_RELEASED,
+        TOUCH_MOVE,
+        TOUCH_CLICKED,
+        KEY_DOWN,
+        KEY_UP,
+        KEY_LONG,
+    }
+
+    public static class Event {
+        public InputType type;
+        public int index;
+
+        public Event(int index_, InputType type_){
+            this.index = index_;
+            this.type = type_;
+        }
+    }
+
+    public static class MouseInputEvent extends Event {
+        public int x;
+        public int y;
+        public int mouseButton;
+
+        public MouseInputEvent(int x_, int y_, int mouseButton_, int index_, InputType type_) {
+            super(index_, type_);
+            this.x = x_;
+            this.y = y_;
+            this.mouseButton = mouseButton_;
+        }
+    }
     private ArrayList<Event> events = new ArrayList<Event>();
 
     @Override
@@ -28,10 +58,7 @@ public class AInput implements IInput, View.OnTouchListener {
         this.events.add(newEvent);
     }
 
-
-    @Override
     public ArrayList<Event> getEventList() {return this.events;}
 
-    @Override
     public void clearEventList() {this.events.clear();}
 }
