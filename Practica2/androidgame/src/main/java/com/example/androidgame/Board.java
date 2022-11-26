@@ -5,9 +5,10 @@ import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.ASound;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Board {
+public class Board implements Serializable {
     private int numCols, numRows;
     private Cell[][] board;
     private ArrayList<Integer>[] colsList;

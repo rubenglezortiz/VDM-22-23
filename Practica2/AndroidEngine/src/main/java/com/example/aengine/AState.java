@@ -1,5 +1,7 @@
 package com.example.aengine;
 
+import android.os.Bundle;
+
 import java.util.Stack;
 
 public class AState  {
@@ -23,6 +25,17 @@ public class AState  {
         if(this.scenes.size() > 0)
             this.scenes.peek().handleInputs();
     }
+
+    public void saveScene(Bundle savedInstanceState){
+        if(this.scenes.size()>0)
+            this.scenes.peek().saveScene(savedInstanceState);
+    }
+
+    public void restoreScene(Bundle savedInstanceState){
+        if(this.scenes.size()>0)
+            this.scenes.peek().restoreScene(savedInstanceState);
+    }
+
 
     public void addScene(AScene scene) { this.scenes.push(scene); }
 

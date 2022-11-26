@@ -25,7 +25,9 @@ public class AAudio  {
 
     public void setBackgroundMusic(ASound backgroundMusic) { this.backgroundMusic = backgroundMusic; }
 
-    public void pauseAllSounds(){ this.backgroundMusic.pause();}
+    public void pauseAllSounds(){ //this.backgroundMusic.pause();
+         }
 
-    public void resumeAllSounds(){ this.backgroundMusic.play(); }
+    public void resumeAllSounds(){ //this.backgroundMusic.play();
+         }
 }
