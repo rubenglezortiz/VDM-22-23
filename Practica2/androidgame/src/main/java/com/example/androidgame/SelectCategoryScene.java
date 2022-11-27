@@ -17,16 +17,9 @@ public class SelectCategoryScene extends AScene {
     private int changeScene;
     private boolean backToMenu;
 
-    private AButton returnButton;
-    private AButton forestButton;
-    private AButton seaButton;
-    private AButton cityButton;
-    private AButton desertButton;
+    private AButton returnButton, forestButton, seaButton, cityButton, desertButton;
 
-    private int forestFinished;
-    private int seaFinished;
-    private int cityFinished;
-    private int desertFinished;
+    private int forestFinished, seaFinished, cityFinished, desertFinished;
 
     private int coins;
 
@@ -36,21 +29,18 @@ public class SelectCategoryScene extends AScene {
         this.changeScene = 0;
 
         //En el futuro, se tendrá que leer de fichero para cargar partida guardada
-        this.coins = 0;
-        this.forestFinished = 0;
-        this.seaFinished = 0;
-        this.cityFinished = 0;
-        this.desertFinished = 0;
+        this.coins = this.forestFinished = this.seaFinished = this.cityFinished = this.desertFinished = 0;
 
-        this.createButtons();
+
+        this.setUpScene();
     }
 
     private void createButtons(){
         int x1, x2, y1, y2, w, h, tx, ty, tSize;
-        x1 = this.engine.getGraphics().getLogicWidth() / 13;
-        x2 = this.engine.getGraphics().getLogicWidth() * 7 / 13;
-        y1 = this.engine.getGraphics().getLogicHeight() / 4;
-        y2 = this.engine.getGraphics().getLogicHeight() * 9 / 16;
+        x1 = this.engine.getGraphics().getLogicWidth() / 4;
+        x2 = this.engine.getGraphics().getLogicWidth() * 3 / 4;
+        y1 = this.engine.getGraphics().getLogicHeight() * 3 / 8;
+        y2 = this.engine.getGraphics().getLogicHeight() * 11 / 16;
         w = this.engine.getGraphics().getLogicWidth() * 5 / 13;
         h = this.engine.getGraphics().getLogicHeight() / 4;
         tx = 12;
@@ -98,7 +88,7 @@ public class SelectCategoryScene extends AScene {
 
 
         int x, y;
-        x =  this.engine.getGraphics().getLogicWidth() / 13;
+        x =  this.engine.getGraphics().getLogicWidth() / 7;
         y =  this.engine.getGraphics().getLogicHeight() / 16;
         w = this.engine.getGraphics().getLogicWidth() / 4;
         h = this.engine.getGraphics().getLogicHeight() / 16;
@@ -121,22 +111,7 @@ public class SelectCategoryScene extends AScene {
     @Override
     public void update() {
         if (this.changeScene != 0){
-            switch(this.changeScene){
-                case 1:
-                    this.engine.getCurrentState().addScene(new ForestScene(this.engine));
-                    break;
-                case 2:
-                    //new SeaScene
-                    break;
-                case 3:
-                    //new CityScene
-                    break;
-                case 4:
-                    //new DesertScene
-                    break;
-                default:
-                    break;
-            }
+            this.engine.getCurrentState().addScene(new LevelScene(this.engine, this.changeScene - 1));
             this.changeScene = 0;
         }
         if(this.backToMenu) this.engine.getCurrentState().removeScene(1);
@@ -146,8 +121,8 @@ public class SelectCategoryScene extends AScene {
     public void render() {
         this.engine.getGraphics().setFont(this.font);
         this.engine.getGraphics().drawText("Elige la categoría en la que quieres jugar",
-                this.engine.getGraphics().getLogicWidth()/2.0f - ((5*50)/2.0f),
-                this.engine.getGraphics().getLogicHeight() * 3/ 16, 10,
+                this.engine.getGraphics().getLogicWidth()/10,
+                this.engine.getGraphics().getLogicHeight() * 3/ 16, 8,
                 this.engine.getGraphics().newColor(0,0,0,255));
 
         this.engine.getGraphics().drawButton(this.forestButton);
@@ -173,15 +148,15 @@ public class SelectCategoryScene extends AScene {
                         }
                         else if (this.seaButton.checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
                                 this.engine.getGraphics().logicToRealY(((AInput.MouseInputEvent)event).y))){
-                            this.changeScene = 2;
+                            if (this.forestFinished >= 5) this.changeScene = 2;
                         }
                         else if (this.cityButton.checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
                                 this.engine.getGraphics().logicToRealY(((AInput.MouseInputEvent)event).y))){
-                            this.changeScene = 3;
+                            if (this.seaFinished >= 5) this.changeScene = 3;
                         }
                         else if (this.desertButton.checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
                                 this.engine.getGraphics().logicToRealY(((AInput.MouseInputEvent)event).y))){
-                            this.changeScene = 4;
+                            if (this.cityFinished >= 5) this.changeScene = 4;
                         }
                         else if (this.returnButton.checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
                                 this.engine.getGraphics().logicToRealY(((AInput.MouseInputEvent)event).y))){

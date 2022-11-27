@@ -1,5 +1,7 @@
 package com.example.androidgame;
 
+import android.os.Bundle;
+
 import com.example.aengine.AButton;
 import com.example.aengine.AFont;
 import com.example.aengine.AInput;
@@ -9,7 +11,7 @@ import com.example.aengine.AndroidEngine;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class ForestScene extends AScene {
+public class LevelScene extends AScene {
     private AndroidEngine engine;
     private AFont font;
     private int changeScene;
@@ -19,10 +21,12 @@ public class ForestScene extends AScene {
     private AButton[][] levels;
 
     private int coins;
-    private int rows;
-    private int cols;
+    private int rows, cols;
 
-    public ForestScene(AndroidEngine engine_){
+    private int id;
+    private String textId;
+
+    public LevelScene(AndroidEngine engine_, int id_){
         this.engine = engine_;
         this.font = this.engine.getGraphics().newFont("font.TTF", false);
         this.backToMenu = false;
@@ -33,9 +37,26 @@ public class ForestScene extends AScene {
 
         //En el futuro, se tendrá que leer de fichero para cargar partida guardada
         this.coins = 0;
+        this.id = id_;
+        switch(this.id){
+            case 0:
+                this.textId = "Bosque";
+                break;
+            case 1:
+                this.textId = "Mar";
+                break;
+            case 2:
+                this.textId = "Ciudad";
+                break;
+            default:
+                this.textId = "Desierto";
+                break;
+        }
+
 
         this.createButtons();
     }
+
 
     @Override
     public void update(){
@@ -49,7 +70,7 @@ public class ForestScene extends AScene {
     @Override
     public void render(){
         this.engine.getGraphics().setFont(this.font);
-        this.engine.getGraphics().drawText("Bosque",
+        this.engine.getGraphics().drawText(this.textId,
                 this.engine.getGraphics().getLogicWidth() / 2 - 90,
                 this.engine.getGraphics().getLogicHeight() / 8, 25,
                 this.engine.getGraphics().newColor(0,0,0,255));
@@ -82,7 +103,7 @@ public class ForestScene extends AScene {
                             for (int j = 0; j < this.cols; ++j) {
                                 if (this.levels[i][j].checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
                                         this.engine.getGraphics().logicToRealY(((AInput.MouseInputEvent)event).y))){
-                                    this.changeScene = i * this.cols + j + 1;
+                                    this.changeScene = i * this.cols + j + 1 + (this.id * 20);
                                 }
 
                             }
@@ -94,6 +115,21 @@ public class ForestScene extends AScene {
             }
         }
         this.engine.getInput().clearEventList();
+    }
+
+    @Override
+    protected void setUpScene() {
+
+    }
+
+    @Override
+    public void saveScene(Bundle outState) {
+
+    }
+
+    @Override
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
+
     }
 
     private void createButtons(){
@@ -119,7 +155,7 @@ public class ForestScene extends AScene {
 
                 x = x0 + (xi * j);
 
-                text = Integer.toString(i * this.cols + j + 1);
+                text = Integer.toString(i * this.cols + j + 1 + (this.id * 20));
 
                 this.levels[i][j] = this.engine.getGraphics().newButton(text,
                         x - (w / 2), y - (h / 2), w, h,
