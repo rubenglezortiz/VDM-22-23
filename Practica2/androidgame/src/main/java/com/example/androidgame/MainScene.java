@@ -131,8 +131,6 @@ public class MainScene extends AScene {
         if(outState !=null){
             outState.putSerializable("board", this.board);
             outState.putFloat("timer", this.timer);
-            this.engine = null;
-            this.board = null;
         }
     }
 

@@ -32,7 +32,6 @@ public class SelectCategoryScene extends AScene {
 
     public SelectCategoryScene(AndroidEngine engine_){
         this.engine = engine_;
-        this.backToMenu = false;
         this.changeScene = 0;
 
         //En el futuro, se tendrá que leer de fichero para cargar partida guardada
@@ -42,7 +41,7 @@ public class SelectCategoryScene extends AScene {
         this.cityFinished = 0;
         this.desertFinished = 0;
 
-        createButtons();
+        setUpScene();
     }
 
     private void createButtons(){
@@ -114,6 +113,7 @@ public class SelectCategoryScene extends AScene {
 
     @Override
     protected void setUpScene() {
+        this.backToMenu = false;
         this.font = this.engine.getGraphics().newFont("font.TTF", false);
         createButtons();
     }
@@ -204,7 +204,6 @@ public class SelectCategoryScene extends AScene {
         outState.putInt("city", this.cityFinished);
         outState.putInt("desert", this.desertFinished);
         outState.putInt("changeScene", this.changeScene);
-        outState.putBoolean("menu", this.backToMenu);
     }
 
     @Override
@@ -215,7 +214,6 @@ public class SelectCategoryScene extends AScene {
         this.cityFinished = savedInstanceState.getInt("city");
         this.desertFinished = savedInstanceState.getInt("desert");
         this.changeScene = savedInstanceState.getInt("changeScene");
-        this.backToMenu = savedInstanceState.getBoolean("menu");
         this.engine = engine;
         setUpScene();
     }
