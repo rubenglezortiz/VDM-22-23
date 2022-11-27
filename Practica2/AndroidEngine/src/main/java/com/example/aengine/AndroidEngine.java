@@ -6,6 +6,8 @@ import android.icu.util.Calendar;
 import android.text.format.Time;
 import android.view.SurfaceView;
 
+import java.io.Serializable;
+
 public class AndroidEngine implements Runnable {
     private AGraphics graphics;
     private AAudio audio;

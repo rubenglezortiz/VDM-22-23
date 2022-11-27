@@ -2,24 +2,16 @@ package com.example.aengine;
 
 import android.os.Bundle;
 
-public class AScene  {
-    public void update() {
+public abstract class AScene  {
+    protected abstract void setUpScene();
 
-    }
+    public abstract void update();
 
-    public void render() {
+    public abstract void render();
 
-    }
+    public abstract void handleInputs();
 
-    public void handleInputs() {
+    public abstract void saveScene(Bundle outState);
 
-    }
-
-    public void saveScene(Bundle savedInstanceState){
-
-    }
-
-    public void restoreScene(Bundle savedInstanceState){
-
-    }
+    public abstract void restoreScene(Bundle savedInstanceState, AndroidEngine engine);
 }
