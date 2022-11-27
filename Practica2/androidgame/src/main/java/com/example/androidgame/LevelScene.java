@@ -129,7 +129,7 @@ public class LevelScene extends AScene {
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-
+        this.engine = engine;
     }
 
     private void createButtons(){
