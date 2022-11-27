@@ -1,7 +1,9 @@
 package com.example.aengine;
 
 import android.os.Bundle;
+import android.transition.Scene;
 
+import java.util.Iterator;
 import java.util.Stack;
 
 public class AState  {
@@ -26,14 +28,18 @@ public class AState  {
             this.scenes.peek().handleInputs();
     }
 
-    public void saveScene(Bundle savedInstanceState){
-        if(this.scenes.size()>0)
-            this.scenes.peek().saveScene(savedInstanceState);
+    public void saveScene(Bundle outState){
+        outState.putSerializable("scenes", this.scenes);
+        Iterator<AScene> it = this.scenes.iterator();
+        while(it.hasNext())
+           it.next().saveScene(outState);
     }
 
-    public void restoreScene(Bundle savedInstanceState){
-        if(this.scenes.size()>0)
-            this.scenes.peek().restoreScene(savedInstanceState);
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine){
+        this.scenes = (Stack<AScene>) savedInstanceState.getSerializable("scenes");
+        Iterator<AScene> it = this.scenes.iterator();
+        while(it.hasNext())
+            it.next().restoreScene(savedInstanceState, engine);
     }
 
 

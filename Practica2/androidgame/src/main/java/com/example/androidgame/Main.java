@@ -14,20 +14,17 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         this.myView = new SurfaceView(this);
         setContentView(this.myView);
-
         this.myEngine = new AndroidEngine(this.myView);
-        TitleScene titleScene = new TitleScene (this.myEngine);
-        this.myEngine.getCurrentState().addScene(titleScene);
 
-        //MainScene ms = new MainScene(this.myEngine,5,5);
-        //this.myEngine.getCurrentState().addScene(ms);
         if (savedInstanceState!=null){
-            this.myEngine.getCurrentState().restoreScene(savedInstanceState);
+            this.myEngine.getCurrentState().restoreScene(savedInstanceState, this.myEngine);
         }
-
+        else {
+            TitleScene titleScene = new TitleScene (this.myEngine);
+            this.myEngine.getCurrentState().addScene(titleScene);
+        }
     }
 
     @Override
@@ -43,6 +40,11 @@ public class Main extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         this.myEngine.getCurrentState().saveScene(outState);
@@ -51,7 +53,6 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        int a = savedInstanceState.getInt("ejemplo");
-        System.out.println(a);
+        this.myEngine.getCurrentState().saveScene(savedInstanceState);
     }
 }

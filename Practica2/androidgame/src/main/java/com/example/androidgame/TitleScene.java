@@ -1,5 +1,7 @@
 package com.example.androidgame;
 
+import android.os.Bundle;
+
 import com.example.aengine.AButton;
 import com.example.aengine.AFont;
 import com.example.aengine.AInput;
@@ -21,11 +23,51 @@ public class TitleScene extends AScene {
     public TitleScene(AndroidEngine engine_){
         this.changeScene = 0;
         this.engine = engine_;
-        this.font = this.engine.getGraphics().newFont("font.TTF", false);
-        createMusic();
-        createButtons();
+        setUpScene();
     }
 
+    private void createMusic(){
+        //Background music
+        if(this.backgroundMusic == null) {
+            this.backgroundMusic = this.engine.getAudio().newSound("music.wav");
+            this.engine.getAudio().setLooping(this.backgroundMusic, true);
+            this.engine.getAudio().setVolume(this.backgroundMusic, 0.25f);
+            this.engine.getAudio().playSound(this.backgroundMusic);
+            this.engine.getAudio().setBackgroundMusic(this.backgroundMusic);
+        }
+    }
+
+    private void createButtons(){
+        int x,y1, y2, w,h;
+        x = this.engine.getGraphics().getLogicWidth() / 2;
+        y1 = this.engine.getGraphics().getLogicHeight() * 2 / 4;
+        w = this.engine.getGraphics().getLogicWidth() / 3;
+        h = this.engine.getGraphics().getLogicHeight() / 10;
+
+        this.storyButton = this.engine.getGraphics().newButton("Modo Historia",
+                x - (w / 2), y1 - (h / 2), w, h,
+                10,35, 18,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(255, 255, 255, 255));
+
+        y2 = this.engine.getGraphics().getLogicHeight() * 3 / 4;
+        this.quickGameButton = this.engine.getGraphics().newButton("Partida Rápida",
+                x - (w / 2), y2 - (h / 2), w, h,
+                10,35, 18,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(255, 255, 255, 255));
+    }
+
+    @Override
+    protected void setUpScene() {
+        this.font = this.engine.getGraphics().newFont("font.TTF", false);
+        createButtons();
+        createMusic();
+    }
+
+    @Override
     public void update() {
         if (this.changeScene != 0) {
             if (this.changeScene == 1)
@@ -37,6 +79,7 @@ public class TitleScene extends AScene {
         }
     }
 
+    @Override
     public void render() {
         this.engine.getGraphics().drawText(this.font, "NONOGRAMS", this.engine.getGraphics().getLogicWidth()/2.0f - ((10*30)/2.0f),
                 100, 27, this.engine.getGraphics().newColor(0,0,0,255));
@@ -45,6 +88,7 @@ public class TitleScene extends AScene {
         this.engine.getGraphics().drawButton(this.quickGameButton);
     }
 
+    @Override
     public synchronized void handleInputs() {
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) this.engine.getInput().getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
@@ -71,36 +115,16 @@ public class TitleScene extends AScene {
         this.engine.getInput().clearEventList();
     }
 
-    private void createMusic(){
-        //Background music
-        this.backgroundMusic = this.engine.getAudio().newSound("music.wav");
-        this.engine.getAudio().setLooping(this.backgroundMusic, true);
-        this.engine.getAudio().setVolume(this.backgroundMusic, 0.25f);
-        this.engine.getAudio().playSound(this.backgroundMusic);
-        this.engine.getAudio().setBackgroundMusic(this.backgroundMusic);
+    @Override
+    public void saveScene(Bundle outState) {
+        outState.putInt("changeScene", this.changeScene);
     }
 
-    private void createButtons(){
-        int x,y1, y2, w,h;
-        x = this.engine.getGraphics().getLogicWidth() / 2;
-        y1 = this.engine.getGraphics().getLogicHeight() * 2 / 4;
-        w = this.engine.getGraphics().getLogicWidth() / 3;
-        h = this.engine.getGraphics().getLogicHeight() / 10;
-
-        this.storyButton = this.engine.getGraphics().newButton("Modo Historia",
-                x - (w / 2), y1 - (h / 2), w, h,
-                10,35, 18,
-                this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
-
-        y2 = this.engine.getGraphics().getLogicHeight() * 3 / 4;
-        this.quickGameButton = this.engine.getGraphics().newButton("Partida Rápida",
-                x - (w / 2), y2 - (h / 2), w, h,
-                10,35, 18,
-                this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
+    @Override
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
+        this.changeScene = savedInstanceState.getInt("changeScene");
+        this.engine = engine;
+        setUpScene();
     }
 }
 

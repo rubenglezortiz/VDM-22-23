@@ -1,5 +1,7 @@
 package com.example.androidgame;
 
+import android.os.Bundle;
+
 import com.example.aengine.AButton;
 import com.example.aengine.AFont;
 import com.example.aengine.AInput;
@@ -30,7 +32,6 @@ public class SelectCategoryScene extends AScene {
 
     public SelectCategoryScene(AndroidEngine engine_){
         this.engine = engine_;
-        this.font = this.engine.getGraphics().newFont("font.TTF", false);
         this.backToMenu = false;
         this.changeScene = 0;
 
@@ -41,6 +42,79 @@ public class SelectCategoryScene extends AScene {
         this.cityFinished = 0;
         this.desertFinished = 0;
 
+        this.createButtons();
+    }
+
+    private void createButtons(){
+        int x1, x2, y1, y2, w, h, tx, ty, tSize;
+        x1 = this.engine.getGraphics().getLogicWidth() / 13;
+        x2 = this.engine.getGraphics().getLogicWidth() * 7 / 13;
+        y1 = this.engine.getGraphics().getLogicHeight() / 4;
+        y2 = this.engine.getGraphics().getLogicHeight() * 9 / 16;
+        w = this.engine.getGraphics().getLogicWidth() * 5 / 13;
+        h = this.engine.getGraphics().getLogicHeight() / 4;
+        tx = 12;
+        ty = 12;
+        tSize = 12;
+
+        String locked = "BLOQUEADO";
+        String sea = "MAR";
+        String city = "CIUDAD";
+        String desert = "DESIERTO";
+
+        if (forestFinished < 5) sea = locked;
+        if (seaFinished < 5) city = locked;
+        if (cityFinished < 5) desert = locked;
+
+        this.forestButton = this.engine.getGraphics().newButton("BOSQUE",
+                x1 - (w / 2), y1 - (h / 2), w, h,
+                tx,ty, tSize,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(250, 215, 160, 255));
+
+
+
+        this.seaButton = this.engine.getGraphics().newButton(sea,
+                x2 - (w / 2), y1 - (h / 2), w, h,
+                tx,ty, tSize,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(250, 215, 160, 255));
+
+        this.cityButton = this.engine.getGraphics().newButton(city,
+                x1 - (w / 2), y2 - (h / 2), w, h,
+                tx,ty, tSize,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(250, 215, 160, 255));
+
+        this.desertButton = this.engine.getGraphics().newButton(desert,
+                x2 - (w / 2), y2 - (h / 2), w, h,
+                tx,ty, tSize,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(250, 215, 160, 255));
+
+
+        int x, y;
+        x =  this.engine.getGraphics().getLogicWidth() / 13;
+        y =  this.engine.getGraphics().getLogicHeight() / 16;
+        w = this.engine.getGraphics().getLogicWidth() / 4;
+        h = this.engine.getGraphics().getLogicHeight() / 16;
+
+        this.returnButton = this.engine.getGraphics().newButton("Volver",
+                x - (w / 2), y - (h / 2), w, h,
+                tx,ty, tSize,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(255, 255, 255, 255));
+
+    }
+
+    @Override
+    protected void setUpScene() {
+        this.font = this.engine.getGraphics().newFont("font.TTF", false);
         this.createButtons();
     }
 
@@ -122,70 +196,27 @@ public class SelectCategoryScene extends AScene {
         this.engine.getInput().clearEventList();
     }
 
-    private void createButtons(){
-        int x1, x2, y1, y2, w, h, tx, ty, tSize;
-        x1 = this.engine.getGraphics().getLogicWidth() / 4;
-        x2 = this.engine.getGraphics().getLogicWidth() * 3 / 4;
-        y1 = this.engine.getGraphics().getLogicHeight() * 3 / 8;
-        y2 = this.engine.getGraphics().getLogicHeight() * 11 / 16;
-        w = this.engine.getGraphics().getLogicWidth() * 5 / 13;
-        h = this.engine.getGraphics().getLogicHeight() / 4;
-        tx = 12;
-        ty = 12;
-        tSize = 12;
+    @Override
+    public void saveScene(Bundle outState) {
+        outState.putInt("coins", this.coins);
+        outState.putInt("forest", this.forestFinished);
+        outState.putInt("sea", this.seaFinished);
+        outState.putInt("city", this.cityFinished);
+        outState.putInt("desert", this.desertFinished);
+        outState.putInt("changeScene", this.changeScene);
+        outState.putBoolean("menu", this.backToMenu);
+    }
 
-        String locked = "BLOQUEADO";
-        String sea = "MAR";
-        String city = "CIUDAD";
-        String desert = "DESIERTO";
-
-        if (forestFinished < 5) sea = locked;
-        if (seaFinished < 5) city = locked;
-        if (cityFinished < 5) desert = locked;
-
-        this.forestButton = this.engine.getGraphics().newButton("BOSQUE",
-                x1 - (w / 2), y1 - (h / 2), w, h,
-                tx,ty, tSize,
-                this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(250, 215, 160, 255));
-
-
-
-        this.seaButton = this.engine.getGraphics().newButton(sea,
-                x2 - (w / 2), y1 - (h / 2), w, h,
-                tx,ty, tSize,
-                this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(250, 215, 160, 255));
-
-        this.cityButton = this.engine.getGraphics().newButton(city,
-                x1 - (w / 2), y2 - (h / 2), w, h,
-                tx,ty, tSize,
-                this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(250, 215, 160, 255));
-
-        this.desertButton = this.engine.getGraphics().newButton(desert,
-                x2 - (w / 2), y2 - (h / 2), w, h,
-                tx,ty, tSize,
-                this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(250, 215, 160, 255));
-
-
-        int x, y;
-        x =  this.engine.getGraphics().getLogicWidth() / 7;
-        y =  this.engine.getGraphics().getLogicHeight() / 16;
-        w = this.engine.getGraphics().getLogicWidth() / 4;
-        h = this.engine.getGraphics().getLogicHeight() / 16;
-
-        this.returnButton = this.engine.getGraphics().newButton("Volver",
-                x - (w / 2), y - (h / 2), w, h,
-                tx,ty, tSize,
-                this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
-
+    @Override
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
+        this.coins = savedInstanceState.getInt("coins");
+        this.forestFinished = savedInstanceState.getInt("forest");
+        this.seaFinished = savedInstanceState.getInt("sea");
+        this.cityFinished = savedInstanceState.getInt("city");
+        this.desertFinished = savedInstanceState.getInt("desert");
+        this.changeScene = savedInstanceState.getInt("changeScene");
+        this.backToMenu = savedInstanceState.getBoolean("menu");
+        this.engine = engine;
+        setUpScene();
     }
 }

@@ -9,7 +9,6 @@ import com.example.aengine.AScene;
 import com.example.aengine.ASound;
 import com.example.aengine.AndroidEngine;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -24,16 +23,22 @@ public class MainScene extends AScene {
     private ASound winSound;
     private ASound failSound;
 
-    public MainScene(AndroidEngine engine_, int numRows, int numCols){
+    public MainScene(AndroidEngine engine_){ //ESTE CONSTRUCTOR NO SE USA :(
         this.engine = engine_;
         this.font = this.engine.getGraphics().newFont("font.TTF", false);
-        this.board = new Board(numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
+        this.board = null;
         this.backToMenu = false;
         this.timer = 0.0f;
         createButtons();
         createSounds();
     }
 
+    public MainScene(AndroidEngine engine_, int numRows, int numCols){
+        this.engine = engine_;
+        this.board = new Board(numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
+        this.timer = 0.0f;
+        setUpScene();
+    }
     private void createButtons(){
         int x,y,w,h;
         x = this.engine.getGraphics().getLogicWidth() / 3;
@@ -58,12 +63,20 @@ public class MainScene extends AScene {
                 this.engine.getGraphics().newColor(255, 255, 255, 255));
     }
 
-    private void createSounds(){
+    private void createSounds() {
         this.winSound = this.engine.getAudio().newSound("win.wav");
         this.engine.getAudio().setVolume(this.winSound, 0.75f);
 
         this.failSound = this.engine.getAudio().newSound("fail.wav");
         this.engine.getAudio().setVolume(this.failSound, 0.5f);
+    }
+
+    @Override
+    protected void setUpScene(){
+        this.font = this.engine.getGraphics().newFont("font.TTF", false);
+        this.backToMenu = false;
+        createButtons();
+        createSounds();
     }
 
     @Override
@@ -114,17 +127,22 @@ public class MainScene extends AScene {
     }
 
     @Override
-    public void saveScene(Bundle savedInstanceState){
-        if(savedInstanceState!=null){
-            savedInstanceState.putSerializable("board", this.board);
+    public void saveScene(Bundle outState){
+        if(outState !=null){
+            outState.putSerializable("board", this.board);
+            outState.putFloat("timer", this.timer);
+            this.engine = null;
+            this.board = null;
         }
     }
 
     @Override
-    public void restoreScene(Bundle savedInstanceState){
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine){
         if(savedInstanceState!=null){
-           Serializable b = savedInstanceState.getSerializable("board");
-           this.board = (Board) b;
+            this.board = (Board) savedInstanceState.getSerializable("board");
+            this.timer = savedInstanceState.getFloat("timer");
+            this.engine = engine;
+            setUpScene();
         }
     }
 }
