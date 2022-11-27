@@ -41,7 +41,7 @@ public class SelectCategoryScene extends AScene {
         this.cityFinished = 0;
         this.desertFinished = 0;
 
-        createButtons();
+        this.createButtons();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SelectCategoryScene extends AScene {
         if (this.changeScene != 0){
             switch(this.changeScene){
                 case 1:
-                    //new ForestScene
+                    this.engine.getCurrentState().addScene(new ForestScene(this.engine));
                     break;
                 case 2:
                     //new SeaScene
@@ -124,10 +124,10 @@ public class SelectCategoryScene extends AScene {
 
     private void createButtons(){
         int x1, x2, y1, y2, w, h, tx, ty, tSize;
-        x1 = this.engine.getGraphics().getLogicWidth() / 13;
-        x2 = this.engine.getGraphics().getLogicWidth() * 7 / 13;
-        y1 = this.engine.getGraphics().getLogicHeight() / 4;
-        y2 = this.engine.getGraphics().getLogicHeight() * 9 / 16;
+        x1 = this.engine.getGraphics().getLogicWidth() / 4;
+        x2 = this.engine.getGraphics().getLogicWidth() * 3 / 4;
+        y1 = this.engine.getGraphics().getLogicHeight() * 3 / 8;
+        y2 = this.engine.getGraphics().getLogicHeight() * 11 / 16;
         w = this.engine.getGraphics().getLogicWidth() * 5 / 13;
         h = this.engine.getGraphics().getLogicHeight() / 4;
         tx = 12;
@@ -175,7 +175,7 @@ public class SelectCategoryScene extends AScene {
 
 
         int x, y;
-        x =  this.engine.getGraphics().getLogicWidth() / 13;
+        x =  this.engine.getGraphics().getLogicWidth() / 7;
         y =  this.engine.getGraphics().getLogicHeight() / 16;
         w = this.engine.getGraphics().getLogicWidth() / 4;
         h = this.engine.getGraphics().getLogicHeight() / 16;
