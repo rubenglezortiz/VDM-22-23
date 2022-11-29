@@ -12,7 +12,7 @@ import com.example.aengine.AndroidEngine;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class MainScene extends AScene {
+public class RandomBoardScene extends AScene {
     private AndroidEngine engine;
     private Board board;
     private AButton checkButton, backToMenuButton;
@@ -23,7 +23,7 @@ public class MainScene extends AScene {
     private ASound winSound;
     private ASound failSound;
 
-    public MainScene(AndroidEngine engine_){ //ESTE CONSTRUCTOR NO SE USA :(
+    public RandomBoardScene(AndroidEngine engine_){ //ESTE CONSTRUCTOR NO SE USA :(
         this.engine = engine_;
         this.font = this.engine.getGraphics().newFont("font.TTF", false);
         this.board = null;
@@ -33,7 +33,7 @@ public class MainScene extends AScene {
         createSounds();
     }
 
-    public MainScene(AndroidEngine engine_, int numRows, int numCols){
+    public RandomBoardScene(AndroidEngine engine_, int numRows, int numCols){
         this.engine = engine_;
         this.board = new Board(numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
         this.timer = 0.0f;
@@ -97,6 +97,9 @@ public class MainScene extends AScene {
         this.board.render();
         this.engine.getGraphics().drawButton(this.backToMenuButton);
         this.engine.getGraphics().drawButton(this.checkButton);
+        String livesText = "Remaining Lives: " + this.board.getLives();
+        this.engine.getGraphics().drawText(this.font,  livesText,this.engine.getGraphics().getLogicWidth()/5,
+                this.engine.getGraphics().getLogicHeight()/20,15, this.engine.getGraphics().newColor(200,0,200,255));
     }
 
     @Override
@@ -117,7 +120,10 @@ public class MainScene extends AScene {
                     else if (this.checkButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
                             this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y)))
                         if(this.board.checkWin()) this.engine.getAudio().playSound(this.winSound);
-                        else this.engine.getAudio().playSound(this.failSound);
+                        else {
+                            this.engine.getAudio().playSound(this.failSound);
+                            if(this.board.getLives()==0) this.backToMenu = true;
+                        }
                     break;
                 default:
                     break;
