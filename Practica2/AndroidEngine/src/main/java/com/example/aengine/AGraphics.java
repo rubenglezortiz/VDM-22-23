@@ -78,17 +78,17 @@ public class AGraphics  {
         this.canvas.translate(x, y);
     }
 
-    public int realToLogicX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ; }
+    public int logicToRealX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ; }
 
-    public int realToLogicY(int y) { return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
+    public int logicToRealY(int y) { return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
 
-    public int realToLogicScale(int s) {  return (int) ((float)s * getScaleFactor()); }
+    public int logicToRealScale(int s) {  return (int) ((float)s * getScaleFactor()); }
 
-    public int logicToRealX(int x) { return (int) ((float)(x - this.offsetX) / getScaleFactor());}
+    public int realToLogicX(int x) { return (int) ((float)(x - this.offsetX) / getScaleFactor());}
 
-    public int logicToRealY(int y){ return (int) ((float)(y - this.offsetY) / getScaleFactor());}
+    public int realToLogicY(int y){ return (int) ((float)(y - this.offsetY) / getScaleFactor());}
 
-    public int logicToRealScale(int s){ return (int) ((float) s/ getScaleFactor()); }
+    public int realToLogicScale(int s){ return (int) ((float) s / getScaleFactor()); }
 
     public void setColor(AColor color){
         this.paint.setColor(((AColor)color).getARGBColor());
@@ -125,8 +125,8 @@ public class AGraphics  {
 
     public void drawLine(float x, float y, float x_stop, float y_stop, AColor color) {
         setColor(color);
-        this.canvas.drawLine(realToLogicX((int)x), realToLogicY((int)y),
-                realToLogicX((int)x_stop), realToLogicY((int)y_stop), this.paint);
+        this.canvas.drawLine(logicToRealX((int)x), logicToRealY((int)y),
+                logicToRealX((int)x_stop), logicToRealY((int)y_stop), this.paint);
     }
 
     public void drawRectangle(float x_, float y_, float w_, float h_, AColor color) {
@@ -143,34 +143,34 @@ public class AGraphics  {
 
     public void fillRectangle(float x_, float y_, float w_, float h_,AColor color){
         setColor(color);
-        int x = realToLogicX((int)x_);
-        int y = realToLogicY((int)y_);
-        int w = realToLogicScale((int)w_);
-        int h = realToLogicScale((int)h_);
+        int x = logicToRealX((int)x_);
+        int y = logicToRealY((int)y_);
+        int w = logicToRealScale((int)w_);
+        int h = logicToRealScale((int)h_);
         this.canvas.drawRect(x,y,x+w, y+h, this.paint);
     }
 
     public void drawImage(AImage image, int x, int y, int w, int h) {
         //INTENTAR METER VALORES POR DEFECTO
-        ((AImage)image).setWidth(realToLogicScale(w));
-        ((AImage)image).setHeight(realToLogicScale(h));
-        this.canvas.drawBitmap(((AImage)image).getBitmap(),realToLogicX(x), realToLogicY(y), this.paint);
+        ((AImage)image).setWidth(logicToRealScale(w));
+        ((AImage)image).setHeight(logicToRealScale(h));
+        this.canvas.drawBitmap(((AImage)image).getBitmap(),logicToRealX(x), logicToRealY(y), this.paint);
     }
 
 
     public void drawText(String text, float x, float y, float textSize, AColor color) {
         float prevTextSize = this.paint.getTextSize();
-        this.paint.setTextSize(textSize * getScaleFactor());
+        this.paint.setTextSize(logicToRealScale((int) textSize));
         this.paint.setColor(((AColor)color).getARGBColor());
-        this.canvas.drawText(text,realToLogicX((int)x),realToLogicY((int)y), this.paint);
+        this.canvas.drawText(text,logicToRealX((int)x),logicToRealY((int)y), this.paint);
         this.paint.setTextSize(prevTextSize);
     }
 
     public void drawText(AFont font, String text, float x, float y, float textSize, AColor color) {
         setColor(color);
         this.paint.setTypeface(((AFont)font).getTypeface());
-        this.paint.setTextSize(textSize * getScaleFactor());
-        this.canvas.drawText(text,realToLogicX((int)x),realToLogicY((int)y), this.paint);
+        this.paint.setTextSize(logicToRealScale((int) textSize));
+        this.canvas.drawText(text,logicToRealX((int)x),logicToRealY((int)y), this.paint);
         this.paint.setTypeface(this.defaultFont);
     }
 

@@ -93,16 +93,16 @@ public class LevelScene extends AScene {
             switch (event.type) {
 
                 case TOUCH_RELEASED:
-                    if (this.returnButton.checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
-                            this.engine.getGraphics().logicToRealY(((AInput.MouseInputEvent)event).y)))
+                    if (this.returnButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
+                            this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y)))
                     {
                         this.backToMenu = true;
                     }
                     else{
                         for (int i = 0; i < this.rows; ++i){
                             for (int j = 0; j < this.cols; ++j) {
-                                if (this.levels[i][j].checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
-                                        this.engine.getGraphics().logicToRealY(((AInput.MouseInputEvent)event).y))){
+                                if (this.levels[i][j].checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
+                                        this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y))){
                                     this.changeScene = i * this.cols + j + 1 + (this.id * 20);
                                 }
 

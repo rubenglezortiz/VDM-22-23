@@ -111,11 +111,11 @@ public class MainScene extends AScene {
                     break;
                 case TOUCH_RELEASED:
                     board.handleInputs(event);
-                    if (this.backToMenuButton.checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
-                            this.engine.getGraphics().logicToRealY(((AInput.MouseInputEvent)event).y)))
+                    if (this.backToMenuButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
+                            this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y)))
                         this.backToMenu = true;
-                    else if (this.checkButton.checkCollision(this.engine.getGraphics().logicToRealX(((AInput.MouseInputEvent)event).x),
-                            this.engine.getGraphics().logicToRealY(((AInput.MouseInputEvent)event).y)))
+                    else if (this.checkButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
+                            this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y)))
                         if(this.board.checkWin()) this.engine.getAudio().playSound(this.winSound);
                         else this.engine.getAudio().playSound(this.failSound);
                     break;

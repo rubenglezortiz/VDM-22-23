@@ -80,19 +80,10 @@ public class Cell extends GameObject {
     }
 
     public boolean checkCollisions(int x, int y) {
-        int x1Aux = this.graphics.realToLogicX(this.x);
-        int x2Aux = this.graphics.realToLogicX(this.x+ this.w);
-        int y1Aux = this.graphics.realToLogicX(this.y);
-        int y2Aux = this.graphics.realToLogicX(this.y+ this.h);
-        boolean auxBoolean = (x >= this.graphics.realToLogicX(this.x) &&
-                x <= this.graphics.realToLogicX(this.x + this.w) &&
-                y >= this.graphics.realToLogicY(this.y)  &&
-                y <= this.graphics.realToLogicY(this.y + this.h));
-
-        return (x >= this.graphics.realToLogicX(this.x) &&
-                x <= this.graphics.realToLogicX(this.x + this.w) &&
-                y >= this.graphics.realToLogicY(this.y)  &&
-                y <= this.graphics.realToLogicY(this.y + this.h));
+        return (x >= this.graphics.logicToRealX(this.x) &&
+                x <= this.graphics.logicToRealX(this.x + this.w) &&
+                y >= this.graphics.logicToRealY(this.y)  &&
+                y <= this.graphics.logicToRealY(this.y + this.h));
     }
 
     public boolean isIncorrect(){
