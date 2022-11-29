@@ -78,7 +78,6 @@ public class Board implements Serializable {
             this.rowsList[i] = new ArrayList<Integer>();
         }
 
-
         boolean thisCell = false;
         int sum = 0; //Sumador de casillas consecutivas anteriores a esta
 
@@ -130,12 +129,13 @@ public class Board implements Serializable {
         createSounds();
     }
 
-    public void render(AGraphics graphics) {
-        int width = graphics.getLogicWidth();
-        int height = graphics.getLogicHeight();
+    public void render() {
+        int cellSize = Math.min(this.graphics.getLogicWidth() - this.margin*3, this.graphics.getLogicHeight() - margin*3);
+        int width = this.graphics.getLogicWidth();
+        int height = this.graphics.getLogicHeight();
         // Ancho y alto de cada casilla
-        int casillaW = this.board[0][0].w;
-        int casillaH = this.board[0][0].h;
+        int casillaW = cellSize/numCols;
+        int casillaH = cellSize/this.numRows;
         // Distancia de separación entre casillas
         int separacion = casillaW/10;
         // Ancho y alto del tablero
@@ -148,7 +148,7 @@ public class Board implements Serializable {
         for (int i = 0; i < this.numRows; i++) {
             for (int j = 0; j < this.numCols; j++) {
                 if (!this.win || this.board[i][j].isSolution())
-                    this.board[i][j].render(graphics,xInicial+i*(casillaW+separacion),yInicial+j*(casillaH+separacion));
+                    this.board[i][j].render(xInicial+i*(casillaW+separacion),yInicial+j*(casillaH+separacion), this.graphics);
             }
         }
 
@@ -292,5 +292,24 @@ public class Board implements Serializable {
 
     private void createSounds(){
         this.cellSound = this.audio.newSound("cell.wav");
+    }
+
+    public void resetBoardCellsPositions(){
+        int cellSize = Math.min(this.graphics.getLogicWidth() - this.margin*3, this.graphics.getLogicHeight() - margin*3);
+        for(int i=0; i < this.numRows; i++){
+            for (int j = 0; j < this.numCols; j++){
+                this.board[i][j] = new Cell(i,j, cellSize/this.numCols,
+                        cellSize/this.numRows, this.board[i][j].isSolution(), this.graphics);
+            }
+        }
+    }
+
+    public void updateGraphics(AGraphics graphics_) {
+        this.graphics = graphics_;
+        for(int i=0; i < this.numRows; i++){
+            for (int j = 0; j < this.numCols; j++){
+                this.board[i][j].updateGraphics(graphics_);
+            }
+        }
     }
 }

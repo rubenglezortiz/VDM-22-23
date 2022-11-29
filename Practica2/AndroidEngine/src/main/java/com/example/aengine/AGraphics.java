@@ -38,17 +38,16 @@ public class AGraphics  {
         this.assetManager = this.myView.getContext().getAssets();
         this.logicWidth = 400;
         this.logicHeight = 600;
-
-        DisplayMetrics metrics = this.myView.getContext().getResources().getDisplayMetrics();
-        this.screenHeight = metrics.heightPixels;
-        this.screenWidth = metrics.widthPixels;
-        setResolution((float)this.screenWidth, (float)this.screenHeight);
         this.defaultFont = this.paint.getTypeface();
     }
 
     // Android functions
     public void prepareFrame() {
         this.canvas = this.holder.lockCanvas();
+        DisplayMetrics metrics = this.myView.getContext().getResources().getDisplayMetrics();
+        this.screenHeight = metrics.heightPixels;
+        this.screenWidth = metrics.widthPixels;
+        setResolution((float)this.screenWidth, (float)this.screenHeight);
         this.clear(newColor(220,220,220,255));
     }
 
@@ -58,9 +57,9 @@ public class AGraphics  {
 
     public boolean changeBuffer() { return (this.holder.getSurface().isValid()); }
 
-    public void setResolution(float newX, float newY){
-        this.scaleFactorX = (float)this.screenWidth / (float) this.logicWidth;
-        this.scaleFactorY = (float)this.screenHeight / (float) this.logicHeight;
+    public void setResolution(float newWidth, float newHeight){
+        this.scaleFactorX = newWidth / (float) this.logicWidth;
+        this.scaleFactorY = newHeight / (float) this.logicHeight;
         this.scaleFactor = Math.min(this.scaleFactorX, this.scaleFactorY);
 
         this.scaleInX = getWidth() * 3 > getHeight() * 2;

@@ -8,11 +8,10 @@ public class Cell extends GameObject {
     private boolean solution;
     private int row, col;
     private State state;
-    private AGraphics graphics;
+
 
     public Cell(int row_, int col_, int w, int h, boolean sol, AGraphics graphics_){
-        super(w, h);
-        this.graphics = graphics_;
+        super(w, h, graphics_);
         this.state = State.UNMARKED;
         this.row = row_;
         this.col = col_;
@@ -50,7 +49,8 @@ public class Cell extends GameObject {
         return 0;
     }
 
-    public void render(AGraphics graphics, int xGraphic_, int yGraphic_){
+    public void render(int xGraphic_, int yGraphic_, AGraphics graphics_){
+        this.graphics = graphics_;
         AColor icolor;
         switch (state){
             case UNMARKED:
@@ -71,7 +71,7 @@ public class Cell extends GameObject {
         }
         //if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
         this.x = xGraphic_;
-        this.y = yGraphic_; //System.out.println(this.y);
+        this.y = yGraphic_;
         if (this.state == State.REMOVED) {
             graphics.drawRectangle(this.x, this.y, this.w, this.h, icolor);
             graphics.drawLine( this.x, this.y,this.x+w, this.y +this.h, icolor);
@@ -80,6 +80,15 @@ public class Cell extends GameObject {
     }
 
     public boolean checkCollisions(int x, int y) {
+        int x1Aux = this.graphics.realToLogicX(this.x);
+        int x2Aux = this.graphics.realToLogicX(this.x+ this.w);
+        int y1Aux = this.graphics.realToLogicX(this.y);
+        int y2Aux = this.graphics.realToLogicX(this.y+ this.h);
+        boolean auxBoolean = (x >= this.graphics.realToLogicX(this.x) &&
+                x <= this.graphics.realToLogicX(this.x + this.w) &&
+                y >= this.graphics.realToLogicY(this.y)  &&
+                y <= this.graphics.realToLogicY(this.y + this.h));
+
         return (x >= this.graphics.realToLogicX(this.x) &&
                 x <= this.graphics.realToLogicX(this.x + this.w) &&
                 y >= this.graphics.realToLogicY(this.y)  &&

@@ -94,7 +94,7 @@ public class MainScene extends AScene {
 
     @Override
     public void render() {
-        this.board.render(this.engine.getGraphics());
+        this.board.render();
         this.engine.getGraphics().drawButton(this.backToMenuButton);
         this.engine.getGraphics().drawButton(this.checkButton);
     }
@@ -137,9 +137,10 @@ public class MainScene extends AScene {
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine){
         if(savedInstanceState!=null){
-            this.board = (Board) savedInstanceState.getSerializable("board");
-            this.timer = savedInstanceState.getFloat("timer");
             this.engine = engine;
+            this.board = (Board) savedInstanceState.getSerializable("board");
+            this.board.updateGraphics(this.engine.getGraphics());
+            this.timer = savedInstanceState.getFloat("timer");
             setUpScene();
         }
     }
