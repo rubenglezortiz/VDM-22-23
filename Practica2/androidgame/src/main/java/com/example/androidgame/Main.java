@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.SurfaceView;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.example.aengine.AndroidEngine;
 
@@ -14,6 +16,7 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         this.myView = new SurfaceView(this);
         setContentView(this.myView);
         this.myEngine = new AndroidEngine(this.myView);

@@ -46,7 +46,7 @@ public class TitleScene extends AScene {
 
         this.storyButton = this.engine.getGraphics().newButton("Modo Historia",
                 x - (w / 2), y1 - (h / 2), w, h,
-                10,35, 18,
+                8,35, 8,
                 this.font,
                 this.engine.getGraphics().newColor(0, 0, 0, 255),
                 this.engine.getGraphics().newColor(255, 255, 255, 255));
@@ -54,7 +54,7 @@ public class TitleScene extends AScene {
         y2 = this.engine.getGraphics().getLogicHeight() * 3 / 4;
         this.quickGameButton = this.engine.getGraphics().newButton("Partida Rápida",
                 x - (w / 2), y2 - (h / 2), w, h,
-                10,35, 18,
+                5,35, 8,
                 this.font,
                 this.engine.getGraphics().newColor(0, 0, 0, 255),
                 this.engine.getGraphics().newColor(255, 255, 255, 255));

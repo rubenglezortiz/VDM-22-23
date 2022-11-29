@@ -41,21 +41,21 @@ public class BoardSelectionScene extends AScene {
 
         this.button3x3 = this.engine.getGraphics().newButton("3x3",
                 x3x - (w / 2), y - (h / 2), w, h,
-                12,ty, tSize,
+                18,ty, tSize,
                 this.font,
                 this.engine.getGraphics().newColor(0, 0, 0, 255),
                 this.engine.getGraphics().newColor(255, 255, 255, 255));
 
         this.button5x5 = this.engine.getGraphics().newButton("5x5",
                 x5x - (w / 2), y - (h / 2), w, h,
-                12,ty, tSize,
+                18,ty, tSize,
                 this.font,
                 this.engine.getGraphics().newColor(0, 0, 0, 255),
                 this.engine.getGraphics().newColor(255, 255, 255, 255));
 
         this.button10x10 = this.engine.getGraphics().newButton("10x10",
                 x10x - (w / 2), y - (h / 2), w, h,
-                5,ty, tSize,
+                7,ty, tSize,
                 this.font,
                 this.engine.getGraphics().newColor(0, 0, 0, 255),
                 this.engine.getGraphics().newColor(255, 255, 255, 255));
@@ -82,9 +82,6 @@ public class BoardSelectionScene extends AScene {
         this.engine.getGraphics().setFont(this.font);
         this.engine.getGraphics().drawText("LEVEL",this.engine.getGraphics().getLogicWidth()/2.0f - ((5*50)/2.0f),
                 100, 45, this.engine.getGraphics().newColor(0,0,0,255));
-        //this.engine.getGraphics().drawText("1 = tablero 3x3\n 2 = tablero 5x5 \n 3 = tablero 10x10",
-        //        this.engine.getGraphics().getLogicWidth()/2.0f-((15*10*3)/2.0f),  200, 10,
-        //        this.engine.getGraphics().newColor(255,0,255,255));
         this.engine.getGraphics().drawButton(this.button3x3);
         this.engine.getGraphics().drawButton(this.button5x5);
         this.engine.getGraphics().drawButton(this.button10x10);

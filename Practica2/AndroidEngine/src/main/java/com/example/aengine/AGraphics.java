@@ -62,7 +62,7 @@ public class AGraphics  {
         this.scaleFactorY = newHeight / (float) this.logicHeight;
         this.scaleFactor = Math.min(this.scaleFactorX, this.scaleFactorY);
 
-        this.scaleInX = getWidth() * 3 > getHeight() * 2;
+        this.scaleInX = screenWidth * 3 > screenHeight * 2;
 
         if (this.scaleInX){
             this.offsetX = (int)(((float)getWidth() / 2.0f) - (((float) this.logicWidth / 2.0f) * this.scaleFactor));

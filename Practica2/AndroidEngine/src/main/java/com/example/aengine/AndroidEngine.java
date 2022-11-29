@@ -53,9 +53,7 @@ public class AndroidEngine implements Runnable {
             // Programación defensiva
             throw new RuntimeException("run() should not be called directly");
         }
-        while(this.running && this.myView.getWidth() == 0){
-            System.out.println(this.running);
-        };
+        while(this.running && this.myView.getWidth() == 0);
 
         while(this.running) {
             //Update
