@@ -71,9 +71,9 @@ public class BoardSelectionScene extends AScene {
     public void update() {
         if(this.changeScene){
             this.changeScene = false;
-            if(this.boardSize == 1) this.engine.getCurrentState().addScene(new MainScene(this.engine,3,3));
-            else if (this.boardSize == 2) this.engine.getCurrentState().addScene(new MainScene(this.engine,5,5));
-            else if (this.boardSize == 3) this.engine.getCurrentState().addScene(new MainScene(this.engine,10,10));
+            if(this.boardSize == 1) this.engine.getCurrentState().addScene(new MainScene(this.engine,3,3,0));
+            else if (this.boardSize == 2) this.engine.getCurrentState().addScene(new MainScene(this.engine,5,5,0));
+            else if (this.boardSize == 3) this.engine.getCurrentState().addScene(new MainScene(this.engine,10,10,0));
         }
     }
 

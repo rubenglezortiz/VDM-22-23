@@ -26,44 +26,54 @@ public class Board implements Serializable {
     private int textMessagesSize;
     private ASound cellSound;
 
-    public Board(int nC, int nR, AGraphics graphics_, AAudio audio_){
-        this.numCols = nC;
-        this.numRows = nR;
-        this.board = new Cell[numRows][numCols];
+    public Board(int id,int nC, int nR, AGraphics graphics_, AAudio audio_){
         this.graphics = graphics_;
         this.audio = audio_;
-        this.textMessagesSize = this.graphics.getLogicWidth()/20;
-        int numCells = nC * nR;
-        int cellSize = Math.min(this.graphics.getLogicWidth() - this.margin*3, this.graphics.getLogicHeight() - margin*3);
+        this.textMessagesSize = this.graphics.getLogicWidth() / 20;
+        int cellSize = Math.min(this.graphics.getLogicWidth() - this.margin * 3, this.graphics.getLogicHeight() - margin * 3);
+        if (id == 0) {
+            this.numCols = nC;
+            this.numRows = nR;
+            this.board = new Cell[numRows][numCols];
+            int numCells = nC * nR;
+            int cont = 0;
+            for (int i = 0; i < this.numRows; i++) {
+                for (int j = 0; j < this.numCols; j++) {
+                    boolean isSol = false;
 
-        int cont = 0;
-        for(int i=0; i < this.numRows; i++){
-            for (int j = 0; j < this.numCols; j++){
-                boolean isSol = false;
-
-                if (cont < numCells * 0.75){
-                    int rnd = (int) (Math.random() * numCells);
-                    isSol = rnd < numCells * 0.65; //En teoría se añaden el 65% de las casillas
-                    if (isSol) cont++;
+                    if (cont < numCells * 0.75) {
+                        int rnd = (int) (Math.random() * numCells);
+                        isSol = rnd < numCells * 0.65; //En teoría se añaden el 65% de las casillas
+                        if (isSol) cont++;
+                    }
+                    this.board[i][j] = new Cell(i, j, cellSize / this.numCols,
+                            cellSize / this.numRows, isSol, this.graphics);
                 }
-                this.board[i][j] = new Cell(i,j, cellSize/this.numCols,
-                        cellSize/this.numRows, isSol, this.graphics);
+            }
+
+            while (cont < numCells * 0.3) {
+                int numRandX = (int) (Math.random() * this.numCols);
+                int numRandY = (int) (Math.random() * this.numRows);
+
+                if (!this.board[numRandY][numRandX].isSolution()) {
+                    this.board[numRandY][numRandX].setSolution(true);
+                    cont++;
+                }
             }
         }
-
-        while (cont < numCells * 0.3){
-            int numRandX = (int) (Math.random() * this.numCols);
-            int numRandY = (int) (Math.random() * this.numRows);
-
-            if (!this.board[numRandY][numRandX].isSolution()){
-                this.board[numRandY][numRandX].setSolution(true);
-                cont++;
-            }
+        else
+        {
+           System.out.println("Aqui va la generacion automatica");
         }
 
         //Aquí la generación de las casillas ya se ha terminado.
+        clueGenerator();
 
 
+        createSounds();
+    }
+    private void clueGenerator()
+    {
         // ----------------- GENERACIÓN DE PISTAS ---------------------
 
         //Inicializar listas de pistas
@@ -126,9 +136,7 @@ public class Board implements Serializable {
                 }
             }
         }
-        createSounds();
     }
-
     public void render() {
         int cellSize = Math.min(this.graphics.getLogicWidth() - this.margin*3, this.graphics.getLogicHeight() - margin*3);
         int width = this.graphics.getLogicWidth();

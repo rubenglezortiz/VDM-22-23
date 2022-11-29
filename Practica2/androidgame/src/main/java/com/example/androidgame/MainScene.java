@@ -33,9 +33,9 @@ public class MainScene extends AScene {
         createSounds();
     }
 
-    public MainScene(AndroidEngine engine_, int numRows, int numCols){
+    public MainScene(AndroidEngine engine_, int numRows, int numCols, int id){
         this.engine = engine_;
-        this.board = new Board(numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
+        this.board = new Board(0,numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
         this.timer = 0.0f;
         setUpScene();
     }
