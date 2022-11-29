@@ -131,10 +131,10 @@ public class AGraphics  {
 
     public void drawRectangle(float x_, float y_, float w_, float h_, AColor color) {
         setColor(color);
-        int x = realToLogicX((int)x_);
-        int y = realToLogicY((int)y_);
-        int w = realToLogicScale((int)w_);
-        int h = realToLogicScale((int)h_);
+        int x = logicToRealX((int)x_);
+        int y = logicToRealY((int)y_);
+        int w = logicToRealScale((int)w_);
+        int h = logicToRealScale((int)h_);
         this.canvas.drawLine(x,y,x+w,y,this.paint);
         this.canvas.drawLine(x,y,x,y + h,this.paint);
         this.canvas.drawLine(x,y+h,x+w,y+h,this.paint);
