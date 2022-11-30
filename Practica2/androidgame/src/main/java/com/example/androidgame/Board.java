@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Board implements Serializable {
-    private int numCols, numRows;
+    private int numCols, numRows, lives;
     private Cell[][] board;
     private ArrayList<Integer>[] colsList;
     private ArrayList<Integer>[] rowsList;
@@ -27,6 +27,7 @@ public class Board implements Serializable {
     private ASound cellSound;
 
     public Board(int id,int nC, int nR, AGraphics graphics_, AAudio audio_){
+        this.lives = 3;
         this.graphics = graphics_;
         this.audio = audio_;
         this.textMessagesSize = this.graphics.getLogicWidth() / 20;
@@ -160,7 +161,6 @@ public class Board implements Serializable {
             }
         }
 
-
         if (!this.win){
             // Se dibujan las pistas de las filas
             int mayorFilas = 1;
@@ -194,13 +194,13 @@ public class Board implements Serializable {
 
         if (this.showLevelInfo)
         {
-            if (this.win) graphics.drawText("Felicidades, has ganado",
-                    xInicial,
+            if (this.win) graphics.drawText(this.graphics.newFont("font.TTF", false),"YOU WIN",
+                    xInicial+35,
                     yInicial+this.numRows*(casillaH+separacion)+this.textMessagesSize,
                     this.textMessagesSize, graphics.newColor(0, 200, 0, 255));
             else
             {
-                if (this.remainingCells != 0) graphics.drawText("Te faltan " + this.remainingCells + " casillas",
+                /*if (this.remainingCells != 0) graphics.drawText("Te faltan " + this.remainingCells + " casillas",
                         xInicial,
                         yInicial+this.numRows*(casillaH+separacion)+this.textMessagesSize,
                         this.textMessagesSize, graphics.newColor(200, 0, 0, 255));
@@ -208,7 +208,13 @@ public class Board implements Serializable {
                         xInicial,
                         yInicial+this.numRows*(casillaH+separacion)+this.textMessagesSize+this.textMessagesSize,
                         this.textMessagesSize, graphics.newColor(200, 0, 0, 255));
+                 */
+                this.graphics.drawText(this.graphics.newFont("font.TTF", false), "WRONG ANSWER",
+                        xInicial-25,
+                        yInicial+this.numRows*(casillaH+separacion)+this.textMessagesSize,
+                        this.textMessagesSize, graphics.newColor(200, 0, 0, 255));
             }
+
         }
     }
 
@@ -272,6 +278,7 @@ public class Board implements Serializable {
             }
         }
         this.win = (this.remainingCells == 0 && this.wrongCells == 0);
+        if(!this.win) lives--;
         return this.win;
     }
 
@@ -320,4 +327,6 @@ public class Board implements Serializable {
             }
         }
     }
+
+    public int getLives(){return lives;}
 }

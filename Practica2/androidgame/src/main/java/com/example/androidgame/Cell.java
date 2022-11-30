@@ -42,7 +42,7 @@ public class Cell extends GameObject {
             return 1; //Devuelve 1 para sumar esta casilla a la cantidad que faltan por pintar
 
         if (wrongMarked()) {
-            this.state = State.INCORRECT;
+            //this.state = State.INCORRECT;
             return 2;
         }
 
@@ -62,9 +62,10 @@ public class Cell extends GameObject {
             case REMOVED:
                 icolor = graphics.newColor(0,0,0,255); // White
                 break;
-            case INCORRECT:
+            /*case INCORRECT:
                 icolor = graphics.newColor(255,0,0,255); // Red
                 break;
+             */
             default:
                 icolor = graphics.newColor(255,255,255,255); // White
                 break;
