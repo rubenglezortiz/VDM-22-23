@@ -8,13 +8,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class AImage  {
-    private Bitmap bitmap;
+    private  Bitmap bitmap;
 
     public AImage(String name, AssetManager assetMan){
-        InputStream is = null;
+        InputStream is;
         try {
             is = assetMan.open(name);
             this.bitmap = BitmapFactory.decodeStream(is);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -24,7 +25,9 @@ public class AImage  {
         return this.bitmap;
     }
 
-    public void setWidth(float width) { this.bitmap.setWidth((int)width); }
+    /*public void setWidth(float width) { this.mutableBitmap.setWidth((int)width); }
 
-    public void setHeight(float height) { this.bitmap.setHeight((int)height); }
+    public void setHeight(float height) { this.mutableBitmap.setHeight((int)height); }
+
+     */
 }

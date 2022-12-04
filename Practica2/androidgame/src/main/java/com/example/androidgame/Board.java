@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Board implements Serializable {
-    private int numCols, numRows, lives;
+    private int numCols, numRows,  initLives, currentLives;
     private Cell[][] board;
     private ArrayList<Integer>[] colsList;
     private ArrayList<Integer>[] rowsList;
@@ -17,16 +17,13 @@ public class Board implements Serializable {
     private AGraphics graphics;
     private AAudio audio;
 
-    private boolean checkPressed = false;
-    private  boolean showLevelInfo = false;
-    private int wrongCells = 0;
     private boolean win = false;
     private int margin = 50;
     private int textMessagesSize;
     private ASound cellSound, failSound;
 
     public Board(int id,int nC, int nR, AGraphics graphics_, AAudio audio_){
-        this.lives = 3;
+        this.initLives = this.currentLives = 3;
         this.graphics = graphics_;
         this.audio = audio_;
         this.textMessagesSize = this.graphics.getLogicWidth() / 20;
@@ -157,7 +154,7 @@ public class Board implements Serializable {
             }
         }
 
-        if (!this.win){
+        if (!this.win && currentLives > 0){
             // Se dibujan las pistas de las filas
             int mayorFilas = 1;
             int textSize = casillaW/2;
@@ -187,11 +184,21 @@ public class Board implements Serializable {
             graphics.drawRectangle(xInicial-(mayorFilas+1)*textSize, yInicial, anchoTablero+(mayorFilas+1)*textSize, altoTablero, graphics.newColor(0,0,0,255));
 
         }
+        else {
+            if(currentLives == 0) {
+                graphics.drawText(this.graphics.newFont("font.TTF", false), "YOU LOSE",
+                        xInicial + 35,
+                        yInicial + this.numRows * (casillaH + separacion) + this.textMessagesSize,
+                        this.textMessagesSize, graphics.newColor(200, 0, 0, 255));
+            }
+            else {
+                graphics.drawText(this.graphics.newFont("font.TTF", false), "YOU WIN",
+                        xInicial + 35,
+                        yInicial + this.numRows * (casillaH + separacion) + this.textMessagesSize,
+                        this.textMessagesSize, graphics.newColor(0, 200, 0, 255));
+            }
+        }
 
-         else graphics.drawText(this.graphics.newFont("font.TTF", false),"YOU WIN",
-                    xInicial+35,
-                    yInicial+this.numRows*(casillaH+separacion)+this.textMessagesSize,
-                    this.textMessagesSize, graphics.newColor(0, 200, 0, 255));
     }
 
     public void handleInputs(AInput.Event event) {
@@ -216,7 +223,7 @@ public class Board implements Serializable {
                         case TOUCH_RELEASED:
                            if(this.pressedCell == this.board[i][j])
                                if(!this.board[i][j].changeState()){
-                                   this.failSound.play(); this.lives--;
+                                   this.failSound.play(); this.currentLives--;
                                }
                                else this.cellSound.play();
                             break;
@@ -230,8 +237,6 @@ public class Board implements Serializable {
     }
 
     public boolean checkWin() {
-        this.checkPressed = true;
-        this.showLevelInfo = true;
         int i = 0, j;
         this.win = true;
         while(i <this.numCols && this.win){
@@ -244,7 +249,6 @@ public class Board implements Serializable {
         }
         return this.win;
     }
-
 
     private void createSounds(){
         this.cellSound = this.audio.newSound("cell.wav");
@@ -261,5 +265,7 @@ public class Board implements Serializable {
         }
     }
 
-    public int getLives(){return lives;}
+    public int getInitLives(){return this.initLives;}
+
+    public int getCurrentLives(){return this.currentLives;}
 }

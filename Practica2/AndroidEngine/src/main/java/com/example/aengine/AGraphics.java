@@ -1,9 +1,12 @@
 package com.example.aengine;
 
 import android.content.res.AssetManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.fonts.Font;
 import android.util.DisplayMetrics;
@@ -78,11 +81,11 @@ public class AGraphics  {
         this.canvas.translate(x, y);
     }
 
-    public float logicToRealX(float x) { return (((float)x * getScaleFactor()) + this.offsetX) ; }
+    public float logicToRealX(float x) { return x * getScaleFactor() + this.offsetX ; }
 
-    public float logicToRealY(float y) { return  (((float)y * getScaleFactor()) + this.offsetY) ; }
+    public float logicToRealY(float y) { return  y * getScaleFactor() + this.offsetY ; }
 
-    public float logicToRealScale(float s) {  return (int) ((float)s * getScaleFactor()); }
+    public float logicToRealScale(float s) {  return s * getScaleFactor(); }
 
     public float realToLogicX(float x) { return ((float)(x - this.offsetX) / getScaleFactor());}
 
@@ -150,11 +153,13 @@ public class AGraphics  {
         this.canvas.drawRect(x,y,x+w, y+h, this.paint);
     }
 
-    public void drawImage(AImage image, int x, int y, int w, int h) {
-        //INTENTAR METER VALORES POR DEFECTO
-        ((AImage)image).setWidth(logicToRealScale(w));
-        ((AImage)image).setHeight(logicToRealScale(h));
-        this.canvas.drawBitmap(((AImage)image).getBitmap(),logicToRealX(x), logicToRealY(y), this.paint);
+    public void drawImage(AImage image, float x, float y, float w, float h) {
+        x = logicToRealX(x);
+        y = logicToRealY(y);
+        w = logicToRealScale(w);
+        h = logicToRealScale(h);
+        this.canvas.drawBitmap(image.getBitmap(), null,
+                new Rect((int)x, (int)y,(int)(x+w), (int)(y+h)), this.paint);
     }
 
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.example.aengine.AButton;
 import com.example.aengine.AFont;
+import com.example.aengine.AImage;
 import com.example.aengine.AInput;
 import com.example.aengine.AScene;
 import com.example.aengine.ASound;
@@ -15,33 +16,24 @@ import java.util.Iterator;
 public class RandomBoardScene extends AScene {
     private AndroidEngine engine;
     private Board board;
-    private AButton backToMenuButton;
+    private AButton backToMenuButton, levelFinishedButton;
+    private AImage liveImage, noLiveImage;
     private AFont font;
-    private boolean backToMenu;
+    private boolean backToMenu, levelFinished, backToSelectionLevelScene;
 
     private ASound winSound;
 
 
     public RandomBoardScene(AndroidEngine engine_, int numRows, int numCols){
         this.engine = engine_;
+        this.levelFinished = false;
         this.board = new Board(0,numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
         setUpScene();
     }
 
-    private void createButtons(){
-        float x,y,w,h;
-        x = 50;
-        y = 0;
-        w = this.engine.getGraphics().getLogicWidth() / 5;
-        h = this.engine.getGraphics().getLogicHeight() / 15;
-
-        this.backToMenuButton = this.engine.getGraphics().newButton("Volver",
-                x - (w / 2), y - (h / 2), w, h,
-                6,25, 9,
-                this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
-
+    private void createImages(){
+        this.liveImage = this.engine.getGraphics().newImage("corazon_con_vida.png");
+        this.noLiveImage = this.engine.getGraphics().newImage("corazon_sin_vida.png");
     }
 
     private void createSounds() {
@@ -49,29 +41,62 @@ public class RandomBoardScene extends AScene {
         this.engine.getAudio().setVolume(this.winSound, 0.75f);
     }
 
+    private void createButtons(){
+        float x,y,w,h;
+        x = this.engine.getGraphics().getLogicWidth()/10.0f;
+        y = this.engine.getGraphics().getLogicHeight()/10.0f;
+        w = this.engine.getGraphics().getLogicWidth() / 5.0f;
+        h = this.engine.getGraphics().getLogicHeight() / 15.0f;
+
+        this.backToMenuButton = this.engine.getGraphics().newButton("MENU",
+                x - (w / 2), y - (h / 2), w, h,
+                10,25, 9,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(255, 255, 255, 255));
+
+        x = (this.engine.getGraphics().getLogicWidth()/2.0f - w/3 );
+        this.levelFinishedButton = this.engine.getGraphics().newButton("CONTINUE",
+                x, this.engine.getGraphics().getLogicHeight() / 5.0f * 4.0f, w,h,
+                4,25,8, this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(255, 255, 255, 255));
+
+    }
+
     @Override
     protected void setUpScene(){
         this.font = this.engine.getGraphics().newFont("font.TTF", false);
-        this.backToMenu = false;
-        createButtons();
+        this.backToMenu = this.backToSelectionLevelScene = false;
+        createImages();
         createSounds();
+        createButtons();
     }
 
     @Override
     public void update() {
-        if(this.board.checkWin()){
-         // añadir botón pa volver etc etc etc
-        }
+        if(!this.levelFinished && this.board.checkWin() || this.board.getCurrentLives() == 0){ this.levelFinished = true;}
         if(this.backToMenu) this.engine.getCurrentState().removeScene(2);
+        if(this.backToSelectionLevelScene) this.engine.getCurrentState().removeScene(1);
     }
 
     @Override
     public void render() {
         this.board.render();
         this.engine.getGraphics().drawButton(this.backToMenuButton);
-        String livesText = "Remaining Lives: " + this.board.getLives();
-        this.engine.getGraphics().drawText(this.font,  livesText,this.engine.getGraphics().getLogicWidth()/5.0f,
-                this.engine.getGraphics().getLogicHeight(),15, this.engine.getGraphics().newColor(200,0,200,255));
+        if(this.levelFinished) this.engine.getGraphics().drawButton(this.levelFinishedButton);
+        renderLives();
+    }
+
+    private void renderLives() {
+        float offset = this.engine.getGraphics().getLogicWidth()/10.0f;
+        float x = (this.engine.getGraphics().getLogicWidth()/2.0f);
+        for(int i = 0; i < this.board.getInitLives() ; i++){
+            AImage image = (i < this.board.getCurrentLives()) ? liveImage : noLiveImage;
+           this.engine.getGraphics().drawImage(image, (int)(x + offset * (i-1)),
+                    this.engine.getGraphics().getLogicHeight()/7.0f*6.0f, this.engine.getGraphics().getLogicWidth()/10.0f,
+                    this.engine.getGraphics().getLogicWidth()/10.0f);
+        }
     }
 
     @Override
@@ -83,14 +108,18 @@ public class RandomBoardScene extends AScene {
             switch (event.type) {
                 case TOUCH_PRESSED:
                 case LONG_TOUCH:
-                    this.board.handleInputs(event);
+                    if(!this.levelFinished) this.board.handleInputs(event);
                     break;
                 case TOUCH_RELEASED:
                     this.board.handleInputs(event);
-                    if(this.board.getLives()==0 || this.backToMenuButton.checkCollision(
+                    if(this.backToMenuButton.checkCollision(
                         this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
                         this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y)))
                             this.backToMenu = true;
+                    else if (this.levelFinished && this.levelFinishedButton.checkCollision(
+                            this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                            this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y)))
+                            this.backToSelectionLevelScene = true;
                     break;
                 default:
                     break;
@@ -103,6 +132,7 @@ public class RandomBoardScene extends AScene {
     public void saveScene(Bundle outState){
         if(outState !=null){
             outState.putSerializable("board", this.board);
+            outState.putBoolean("levelFinished", this.levelFinished);
         }
     }
 
@@ -112,6 +142,7 @@ public class RandomBoardScene extends AScene {
             this.engine = engine;
             this.board = (Board) savedInstanceState.getSerializable("board");
             this.board.updateGraphics(this.engine.getGraphics());
+            this.levelFinished = savedInstanceState.getBoolean("levelFinished");
             setUpScene();
         }
     }
