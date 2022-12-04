@@ -188,23 +188,14 @@ public class Board implements Serializable {
 
         }
 
-        if (this.showLevelInfo)
-        {
-            if (this.win) graphics.drawText(this.graphics.newFont("font.TTF", false),"YOU WIN",
+         else graphics.drawText(this.graphics.newFont("font.TTF", false),"YOU WIN",
                     xInicial+35,
                     yInicial+this.numRows*(casillaH+separacion)+this.textMessagesSize,
                     this.textMessagesSize, graphics.newColor(0, 200, 0, 255));
-            else {
-                this.graphics.drawText(this.graphics.newFont("font.TTF", false), "WRONG ANSWER",
-                        xInicial-25,
-                        yInicial+this.numRows*(casillaH+separacion)+this.textMessagesSize,
-                        this.textMessagesSize, graphics.newColor(200, 0, 0, 255));
-            }
-
-        }
     }
 
     public void handleInputs(AInput.Event event) {
+        if(event.type == AInput.InputType.TOUCH_RELEASED && checkWin()) return;
         if(((AInput.TouchInputEvent)event).mouseButton == 1){
             checkCellsCollision(((AInput.TouchInputEvent)event).x, ((AInput.TouchInputEvent)event).y, event.type);
         }
@@ -224,21 +215,17 @@ public class Board implements Serializable {
                             break;
                         case TOUCH_RELEASED:
                            if(this.pressedCell == this.board[i][j])
-                               this.board[i][j].changeState();
-                                if(this.board[i][j].wrongMarked()){
-                                    this.failSound.play();
-                                    this.lives--;
-                                }
-                                else this.cellSound.play();
+                               if(!this.board[i][j].changeState()){
+                                   this.failSound.play(); this.lives--;
+                               }
+                               else this.cellSound.play();
                             break;
                         case LONG_TOUCH:
                             this.board[i][j].changeStateToRemoved();
                             break;
                     }
-                }
-                j++;
-            }
-            i++;
+                } j++;
+            } i++;
         }
     }
 
@@ -255,33 +242,9 @@ public class Board implements Serializable {
             }
             i++;
         }
-
-        if(!this.win) lives--;
         return this.win;
     }
 
-    public void checkOut() {
-        this.showLevelInfo = false;
-
-        int i = 0;
-        while (this.wrongCells > 0 && i < this.numCols){
-            int j = 0;
-            while (this.wrongCells > 0 && j < this.numRows) {
-                if (this.board[i][j].isIncorrect()){
-                    this.board[i][j].checkOut();
-                    this.wrongCells--;
-                }
-                j++;
-            }
-            i++;
-        }
-    }
-
-    public boolean getCheckPressed() { return this.checkPressed; }
-
-    public void pressedOut() {
-        this.checkPressed = false;
-    }
 
     private void createSounds(){
         this.cellSound = this.audio.newSound("cell.wav");

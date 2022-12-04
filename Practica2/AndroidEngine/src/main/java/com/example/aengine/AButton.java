@@ -5,11 +5,11 @@ import android.widget.Button;
 
 public class AButton {
     private String text;
-    private int posX, posY, width, height, textX, textY, textSize;
+    private float posX, posY, width, height, textX, textY, textSize;
     private AFont font;
     private AColor mainColor, backgroundColor;
 
-    public AButton(String buttonText, int x, int y, int w, int h, int tX, int tY, int tSize, AFont f, AColor mColor, AColor bgColor) {
+    public AButton(String buttonText, float x, float y, float w, float h, float tX, float tY, int tSize, AFont f, AColor mColor, AColor bgColor) {
         this.text = buttonText;
         this.posX = x;
         this.posY = y;
@@ -23,27 +23,27 @@ public class AButton {
         this.backgroundColor = bgColor;
     }
 
-    public int getPosX() {
+    public float getPosX() {
         return this.posX;
     }
 
-    public int getPosY() {
+    public float getPosY() {
         return this.posY;
     }
 
-    public int getWidth() {
+    public float getWidth() {
         return this.width;
     }
 
-    public int getHeight() { return this.height; }
+    public float getHeight() { return this.height; }
 
     public String getText() { return this.text; }
 
-    public int getTextX() { return this.textX; }
+    public float getTextX() { return this.textX; }
 
-    public int getTextY() { return this.textY; }
+    public float getTextY() { return this.textY; }
 
-    public int getTextSize() { return this.textSize; }
+    public float getTextSize() { return this.textSize; }
 
     public AFont getFont() { return this.font; }
 

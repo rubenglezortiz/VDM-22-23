@@ -113,8 +113,8 @@ public class AGraphics  {
         return new AFont(name, bold, this.assetManager);
     }
 
-    public AButton newButton(String text, int x, int y, int w, int h, int tX, int tY, int tSize, AFont f, AColor mColor, AColor bgColor) {
-        return new AButton(text, x, y, w, h, tX, tY, tSize, (AFont)f, (AColor) mColor, (AColor) bgColor);
+    public AButton newButton(String text, float x, float y, float w, float h, float tX, float tY, int tSize, AFont f, AColor mColor, AColor bgColor) {
+        return new AButton(text, x, y, w, h, tX, tY, tSize, f,  mColor, bgColor);
     }
 
 

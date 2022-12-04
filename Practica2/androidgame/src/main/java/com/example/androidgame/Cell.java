@@ -28,14 +28,19 @@ public class Cell extends GameObject {
 
     public void setSolution(boolean solution_) { this.solution = solution_; }
 
-    public void changeState(){
-        if(this.state == State.UNMARKED)
-            if(this.solution) this.state = State.MARKED;
-        else this.state = State.INCORRECT;
+    public boolean changeState(){ // returns false if the pressed cell is incorrect
+        if(this.state == State.UNMARKED) {
+            if (this.solution) this.state = State.MARKED;
+            else {
+                this.state = State.INCORRECT;
+                return false;
+            }
+        }
         else if (this.state == State.REMOVED) {
             if(!this.recentlyRemoved) this.state = State.UNMARKED;
             else this.recentlyRemoved = false;
         }
+        return true;
     }
 
     public void changeStateToRemoved(){
@@ -46,11 +51,7 @@ public class Cell extends GameObject {
     }
 
     public boolean check(){
-        return this.solution && this.state == State.MARKED;
-    }
-
-    public boolean wrongMarked(){
-        return this.state == State.INCORRECT;
+        return this.solution && this.state == State.MARKED || !this.solution && this.state!=State.MARKED;
     }
 
     public void render(int xGraphic_, int yGraphic_, AGraphics graphics_){
@@ -87,13 +88,5 @@ public class Cell extends GameObject {
                 x <= this.graphics.logicToRealX(this.x + this.w) &&
                 y >= this.graphics.logicToRealY(this.y)  &&
                 y <= this.graphics.logicToRealY(this.y + this.h));
-    }
-
-    public boolean isIncorrect(){
-        return this.state == State.INCORRECT;
-    }
-
-    public void checkOut(){
-        this.state = State.MARKED;
     }
 }

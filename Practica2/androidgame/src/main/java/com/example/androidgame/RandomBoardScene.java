@@ -15,34 +15,23 @@ import java.util.Iterator;
 public class RandomBoardScene extends AScene {
     private AndroidEngine engine;
     private Board board;
-    private AButton checkButton, backToMenuButton;
+    private AButton backToMenuButton;
     private AFont font;
-    private float timer;
     private boolean backToMenu;
 
     private ASound winSound;
 
 
-    public RandomBoardScene(AndroidEngine engine_){ //ESTE CONSTRUCTOR NO SE USA :(
-        this.engine = engine_;
-        this.font = this.engine.getGraphics().newFont("font.TTF", false);
-        this.board = null;
-        this.backToMenu = false;
-        this.timer = 0.0f;
-        createButtons();
-        createSounds();
-    }
-
     public RandomBoardScene(AndroidEngine engine_, int numRows, int numCols){
         this.engine = engine_;
         this.board = new Board(0,numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
-        this.timer = 0.0f;
         setUpScene();
     }
+
     private void createButtons(){
-        int x,y,w,h;
-        x = this.engine.getGraphics().getLogicWidth() / 3;
-        y = this.engine.getGraphics().getLogicHeight() * 6 / 7;
+        float x,y,w,h;
+        x = 50;
+        y = 0;
         w = this.engine.getGraphics().getLogicWidth() / 5;
         h = this.engine.getGraphics().getLogicHeight() / 15;
 
@@ -53,21 +42,11 @@ public class RandomBoardScene extends AScene {
                 this.engine.getGraphics().newColor(0, 0, 0, 255),
                 this.engine.getGraphics().newColor(255, 255, 255, 255));
 
-        x = this.engine.getGraphics().getLogicWidth() * 2 / 3;
-
-        this.checkButton = this.engine.getGraphics().newButton("Comprueba",
-                x - (w / 2), y - (h / 2), w, h,
-                2,25, 7,
-                this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
     }
 
     private void createSounds() {
         this.winSound = this.engine.getAudio().newSound("win.wav");
         this.engine.getAudio().setVolume(this.winSound, 0.75f);
-
-
     }
 
     @Override
@@ -80,14 +59,9 @@ public class RandomBoardScene extends AScene {
 
     @Override
     public void update() {
-        long actualTime = this.engine.getTime();
-        if(this.board.getCheckPressed()){
-            this.timer = (actualTime) + 5.0f;
-            this.board.pressedOut();
+        if(this.board.checkWin()){
+         // añadir botón pa volver etc etc etc
         }
-
-        if ((actualTime) > this.timer) this.board.checkOut();
-
         if(this.backToMenu) this.engine.getCurrentState().removeScene(2);
     }
 
@@ -95,10 +69,9 @@ public class RandomBoardScene extends AScene {
     public void render() {
         this.board.render();
         this.engine.getGraphics().drawButton(this.backToMenuButton);
-        this.engine.getGraphics().drawButton(this.checkButton);
         String livesText = "Remaining Lives: " + this.board.getLives();
-        this.engine.getGraphics().drawText(this.font,  livesText,this.engine.getGraphics().getLogicWidth()/5,
-                this.engine.getGraphics().getLogicHeight()/20,15, this.engine.getGraphics().newColor(200,0,200,255));
+        this.engine.getGraphics().drawText(this.font,  livesText,this.engine.getGraphics().getLogicWidth()/5.0f,
+                this.engine.getGraphics().getLogicHeight(),15, this.engine.getGraphics().newColor(200,0,200,255));
     }
 
     @Override
@@ -130,7 +103,6 @@ public class RandomBoardScene extends AScene {
     public void saveScene(Bundle outState){
         if(outState !=null){
             outState.putSerializable("board", this.board);
-            outState.putFloat("timer", this.timer);
         }
     }
 
@@ -140,7 +112,6 @@ public class RandomBoardScene extends AScene {
             this.engine = engine;
             this.board = (Board) savedInstanceState.getSerializable("board");
             this.board.updateGraphics(this.engine.getGraphics());
-            this.timer = savedInstanceState.getFloat("timer");
             setUpScene();
         }
     }
