@@ -4,7 +4,9 @@ package com.example.aengine;
 import android.annotation.SuppressLint;
 import android.icu.util.Calendar;
 import android.text.format.Time;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
+import android.view.View;
 
 import java.io.Serializable;
 
@@ -25,7 +27,10 @@ public class AndroidEngine implements Runnable {
         this.graphics = new AGraphics(this.myView); //DESDE DÓNDE SE PASA EL SURFACE VIEW???
         this.audio = new AAudio(this.myView.getContext().getAssets());
         this.input = new AInput();
+
+        this.myView.setOnLongClickListener(this.input);
         this.myView.setOnTouchListener(this.input);
+        //this.myView.setLongClickable(true);
         this.currentState = new AState();
         this.currentThread = new Thread(this);
         this.currentThread.start();

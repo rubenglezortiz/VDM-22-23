@@ -24,7 +24,7 @@ public class AImage  {
         return this.bitmap;
     }
 
-    public void setWidth(int width) { this.bitmap.setWidth(width); }
+    public void setWidth(float width) { this.bitmap.setWidth((int)width); }
 
-    public void setHeight(int height) { this.bitmap.setHeight(height); }
+    public void setHeight(float height) { this.bitmap.setHeight((int)height); }
 }

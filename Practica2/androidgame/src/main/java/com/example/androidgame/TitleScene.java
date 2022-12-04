@@ -96,13 +96,13 @@ public class TitleScene extends AScene {
             AInput.Event event = it.next();
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    if(((AInput.MouseInputEvent)event).mouseButton == 1){
-                        if (this.storyButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y))){
+                    if(((AInput.TouchInputEvent)event).mouseButton == 1){
+                        if (this.storyButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
                             this.changeScene = 1;
                         }
-                        if (this.quickGameButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y))){
+                        if (this.quickGameButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
                             this.changeScene = 2;
                         }
                     }

@@ -95,19 +95,19 @@ public class BoardSelectionScene extends AScene {
             AInput.Event event = it.next();
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    if(((AInput.MouseInputEvent)event).mouseButton == 1){
-                        if (this.button3x3.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y))){
+                    if(((AInput.TouchInputEvent)event).mouseButton == 1){
+                        if (this.button3x3.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
                             this.changeScene = true;
                             this.boardSize = 1;
                         }
-                        if (this.button5x5.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y))){
+                        if (this.button5x5.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
                             this.changeScene = true;
                             this.boardSize = 2;
                         }
-                        if (this.button10x10.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y))){
+                        if (this.button10x10.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
                             this.changeScene = true;
                             this.boardSize = 3;
                         }

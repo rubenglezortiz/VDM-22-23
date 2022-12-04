@@ -5,10 +5,12 @@ import com.example.aengine.AGraphics;
 
 public class Cell extends GameObject {
     enum State {UNMARKED, MARKED, REMOVED, INCORRECT};
-    private boolean solution;
+    //Cuando se mantiene pulsada una casilla, se detectan los input LONG_TOUCH y RELEASED
+    //este último cambia en la misma iteración el estado de la casilla de REMOVED a UNMARKED
+    //la variable recentlyRemoved evita esto
+    private boolean solution, recentlyRemoved;
     private int row, col;
     private State state;
-
 
     public Cell(int row_, int col_, int w, int h, boolean sol, AGraphics graphics_){
         super(w, h, graphics_);
@@ -16,6 +18,8 @@ public class Cell extends GameObject {
         this.row = row_;
         this.col = col_;
         this.solution = sol;
+
+        this.recentlyRemoved = false;
     }
 
     public boolean isSolution() {
@@ -25,28 +29,28 @@ public class Cell extends GameObject {
     public void setSolution(boolean solution_) { this.solution = solution_; }
 
     public void changeState(){
-        switch (state){
-            case UNMARKED: this.state = State.MARKED; break;
-            case MARKED: this.state = State.REMOVED; break;
-            case REMOVED: this.state = State.UNMARKED; break;
-            case INCORRECT: this.state = State.UNMARKED; break;
+        if(this.state == State.UNMARKED)
+            if(this.solution) this.state = State.MARKED;
+        else this.state = State.INCORRECT;
+        else if (this.state == State.REMOVED) {
+            if(!this.recentlyRemoved) this.state = State.UNMARKED;
+            else this.recentlyRemoved = false;
         }
+    }
+
+    public void changeStateToRemoved(){
+        if(this.state == State.UNMARKED) {
+            this.state = State.REMOVED;
+            this.recentlyRemoved = true;
+        }
+    }
+
+    public boolean check(){
+        return this.solution && this.state == State.MARKED;
     }
 
     public boolean wrongMarked(){
-        return (this.state == State.MARKED && !solution) || (state == State.INCORRECT);
-    }
-
-    public int check(){
-        if (this.solution && (this.state == State.UNMARKED || state == State.REMOVED))
-            return 1; //Devuelve 1 para sumar esta casilla a la cantidad que faltan por pintar
-
-        if (wrongMarked()) {
-            //this.state = State.INCORRECT;
-            return 2;
-        }
-
-        return 0;
+        return this.state == State.INCORRECT;
     }
 
     public void render(int xGraphic_, int yGraphic_, AGraphics graphics_){
@@ -62,15 +66,13 @@ public class Cell extends GameObject {
             case REMOVED:
                 icolor = graphics.newColor(0,0,0,255); // White
                 break;
-            /*case INCORRECT:
+            case INCORRECT:
                 icolor = graphics.newColor(255,0,0,255); // Red
                 break;
-             */
             default:
                 icolor = graphics.newColor(255,255,255,255); // White
                 break;
         }
-        //if(isSolucion())  icolor = graphics.newColor(255,0,0,255); // Debug
         this.x = xGraphic_;
         this.y = yGraphic_;
         if (this.state == State.REMOVED) {
@@ -80,7 +82,7 @@ public class Cell extends GameObject {
         else graphics.fillRectangle(this.x, this.y, this.w, this.h, icolor);
     }
 
-    public boolean checkCollisions(int x, int y) {
+    public boolean checkCollisions(float x, float y) {
         return (x >= this.graphics.logicToRealX(this.x) &&
                 x <= this.graphics.logicToRealX(this.x + this.w) &&
                 y >= this.graphics.logicToRealY(this.y)  &&
@@ -94,5 +96,4 @@ public class Cell extends GameObject {
     public void checkOut(){
         this.state = State.MARKED;
     }
-
 }

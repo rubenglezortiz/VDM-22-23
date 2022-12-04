@@ -141,25 +141,25 @@ public class SelectCategoryScene extends AScene {
             switch (event.type) {
 
                 case TOUCH_RELEASED:
-                    if(((AInput.MouseInputEvent)event).mouseButton == 1){
-                        if (this.forestButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y))){
+                    if(((AInput.TouchInputEvent)event).mouseButton == 1){
+                        if (this.forestButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
                             this.changeScene = 1;
                         }
-                        else if (this.seaButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y))){
+                        else if (this.seaButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
                             if (this.forestFinished >= 5) this.changeScene = 2;
                         }
-                        else if (this.cityButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y))){
+                        else if (this.cityButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
                             if (this.seaFinished >= 5) this.changeScene = 3;
                         }
-                        else if (this.desertButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y))){
+                        else if (this.desertButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
                             if (this.cityFinished >= 5) this.changeScene = 4;
                         }
-                        else if (this.returnButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y))){
+                        else if (this.returnButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
                             this.backToMenu = true;
                         }
                     }

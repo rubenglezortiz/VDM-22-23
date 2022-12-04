@@ -21,7 +21,7 @@ public class RandomBoardScene extends AScene {
     private boolean backToMenu;
 
     private ASound winSound;
-    private ASound failSound;
+
 
     public RandomBoardScene(AndroidEngine engine_){ //ESTE CONSTRUCTOR NO SE USA :(
         this.engine = engine_;
@@ -67,8 +67,7 @@ public class RandomBoardScene extends AScene {
         this.winSound = this.engine.getAudio().newSound("win.wav");
         this.engine.getAudio().setVolume(this.winSound, 0.75f);
 
-        this.failSound = this.engine.getAudio().newSound("fail.wav");
-        this.engine.getAudio().setVolume(this.failSound, 0.5f);
+
     }
 
     @Override
@@ -110,20 +109,15 @@ public class RandomBoardScene extends AScene {
             AInput.Event event = it.next();
             switch (event.type) {
                 case TOUCH_PRESSED:
-                    board.handleInputs(event);
+                case LONG_TOUCH:
+                    this.board.handleInputs(event);
                     break;
                 case TOUCH_RELEASED:
-                    board.handleInputs(event);
-                    if (this.backToMenuButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                            this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y)))
-                        this.backToMenu = true;
-                    else if (this.checkButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.MouseInputEvent)event).x),
-                            this.engine.getGraphics().realToLogicY(((AInput.MouseInputEvent)event).y)))
-                        if(this.board.checkWin()) this.engine.getAudio().playSound(this.winSound);
-                        else {
-                            this.engine.getAudio().playSound(this.failSound);
-                            if(this.board.getLives()==0) this.backToMenu = true;
-                        }
+                    this.board.handleInputs(event);
+                    if(this.board.getLives()==0 || this.backToMenuButton.checkCollision(
+                        this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                        this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y)))
+                            this.backToMenu = true;
                     break;
                 default:
                     break;

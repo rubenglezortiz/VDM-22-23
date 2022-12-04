@@ -51,7 +51,7 @@ public class AButton {
 
     public AColor getBackgroundColor() { return this.backgroundColor; }
 
-    public boolean checkCollision(int coordX, int coordY) {
+    public boolean checkCollision(float coordX, float coordY) {
         return (coordX >= this.posX &&
                 coordX <= this.posX + this.width &&
                 coordY >= this.posY &&

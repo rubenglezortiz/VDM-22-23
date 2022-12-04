@@ -78,15 +78,15 @@ public class AGraphics  {
         this.canvas.translate(x, y);
     }
 
-    public int logicToRealX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ; }
+    public float logicToRealX(float x) { return (((float)x * getScaleFactor()) + this.offsetX) ; }
 
-    public int logicToRealY(int y) { return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
+    public float logicToRealY(float y) { return  (((float)y * getScaleFactor()) + this.offsetY) ; }
 
-    public int logicToRealScale(int s) {  return (int) ((float)s * getScaleFactor()); }
+    public float logicToRealScale(float s) {  return (int) ((float)s * getScaleFactor()); }
 
-    public int realToLogicX(int x) { return (int) ((float)(x - this.offsetX) / getScaleFactor());}
+    public float realToLogicX(float x) { return ((float)(x - this.offsetX) / getScaleFactor());}
 
-    public int realToLogicY(int y){ return (int) ((float)(y - this.offsetY) / getScaleFactor());}
+    public float realToLogicY(float y){ return ((float)(y - this.offsetY) / getScaleFactor());}
 
     public int realToLogicScale(int s){ return (int) ((float) s / getScaleFactor()); }
 
@@ -131,10 +131,10 @@ public class AGraphics  {
 
     public void drawRectangle(float x_, float y_, float w_, float h_, AColor color) {
         setColor(color);
-        int x = logicToRealX((int)x_);
-        int y = logicToRealY((int)y_);
-        int w = logicToRealScale((int)w_);
-        int h = logicToRealScale((int)h_);
+        float x = logicToRealX(x_);
+        float y = logicToRealY(y_);
+        float w = logicToRealScale(w_);
+        float h = logicToRealScale(h_);
         this.canvas.drawLine(x,y,x+w,y,this.paint);
         this.canvas.drawLine(x,y,x,y + h,this.paint);
         this.canvas.drawLine(x,y+h,x+w,y+h,this.paint);
@@ -143,10 +143,10 @@ public class AGraphics  {
 
     public void fillRectangle(float x_, float y_, float w_, float h_,AColor color){
         setColor(color);
-        int x = logicToRealX((int)x_);
-        int y = logicToRealY((int)y_);
-        int w = logicToRealScale((int)w_);
-        int h = logicToRealScale((int)h_);
+        float x = logicToRealX(x_);
+        float y = logicToRealY(y_);
+        float w = logicToRealScale(w_);
+        float h = logicToRealScale(h_);
         this.canvas.drawRect(x,y,x+w, y+h, this.paint);
     }
 
