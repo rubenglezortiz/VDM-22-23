@@ -5,6 +5,12 @@ import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.ASound;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -31,7 +37,7 @@ public class Board implements Serializable {
         if (id == 0) {
             this.numCols = nC;
             this.numRows = nR;
-            this.board = new Cell[numRows][numCols];
+            this.board = new Cell[this.numRows][this.numCols];
             int numCells = nC * nR;
             int cont = 0;
             for (int i = 0; i < this.numRows; i++) {
@@ -60,7 +66,40 @@ public class Board implements Serializable {
         }
         else
         {
+
            System.out.println("Aqui va la generacion automatica");
+/*
+            //Leer un archivo
+            File levelFile = new File();
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(levelFile)));
+                this.numRows = Integer.parseInt(br.readLine());
+                this.numCols = Integer.parseInt(br.readLine());
+
+                this.board = new Cell[this.numRows][this.numCols];
+
+                for (int i = 0; i < this.numRows; i++){
+                    String row = br.readLine();
+                    for (int j = 0; j < this.numCols; j++){
+                        char aux = row.charAt(j);
+                        boolean isSol;
+                        if (aux == '1'){
+                            isSol = true;
+                        }
+                        else if (aux == '0'){
+                            isSol = false;
+                        }
+                        else throw new Exception("El nivel está mal creado.");
+
+                        this.board[i][j] = new Cell(i, j, cellSize / this.numCols,
+                                cellSize / this.numRows, isSol, this.graphics);
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+*/
         }
 
         //Aquí la generación de las casillas ya se ha terminado.
