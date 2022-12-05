@@ -1,6 +1,7 @@
 package com.example.aengine;
 
 import android.os.Bundle;
+import android.view.View;
 
 public abstract class AScene  {
     protected abstract void setUpScene();
@@ -13,5 +14,9 @@ public abstract class AScene  {
 
     public abstract void saveScene(Bundle outState);
 
+    public abstract void saveSceneInFile(View myView);
+
     public abstract void restoreScene(Bundle savedInstanceState, AndroidEngine engine);
+
+    public abstract  void restoreSceneFromFile(View myView);
 }

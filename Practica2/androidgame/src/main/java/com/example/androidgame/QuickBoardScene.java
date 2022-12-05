@@ -1,6 +1,7 @@
 package com.example.androidgame;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.aengine.AButton;
 import com.example.aengine.AFont;
@@ -13,7 +14,7 @@ import com.example.aengine.AndroidEngine;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class RandomBoardScene extends AScene {
+public class QuickBoardScene extends AScene {
     private AndroidEngine engine;
     private Board board;
     private AButton backToMenuButton, levelFinishedButton;
@@ -24,7 +25,7 @@ public class RandomBoardScene extends AScene {
     private ASound winSound;
 
 
-    public RandomBoardScene(AndroidEngine engine_, int numRows, int numCols){
+    public QuickBoardScene(AndroidEngine engine_, int numRows, int numCols){
         this.engine = engine_;
         this.levelFinished = false;
         this.board = new Board(0,numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
@@ -111,15 +112,12 @@ public class RandomBoardScene extends AScene {
                     if(!this.levelFinished) this.board.handleInputs(event);
                     break;
                 case TOUCH_RELEASED:
+                    float collisionX = this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent) event).x);
+                    float collisionY = this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent) event).y);
                     this.board.handleInputs(event);
-                    if(this.backToMenuButton.checkCollision(
-                        this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
-                        this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y)))
-                            this.backToMenu = true;
-                    else if (this.levelFinished && this.levelFinishedButton.checkCollision(
-                            this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
-                            this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y)))
-                            this.backToSelectionLevelScene = true;
+                    if(this.backToMenuButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
+                    else if (this.levelFinished && this.levelFinishedButton.checkCollision(collisionX, collisionY))
+                        this.backToSelectionLevelScene = true;
                     break;
                 default:
                     break;
@@ -130,20 +128,32 @@ public class RandomBoardScene extends AScene {
 
     @Override
     public void saveScene(Bundle outState){
-        if(outState !=null){
+        /*if(outState !=null){
             outState.putSerializable("board", this.board);
             outState.putBoolean("levelFinished", this.levelFinished);
         }
+
+         */
+    }
+
+    @Override
+    public void saveSceneInFile(View myView) {
+
     }
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine){
         if(savedInstanceState!=null){
             this.engine = engine;
-            this.board = (Board) savedInstanceState.getSerializable("board");
             this.board.updateGraphics(this.engine.getGraphics());
-            this.levelFinished = savedInstanceState.getBoolean("levelFinished");
             setUpScene();
+            //this.board = (Board) savedInstanceState.getSerializable("board");
+            //this.levelFinished = savedInstanceState.getBoolean("levelFinished");
         }
+    }
+
+    @Override
+    public void restoreSceneFromFile(View myView) {
+
     }
 }

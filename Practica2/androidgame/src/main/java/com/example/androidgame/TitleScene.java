@@ -1,6 +1,7 @@
 package com.example.androidgame;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.aengine.AButton;
 import com.example.aengine.AFont;
@@ -73,7 +74,7 @@ public class TitleScene extends AScene {
             if (this.changeScene == 1)
                 this.engine.getCurrentState().addScene(new SelectCategoryScene(this.engine));
             else
-                this.engine.getCurrentState().addScene(new BoardSelectionScene(this.engine));
+                this.engine.getCurrentState().addScene(new QuickBoardSelectionScene(this.engine));
 
             this.changeScene = 0;
         }
@@ -96,18 +97,16 @@ public class TitleScene extends AScene {
             AInput.Event event = it.next();
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    if(((AInput.TouchInputEvent)event).mouseButton == 1){
-                        if (this.storyButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
-                            this.changeScene = 1;
-                        }
-                        if (this.quickGameButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
-                            this.changeScene = 2;
-                        }
+                    float collisionX = this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent) event).x);
+                    float collisionY = this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent) event).y);
+                    if (this.storyButton.checkCollision(collisionX, collisionY)){
+                        this.changeScene = 1;
+                    }
+                    if (this.quickGameButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
+                            this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
+                        this.changeScene = 2;
                     }
                     break;
-
                 default:
                     break;
             }
@@ -121,10 +120,20 @@ public class TitleScene extends AScene {
     }
 
     @Override
+    public void saveSceneInFile(View myView) {
+
+    }
+
+    @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
         this.changeScene = savedInstanceState.getInt("changeScene");
         this.engine = engine;
         setUpScene();
+    }
+
+    @Override
+    public void restoreSceneFromFile(View myView) {
+
     }
 }
 

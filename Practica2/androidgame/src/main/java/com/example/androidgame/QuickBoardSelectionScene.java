@@ -1,6 +1,7 @@
 package com.example.androidgame;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.aengine.AButton;
 import com.example.aengine.AFont;
@@ -11,7 +12,7 @@ import com.example.aengine.AndroidEngine;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class BoardSelectionScene extends AScene {
+public class QuickBoardSelectionScene extends AScene {
     private AFont font;
     private AndroidEngine engine;
     private boolean changeScene;
@@ -21,11 +22,13 @@ public class BoardSelectionScene extends AScene {
     private AButton button5x5;
     private AButton button10x10;
 
-    public BoardSelectionScene(AndroidEngine engine_){
+    public QuickBoardSelectionScene(AndroidEngine engine_){
         this.changeScene = false;
         this.boardSize = 0;
         this.engine = engine_;
-        setUpScene();
+        //setUpScene();
+        this.font = this.engine.getGraphics().newFont("font.TTF", false);
+        createButtons();
     }
 
     private void createButtons(){
@@ -63,17 +66,16 @@ public class BoardSelectionScene extends AScene {
 
     @Override
     protected void setUpScene() {
-        this.font = this.engine.getGraphics().newFont("font.TTF", false);
-        createButtons();
+
     }
 
     @Override
     public void update() {
         if(this.changeScene){
             this.changeScene = false;
-            if(this.boardSize == 1) this.engine.getCurrentState().addScene(new RandomBoardScene(this.engine,3,3));
-            else if (this.boardSize == 2) this.engine.getCurrentState().addScene(new RandomBoardScene(this.engine,5,5));
-            else if (this.boardSize == 3) this.engine.getCurrentState().addScene(new RandomBoardScene(this.engine,10,10));
+            if(this.boardSize == 1) this.engine.getCurrentState().addScene(new QuickBoardScene(this.engine,3,3));
+            else if (this.boardSize == 2) this.engine.getCurrentState().addScene(new QuickBoardScene(this.engine,5,5));
+            else if (this.boardSize == 3) this.engine.getCurrentState().addScene(new QuickBoardScene(this.engine,10,10));
         }
     }
 
@@ -95,22 +97,19 @@ public class BoardSelectionScene extends AScene {
             AInput.Event event = it.next();
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    if(((AInput.TouchInputEvent)event).mouseButton == 1){
-                        if (this.button3x3.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
-                            this.changeScene = true;
-                            this.boardSize = 1;
-                        }
-                        if (this.button5x5.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
-                            this.changeScene = true;
-                            this.boardSize = 2;
-                        }
-                        if (this.button10x10.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
-                                this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
-                            this.changeScene = true;
-                            this.boardSize = 3;
-                        }
+                    float collisionX = this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent) event).x);
+                    float collisionY = this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent) event).y);
+                    if (this.button3x3.checkCollision(collisionX, collisionY)){
+                        this.changeScene = true;
+                        this.boardSize = 1;
+                    }
+                    if (this.button5x5.checkCollision(collisionX, collisionY)){
+                        this.changeScene = true;
+                        this.boardSize = 2;
+                    }
+                    if (this.button10x10.checkCollision(collisionX, collisionY)){
+                        this.changeScene = true;
+                        this.boardSize = 3;
                     }
                     break;
                 default:
@@ -122,16 +121,28 @@ public class BoardSelectionScene extends AScene {
 
     @Override
     public void saveScene(Bundle outState) {
-        outState.putInt("boardSize", this.boardSize);
+        /*outState.putInt("boardSize", this.boardSize);
         outState.putBoolean("changeScene", this.changeScene);
+         */
+    }
+
+    @Override
+    public void saveSceneInFile(View myView) {
+
     }
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-        this.boardSize = savedInstanceState.getInt("boardSize");
+        /*this.boardSize = savedInstanceState.getInt("boardSize");
         this.changeScene = savedInstanceState.getBoolean("changeScene");
-        this.engine = engine;
         setUpScene();
+         */
+        this.engine = engine;
+    }
+
+    @Override
+    public void restoreSceneFromFile(View myView) {
+
     }
 
 }

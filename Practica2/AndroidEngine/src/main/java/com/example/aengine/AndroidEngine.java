@@ -31,7 +31,7 @@ public class AndroidEngine implements Runnable {
         this.myView.setOnLongClickListener(this.input);
         this.myView.setOnTouchListener(this.input);
         //this.myView.setLongClickable(true);
-        this.currentState = new AState();
+        this.currentState = new AState(this.myView);
         this.currentThread = new Thread(this);
         this.currentThread.start();
     }
@@ -87,14 +87,13 @@ public class AndroidEngine implements Runnable {
     public void pause() {
         if (this.running) {
             this.running = false;
-            while (true) {
                 try {
                     this.audio.pauseAllSounds();
                     this.currentThread.join();
                     this.currentThread = null;
-                    break;
                 } catch (InterruptedException ie) {}
-            }
         }
     }
+
+    public SurfaceView getSurfaceView(){return this.myView;}
 }

@@ -3,16 +3,27 @@ package com.example.androidgame;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.aengine.AndroidEngine;
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 
 public class Main extends AppCompatActivity {
     private SurfaceView myView;
     private AndroidEngine myEngine;
+    private int jsonInt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,13 +38,16 @@ public class Main extends AppCompatActivity {
         else {
             TitleScene titleScene = new TitleScene (this.myEngine);
             this.myEngine.getCurrentState().addScene(titleScene);
+            this.myEngine.getCurrentState().restoreSceneFromFile(this.myView);
         }
+        this.myEngine.getCurrentState().saveSceneInFile(myView);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         this.myEngine.resume();
+
     }
 
     @Override
@@ -45,6 +59,7 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        this.myEngine.getCurrentState().saveSceneInFile(this.myView);
     }
 
     @Override
