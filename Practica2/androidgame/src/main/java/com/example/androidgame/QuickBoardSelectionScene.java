@@ -18,6 +18,8 @@ public class QuickBoardSelectionScene extends AScene {
     private boolean changeScene;
     private int boardSize;
 
+    private boolean backToMenu;
+    private AButton returnButton;
     private AButton button3x3;
     private AButton button5x5;
     private AButton button10x10;
@@ -25,6 +27,7 @@ public class QuickBoardSelectionScene extends AScene {
     public QuickBoardSelectionScene(AndroidEngine engine_){
         this.changeScene = false;
         this.boardSize = 0;
+        this.backToMenu = false;
         this.engine = engine_;
         //setUpScene();
         this.font = this.engine.getGraphics().newFont("font.TTF", false);
@@ -32,7 +35,7 @@ public class QuickBoardSelectionScene extends AScene {
     }
 
     private void createButtons(){
-        int x3x, x5x, x10x, y, w, h, tx, ty, tSize;
+        int x, x3x, x5x, x10x, y, w, h, tx, ty, tSize;
         x3x = this.engine.getGraphics().getLogicWidth() / 4;
         x5x = this.engine.getGraphics().getLogicWidth() * 2 / 4;
         x10x = this.engine.getGraphics().getLogicWidth() * 3 / 4;
@@ -62,7 +65,21 @@ public class QuickBoardSelectionScene extends AScene {
                 this.font,
                 this.engine.getGraphics().newColor(0, 0, 0, 255),
                 this.engine.getGraphics().newColor(255, 255, 255, 255));
+        x =  this.engine.getGraphics().getLogicWidth() / 7;
+        y =  this.engine.getGraphics().getLogicHeight() / 16;
+        w = this.engine.getGraphics().getLogicWidth() / 4;
+        h = this.engine.getGraphics().getLogicHeight() / 16;
+        tx = 10;
+        ty = 25;
+        tSize = 12;
+        this.returnButton = this.engine.getGraphics().newButton("Volver",
+                x - (w / 2), y - (h / 2), w, h,
+                tx,ty, tSize,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(255, 255, 255, 255));
     }
+
 
     @Override
     protected void setUpScene() {
@@ -77,6 +94,10 @@ public class QuickBoardSelectionScene extends AScene {
             else if (this.boardSize == 2) this.engine.getCurrentState().addScene(new QuickBoardScene(this.engine,5,5));
             else if (this.boardSize == 3) this.engine.getCurrentState().addScene(new QuickBoardScene(this.engine,10,10));
         }
+        if(this.backToMenu){
+            //saveSceneInFile(this.engine.getSurfaceView());
+            this.engine.getCurrentState().removeScene(1);
+        }
     }
 
     @Override
@@ -84,6 +105,7 @@ public class QuickBoardSelectionScene extends AScene {
         this.engine.getGraphics().setFont(this.font);
         this.engine.getGraphics().drawText("LEVEL",this.engine.getGraphics().getLogicWidth()/2.0f - ((5*50)/2.0f),
                 100, 45, this.engine.getGraphics().newColor(0,0,0,255));
+        this.engine.getGraphics().drawButton(this.returnButton);
         this.engine.getGraphics().drawButton(this.button3x3);
         this.engine.getGraphics().drawButton(this.button5x5);
         this.engine.getGraphics().drawButton(this.button10x10);
@@ -111,6 +133,8 @@ public class QuickBoardSelectionScene extends AScene {
                         this.changeScene = true;
                         this.boardSize = 3;
                     }
+                    if (this.returnButton.checkCollision(collisionX, collisionY))
+                        this.backToMenu = true;
                     break;
                 default:
                     break;
