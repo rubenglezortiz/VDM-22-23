@@ -110,7 +110,7 @@ public class LevelScene extends HistorySuperScene {
     public void update(){
         if (this.changeScene != 0){
             //saveSceneInFile(this.engine.getSurfaceView());
-            //new Nivel(this.changeScene) //changeScene indica el nivel al que pasas, habiendo 80 niveles.
+            this.engine.getCurrentState().addScene(new QuickBoardScene(this.engine, this.changeScene,0,0));
             this.changeScene = 0;
         }
         if(this.backToMenu){

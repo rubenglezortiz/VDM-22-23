@@ -1,15 +1,19 @@
 package com.example.androidgame;
 
+import android.content.res.Resources;
+
 import com.example.aengine.AAudio;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.ASound;
+import com.example.aengine.AndroidEngine;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,10 +32,10 @@ public class Board implements Serializable {
     private int textMessagesSize;
     private ASound cellSound, failSound;
 
-    public Board(int id,int nC, int nR, AGraphics graphics_, AAudio audio_){
+    public Board(int id, int nC, int nR, AndroidEngine engine_){
         this.initLives = this.currentLives = 3;
-        this.graphics = graphics_;
-        this.audio = audio_;
+        this.graphics = engine_.getGraphics();
+        this.audio = engine_.getAudio();
         this.textMessagesSize = this.graphics.getLogicWidth() / 20;
         int cellSize = Math.min(this.graphics.getLogicWidth() - this.margin * 3, this.graphics.getLogicHeight() - margin * 3);
         if (id == 0) {
@@ -66,13 +70,13 @@ public class Board implements Serializable {
         }
         else
         {
-
-           System.out.println("Aqui va la generacion automatica");
-/*
             //Leer un archivo
-            File levelFile = new File();
+            Resources resources = engine_.getSurfaceView().getResources();
             try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(levelFile)));
+                InputStream iS = resources.getAssets().open("level.txt");
+                //String levelName = "level" + Integer.toString(id) + ".txt";
+                //InputStream iS = resources.getAssets().open(levelName);
+                BufferedReader br = new BufferedReader(new InputStreamReader(iS));
                 this.numRows = Integer.parseInt(br.readLine());
                 this.numCols = Integer.parseInt(br.readLine());
 
@@ -91,7 +95,7 @@ public class Board implements Serializable {
                         }
                         else throw new Exception("El nivel está mal creado.");
 
-                        this.board[i][j] = new Cell(i, j, cellSize / this.numCols,
+                        this.board[j][i] = new Cell(i, j, cellSize / this.numCols,
                                 cellSize / this.numRows, isSol, this.graphics);
                     }
                 }
@@ -99,7 +103,7 @@ public class Board implements Serializable {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-*/
+
         }
 
         //Aquí la generación de las casillas ya se ha terminado.

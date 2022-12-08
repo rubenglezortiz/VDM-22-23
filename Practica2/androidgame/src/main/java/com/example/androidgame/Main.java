@@ -24,6 +24,8 @@ public class Main extends AppCompatActivity {
     private SurfaceView myView;
     private AndroidEngine myEngine;
     private int jsonInt;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
