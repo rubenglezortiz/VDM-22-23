@@ -3,7 +3,6 @@ package com.example.androidgame;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.SurfaceView;
@@ -25,14 +24,12 @@ public class Main extends AppCompatActivity {
     private SurfaceView myView;
     private AndroidEngine myEngine;
     private int jsonInt;
-    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        //this.myView = new SurfaceView(this);
-        this.myView = findViewById(R.id.surfaceView);
-        setContentView(R.layout.activity_main);
+        this.myView = new SurfaceView(this);
+        setContentView(this.myView);
         this.myEngine = new AndroidEngine(this.myView);
 
         if (savedInstanceState!=null){
@@ -62,7 +59,6 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        //GUARDAR LA INFO EN EL ONSAVEINSTANCE
         this.myEngine.getCurrentState().saveSceneInFile(this.myView);
     }
 
@@ -75,6 +71,6 @@ public class Main extends AppCompatActivity {
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        this.myEngine.getCurrentState().restoreScene(savedInstanceState);
+        this.myEngine.getCurrentState().saveScene(savedInstanceState);
     }
 }

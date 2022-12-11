@@ -162,6 +162,7 @@ public class AGraphics  {
                 new Rect((int)x, (int)y,(int)(x+w), (int)(y+h)), this.paint);
     }
 
+
     public void drawText(String text, float x, float y, float textSize, AColor color) {
         float prevTextSize = this.paint.getTextSize();
         this.paint.setTextSize(logicToRealScale((int) textSize));
@@ -190,6 +191,7 @@ public class AGraphics  {
         if(button.getFont()!=null)
             this.drawText(button.getFont(), button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
         else this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
+
     }
 
     // Getters

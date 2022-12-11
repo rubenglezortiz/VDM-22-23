@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 public class HistorySuperScene extends AScene {
     private String filename;
-    protected AndroidEngine engine;
+    protected  AndroidEngine engine;
     protected AFont font;
     protected int coins, currentLevel;
 
