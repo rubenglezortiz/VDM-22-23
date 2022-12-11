@@ -25,10 +25,10 @@ public class QuickBoardScene extends AScene {
     private ASound winSound;
 
 
-    public QuickBoardScene(AndroidEngine engine_, int numRows, int numCols){
+    public QuickBoardScene(AndroidEngine engine_, int id, int numCols, int numRows){
         this.engine = engine_;
         this.levelFinished = false;
-        this.board = new Board(0,numRows,numCols,this.engine.getGraphics(), this.engine.getAudio());
+        this.board = new Board(id,numCols,numRows,this.engine);
         setUpScene();
     }
 
