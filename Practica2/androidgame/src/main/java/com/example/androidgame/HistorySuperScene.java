@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AColor;
 import com.example.aengine.AFont;
@@ -20,11 +21,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 
 public class HistorySuperScene extends AScene {
-    private String filename;
-    protected AFont font;
+    protected String filename, font;
     private AImage coinsImage;
     protected int coins, forestLevels, seaLevels, cityLevels, desertLevels;
     protected AColor[][] palettes;
@@ -32,7 +33,7 @@ public class HistorySuperScene extends AScene {
 
     HistorySuperScene(AGraphics graphics){
         this.filename = "super";
-        this.font = graphics.newFont("font.TTF", false);
+        this.font = ("font.TTF");
         this.coinsImage = graphics.newImage("moneda.png");
         this.coins = 0;
         this.forestLevels = this.seaLevels = this.cityLevels = this.desertLevels = 1;
@@ -54,13 +55,13 @@ public class HistorySuperScene extends AScene {
 
     @Override
     public void render(AGraphics graphics) {
-        graphics.setFont(this.font);
+        //graphics.setFont(this.font);
         graphics.drawImage(this.coinsImage, 350,0,25,25);
         graphics.drawText(this.font, String.valueOf(this.coins), 320 ,17, 10, new AColor(0,0,0,255));
     }
 
     @Override
-    public void handleInputs(AGraphics graphics, AInput input) {}
+    public void handleInputs(AGraphics graphics, AInput input, AAudio audio) {}
 
     @Override
     public void saveScene(Bundle outState) {

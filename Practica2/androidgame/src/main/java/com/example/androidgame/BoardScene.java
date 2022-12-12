@@ -12,25 +12,27 @@ import com.example.aengine.AInput;
 import com.example.aengine.ASound;
 import com.example.aengine.AndroidEngine;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class BoardScene extends HistorySuperScene {
+public class BoardScene extends HistorySuperScene implements Serializable {
     private Board board;
     private AButton backToMenuButton, levelFinishedButton;
     private AImage liveImage, noLiveImage;
     private boolean backToMenu, levelFinished, backToSelectionLevelScene;
     private int levelId, categoryId;
 
-    private ASound winSound;
+    private String winSound;
 
 
     public BoardScene(AndroidEngine engine, int id_, int category, int numCols, int numRows){
         super(engine.getGraphics());
+        this.winSound = "win.wav";
         this.levelFinished = false;
         this.levelId = id_;
         this.categoryId = category;
-        this.board = new Board(this.levelId,numCols,numRows, engine);
+        this.board = new Board(this.levelId,numCols,numRows, engine, engine.getGraphics(), engine.getAudio());
         setUpScene(engine.getGraphics(), engine.getAudio());
     }
 
@@ -40,7 +42,7 @@ public class BoardScene extends HistorySuperScene {
     }
 
     private void createSounds(AAudio audio) {
-        this.winSound = audio.newSound("win.wav");
+        audio.newSound(this.winSound);
         audio.setVolume(this.winSound, 0.75f);
     }
 
@@ -95,7 +97,7 @@ public class BoardScene extends HistorySuperScene {
     public void render(AGraphics graphics) {
         super.render(graphics);
         graphics.drawButton(this.backToMenuButton);
-        this.board.render();
+        this.board.render(graphics);
         if(this.levelFinished) graphics.drawButton(this.levelFinishedButton);
         renderLives(graphics);
     }
@@ -112,7 +114,7 @@ public class BoardScene extends HistorySuperScene {
     }
 
     @Override
-    public synchronized void handleInputs(AGraphics graphics, AInput input) {
+    public synchronized void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
@@ -120,12 +122,12 @@ public class BoardScene extends HistorySuperScene {
             switch (event.type) {
                 case TOUCH_PRESSED:
                 case LONG_TOUCH:
-                    if(!this.levelFinished) this.board.handleInputs(event);
+                    if(!this.levelFinished) this.board.handleInputs(event,audio);
                     break;
                 case TOUCH_RELEASED:
                     float collisionX = graphics.realToLogicX(((AInput.TouchInputEvent) event).x);
                     float collisionY = graphics.realToLogicY(((AInput.TouchInputEvent) event).y);
-                    this.board.handleInputs(event);
+                    this.board.handleInputs(event, audio);
                     if(this.backToMenuButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
                     else if (this.levelFinished && this.levelFinishedButton.checkCollision(collisionX, collisionY))
                         this.backToSelectionLevelScene = true;

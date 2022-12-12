@@ -5,40 +5,33 @@ import android.view.View;
 
 import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
-import com.example.aengine.AFont;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
-import com.example.aengine.AScene;
-import com.example.aengine.ASound;
-import com.example.aengine.AState;
 import com.example.aengine.AndroidEngine;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import java.net.DatagramPacket;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TitleScene extends HistorySuperScene {
+public class TitleScene extends HistorySuperScene implements Serializable {
     private AButton storyButton, quickGameButton, paletteButton;
-    private ASound backgroundMusic;
+    private String backgroundMusic;
     private int changeScene;
     private AdView mAdView;
     public TitleScene(AndroidEngine engine_){
         super(engine_.getGraphics());
         this.changeScene = 0;
-
+        this.backgroundMusic = "music.wav";
         setUpScene(engine_.getGraphics(), engine_.getAudio());
     }
 
     private void createMusic(AAudio audio) {
         //Background music
-        if (this.backgroundMusic == null) {
-            this.backgroundMusic = audio.newSound("music.wav");
-            audio.setLooping(this.backgroundMusic, true);
-            audio.setVolume(this.backgroundMusic, 0.25f);
-            audio.playSound(this.backgroundMusic);
-            audio.setBackgroundMusic(this.backgroundMusic);
-        }
+        audio.newSound(this.backgroundMusic);
+        audio.playSound(this.backgroundMusic);
+        audio.setVolume(this.backgroundMusic, 0.25f);
+        audio.setLooping(this.backgroundMusic, true);
     }
 
 
@@ -74,7 +67,7 @@ public class TitleScene extends HistorySuperScene {
     }
 
     protected void setUpScene(AGraphics graphics, AAudio audio) {
-        this.font = graphics.newFont("font.TTF", false);
+        graphics.newFont(this.font, false);
         createButtons(graphics);
         createMusic(audio);
     }
@@ -105,7 +98,7 @@ public class TitleScene extends HistorySuperScene {
     }
 
     @Override
-    public synchronized void handleInputs(AGraphics graphics, AInput input) {
+    public synchronized void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {

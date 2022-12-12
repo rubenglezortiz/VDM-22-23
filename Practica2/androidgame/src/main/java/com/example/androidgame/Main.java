@@ -92,4 +92,10 @@ public class Main extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         this.myEngine.getCurrentState().restoreScene(savedInstanceState, this.myEngine);
     }
+
+    @Override
+    protected void onDestroy() {
+        System.out.println("_______________DESTROY_______________");
+        super.onDestroy();
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AColor;
 import com.example.aengine.AGraphics;
@@ -102,7 +103,7 @@ public class PaletteScene extends HistorySuperScene {
     }
 
     @Override
-    public void handleInputs(AGraphics graphics, AInput input){
+    public void handleInputs(AGraphics graphics, AInput input, AAudio audio){
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList)
             switch (event.type) {

@@ -3,6 +3,7 @@ package com.example.androidgame;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AFont;
 import com.example.aengine.AGraphics;
@@ -108,7 +109,7 @@ public class QuickBoardSelectionScene extends HistorySuperScene {
     }
 
     @Override
-    public synchronized void handleInputs(AGraphics graphics, AInput input) {
+    public synchronized void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {

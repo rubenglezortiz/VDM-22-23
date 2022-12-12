@@ -5,13 +5,12 @@ import android.widget.Button;
 import java.io.Serializable;
 
 
-public class AButton {
-    private String text;
+public class AButton implements Serializable {
+    private String text, font;
     private float posX, posY, width, height, textX, textY, textSize;
-    private AFont font;
     private AColor mainColor, backgroundColor;
 
-    public AButton(String buttonText, float x, float y, float w, float h, float tX, float tY, int tSize, AFont f, AColor mColor, AColor bgColor) {
+    public AButton(String buttonText, float x, float y, float w, float h, float tX, float tY, int tSize, String f, AColor mColor, AColor bgColor) {
         this.text = buttonText;
         this.posX = x;
         this.posY = y;
@@ -47,7 +46,7 @@ public class AButton {
 
     public float getTextSize() { return this.textSize; }
 
-    public AFont getFont() { return this.font; }
+    public String getFont() { return this.font; }
 
     public AColor getMainColor() { return this.mainColor; }
 

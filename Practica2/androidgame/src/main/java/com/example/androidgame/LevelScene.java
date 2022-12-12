@@ -3,15 +3,17 @@ package com.example.androidgame;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AColor;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.AndroidEngine;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class LevelScene extends HistorySuperScene {
+public class LevelScene extends HistorySuperScene implements Serializable {
     private String filename;
     private int changeScene;
     private boolean backToMenu;
@@ -128,7 +130,7 @@ public class LevelScene extends HistorySuperScene {
     @Override
     public void render(AGraphics graphics){
         super.render(graphics);
-        graphics.setFont(this.font);
+        //graphics.setFont(this.font);
         graphics.drawText(this.textId,
                 graphics.getLogicWidth() / 2.0f - 90,
                 graphics.getLogicHeight() / 8.0f, 25,
@@ -146,7 +148,7 @@ public class LevelScene extends HistorySuperScene {
     }
 
     @Override
-    public void handleInputs(AGraphics graphics, AInput input){
+    public void handleInputs(AGraphics graphics, AInput input, AAudio audio){
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList)
             switch (event.type) {

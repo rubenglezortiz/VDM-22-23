@@ -13,6 +13,8 @@ import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.HashMap;
+
 public class AGraphics  {
     // Android variables
     private SurfaceView myView;
@@ -35,6 +37,7 @@ public class AGraphics  {
 
     // Other Variables
     private  AColor background;
+    private HashMap<String, AFont> fonts;
 
     public AGraphics(SurfaceView myView_){
         this.myView = myView_;
@@ -46,6 +49,7 @@ public class AGraphics  {
         this.logicHeight = 600;
         this.defaultFont = this.paint.getTypeface();
         this.background = newColor(255,255,255,255);
+        fonts = new HashMap<>();
     }
 
     // Android functions
@@ -116,12 +120,17 @@ public class AGraphics  {
         return new AImage(name, this.assetManager);
     }
 
-    public AFont newFont(String name, boolean bold) {
-        return new AFont(name, bold, this.assetManager);
+    public void newFont(String name, boolean bold) {
+        if(this.fonts.containsKey(name)) return;
+        AFont font = new AFont(name, bold, this.assetManager);
+        this.fonts.put(name, font);
     }
 
-    public AButton newButton(String text, float x, float y, float w, float h, float tX, float tY, int tSize, AFont f, AColor mColor, AColor bgColor) {
-        return new AButton(text, x, y, w, h, tX, tY, tSize, f,  mColor, bgColor);
+    public AButton newButton(String text, float x, float y, float w, float h, float tX, float tY, int tSize, String f, AColor mColor, AColor bgColor) {
+        if(fonts.containsKey(f)) {
+            return new AButton(text, x, y, w, h, tX, tY, tSize, f, mColor, bgColor);
+        }
+        return null;
     }
 
     public void setBackgroundColor(AColor backgroundColor){
@@ -178,12 +187,14 @@ public class AGraphics  {
         this.paint.setTextSize(prevTextSize);
     }
 
-    public void drawText(AFont font, String text, float x, float y, float textSize, AColor color) {
+    public void drawText(String font, String text, float x, float y, float textSize, AColor color) {
         setColor(color);
-        this.paint.setTypeface(((AFont)font).getTypeface());
-        this.paint.setTextSize(logicToRealScale((int) textSize));
-        this.canvas.drawText(text,logicToRealX((int)x),logicToRealY((int)y), this.paint);
-        this.paint.setTypeface(this.defaultFont);
+        if(this.fonts.containsKey(font)) {
+            this.paint.setTypeface(this.fonts.get(font).getTypeface());
+            this.paint.setTextSize(logicToRealScale((int) textSize));
+            this.canvas.drawText(text, logicToRealX((int) x), logicToRealY((int) y), this.paint);
+            this.paint.setTypeface(this.defaultFont);
+        }
     }
 
     public void drawButton(AButton button) {

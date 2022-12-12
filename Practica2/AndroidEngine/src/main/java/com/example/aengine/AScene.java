@@ -12,7 +12,7 @@ public abstract class AScene  {
 
     public abstract void render(AGraphics graphics);
 
-    public abstract void handleInputs(AGraphics graphics, AInput input);
+    public abstract void handleInputs(AGraphics graphics, AInput input, AAudio audio);
 
     public abstract void saveScene(Bundle outState);
 

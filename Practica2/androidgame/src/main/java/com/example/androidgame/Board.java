@@ -21,20 +21,18 @@ public class Board implements Serializable {
     private ArrayList<Integer>[] colsList;
     private ArrayList<Integer>[] rowsList;
     private Cell pressedCell;
-    private AGraphics graphics;
-    private AAudio audio;
 
     private boolean win = false;
     private int margin = 50;
     private int textMessagesSize;
-    private ASound cellSound, failSound;
+    private String cellSound, failSound;
 
-    public Board(int id, int nC, int nR, AndroidEngine engine_){
+    public Board(int id, int nC, int nR, AndroidEngine engine_, AGraphics graphics, AAudio audio){
         this.initLives = this.currentLives = 3;
-        this.graphics = engine_.getGraphics();
-        this.audio = engine_.getAudio();
-        this.textMessagesSize = this.graphics.getLogicWidth() / 20;
-        int cellSize = Math.min(this.graphics.getLogicWidth() - this.margin * 3, this.graphics.getLogicHeight() - margin * 3);
+        this.textMessagesSize = graphics.getLogicWidth() / 20;
+        int cellSize = Math.min(graphics.getLogicWidth() - this.margin * 3, graphics.getLogicHeight() - margin * 3);
+        this.cellSound = "cell.wav";
+        this.failSound = "fail.wav";
         if (id == 0) {
             this.numCols = nC;
             this.numRows = nR;
@@ -51,7 +49,7 @@ public class Board implements Serializable {
                         if (isSol) cont++;
                     }
                     this.board[i][j] = new Cell(i, j, cellSize / this.numCols,
-                            cellSize / this.numRows, isSol, this.graphics);
+                            cellSize / this.numRows, isSol, graphics);
                 }
             }
 
@@ -92,7 +90,7 @@ public class Board implements Serializable {
                         else throw new Exception("El nivel está mal creado.");
 
                         this.board[j][i] = new Cell(i, j, cellSize / this.numCols,
-                                cellSize / this.numRows, isSol, this.graphics);
+                                cellSize / this.numRows, isSol, graphics);
                     }
                 }
 
@@ -103,7 +101,7 @@ public class Board implements Serializable {
         }
         //Aquí la generación de las casillas ya se ha terminado.
         clueGenerator();
-        createSounds();
+        createSounds(audio);
     }
 
     private void clueGenerator(){
@@ -169,10 +167,10 @@ public class Board implements Serializable {
         }
     }
 
-    public void render() {
-        int cellSize = Math.min(this.graphics.getLogicWidth() - this.margin*3, this.graphics.getLogicHeight() - margin*3);
-        int width = this.graphics.getLogicWidth();
-        int height = this.graphics.getLogicHeight();
+    public void render(AGraphics graphics) {
+        int cellSize = Math.min(graphics.getLogicWidth() - this.margin*3, graphics.getLogicHeight() - margin*3);
+        int width = graphics.getLogicWidth();
+        int height = graphics.getLogicHeight();
         // Ancho y alto de cada casilla
         int casillaW = cellSize/numCols;
         int casillaH = cellSize/this.numRows;
@@ -188,7 +186,7 @@ public class Board implements Serializable {
         for (int i = 0; i < this.numRows; i++) {
             for (int j = 0; j < this.numCols; j++) {
                 if (!this.win || this.board[i][j].isSolution())
-                    this.board[i][j].render(xInicial+i*(casillaW+separacion),yInicial+j*(casillaH+separacion), this.graphics);
+                    this.board[i][j].render(xInicial+i*(casillaW+separacion),yInicial+j*(casillaH+separacion), graphics);
             }
         }
 
@@ -224,13 +222,13 @@ public class Board implements Serializable {
         }
         else {
             if(currentLives == 0) {
-                graphics.drawText(this.graphics.newFont("font.TTF", false), "YOU LOSE",
+                graphics.drawText("font.TTF", "YOU LOSE",
                         xInicial + 35,
                         yInicial + this.numRows * (casillaH + separacion) + this.textMessagesSize,
                         this.textMessagesSize, graphics.newColor(200, 0, 0, 255));
             }
             else {
-                graphics.drawText(this.graphics.newFont("font.TTF", false), "YOU WIN",
+                graphics.drawText("font.TTF", "YOU WIN",
                         xInicial + 35,
                         yInicial + this.numRows * (casillaH + separacion) + this.textMessagesSize,
                         this.textMessagesSize, graphics.newColor(0, 200, 0, 255));
@@ -239,14 +237,14 @@ public class Board implements Serializable {
 
     }
 
-    public void handleInputs(AInput.Event event) {
+    public void handleInputs(AInput.Event event, AAudio audio) {
         if(event.type == AInput.InputType.TOUCH_RELEASED && checkWin()) return;
         if(((AInput.TouchInputEvent)event).mouseButton == 1){
-            checkCellsCollision(((AInput.TouchInputEvent)event).x, ((AInput.TouchInputEvent)event).y, event.type);
+            checkCellsCollision(((AInput.TouchInputEvent)event).x, ((AInput.TouchInputEvent)event).y, event.type, audio);
         }
     }
 
-    private void checkCellsCollision(float mouseX, float mouseY, AInput.InputType type){
+    private void checkCellsCollision(float mouseX, float mouseY, AInput.InputType type, AAudio audio){
         int i = 0, j;
         boolean checked = false;
         while(i < this.numCols && !checked){
@@ -261,9 +259,10 @@ public class Board implements Serializable {
                         case TOUCH_RELEASED:
                            if(this.pressedCell == this.board[i][j])
                                if(!this.board[i][j].changeState()){
-                                   this.failSound.play(); this.currentLives--;
+                                   audio.playSound(this.failSound);
+                                   this.currentLives--;
                                }
-                               else this.cellSound.play();
+                               else audio.playSound(this.cellSound);
                             break;
                         case LONG_TOUCH:
                             this.board[i][j].changeStateToRemoved();
@@ -288,14 +287,13 @@ public class Board implements Serializable {
         return this.win;
     }
 
-    private void createSounds(){
-        this.cellSound = this.audio.newSound("cell.wav");
-        this.failSound = this.audio.newSound("fail.wav");
-        this.audio.setVolume(this.failSound, 0.5f);
+    private void createSounds(AAudio audio){
+        audio.newSound(this.cellSound);
+        audio.newSound(this.failSound);
+        audio.setVolume(this.failSound, 0.5f);
     }
 
     public void updateGraphics(AGraphics graphics_) {
-        this.graphics = graphics_;
         for(int i=0; i < this.numRows; i++){
             for (int j = 0; j < this.numCols; j++){
                 this.board[i][j].updateGraphics(graphics_);

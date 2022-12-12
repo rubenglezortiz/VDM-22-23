@@ -18,8 +18,7 @@ public class ASound  {
                     afd.getStartOffset(), afd.getLength());
             this.mPlayer.prepare();
         } catch (IOException e) {
-            System.err.println("Couldn't load audio file");
-            e.printStackTrace();
+            System.err.println("!!!!!!!!!!!!!!Couldn't load audio file!!!!!!!!!!!!!!");
         }
     }
 

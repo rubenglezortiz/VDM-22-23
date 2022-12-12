@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
@@ -16,10 +17,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
-public class SelectCategoryScene extends HistorySuperScene {
+public class SelectCategoryScene extends HistorySuperScene implements Serializable {
     private String filename;
     private int changeScene;
     private boolean backToMenu;
@@ -118,7 +120,7 @@ public class SelectCategoryScene extends HistorySuperScene {
 
     @Override
     public void render(AGraphics graphics) {
-        graphics.setFont(this.font);
+        //graphics.setFont(this.font);
         graphics.drawText("Elige la categoría en la que quieres jugar",
                 graphics.getLogicWidth()/10.0f,
                 graphics.getLogicHeight() * 3.0f/ 16.0f, 8,
@@ -133,7 +135,7 @@ public class SelectCategoryScene extends HistorySuperScene {
     }
 
     @Override
-    public void handleInputs(AGraphics graphics, AInput input) {
+    public void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList) {
             switch (event.type) {
