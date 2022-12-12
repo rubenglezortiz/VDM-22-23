@@ -19,7 +19,7 @@ import java.util.Iterator;
 public class BoardScene extends HistorySuperScene implements Serializable {
     private Board board;
     private AButton backToMenuButton, levelFinishedButton;
-    private AImage liveImage, noLiveImage;
+    private String liveImage, noLiveImage;
     private boolean backToMenu, levelFinished, backToSelectionLevelScene;
     private int levelId, categoryId;
 
@@ -29,6 +29,8 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     public BoardScene(AndroidEngine engine, int id_, int category, int numCols, int numRows){
         super(engine.getGraphics());
         this.winSound = "win.wav";
+        this.liveImage = "corazon_con_vida.png";
+        this.noLiveImage = "corazon_sin_vida.png";
         this.levelFinished = false;
         this.levelId = id_;
         this.categoryId = category;
@@ -37,8 +39,8 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     }
 
     private void createImages(AGraphics graphics){
-        this.liveImage = graphics.newImage("corazon_con_vida.png");
-        this.noLiveImage = graphics.newImage("corazon_sin_vida.png");
+        graphics.newImage(this.liveImage);
+        graphics.newImage(this.noLiveImage);
     }
 
     private void createSounds(AAudio audio) {
@@ -106,8 +108,8 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         float offset = graphics.getLogicWidth()/10.0f;
         float x = (graphics.getLogicWidth()/2.0f);
         for(int i = 0; i < this.board.getInitLives() ; i++){
-            AImage image = (i < this.board.getCurrentLives()) ? liveImage : noLiveImage;
-            graphics.drawImage(image, (int)(x + offset * (i-1)),
+            String key = (i < this.board.getCurrentLives()) ? this.liveImage : this.noLiveImage;
+            graphics.drawImage(key, (int)(x + offset * (i-1)),
                     graphics.getLogicHeight()/7.0f*6.0f, graphics.getLogicWidth()/10.0f,
                     graphics.getLogicWidth()/10.0f);
         }

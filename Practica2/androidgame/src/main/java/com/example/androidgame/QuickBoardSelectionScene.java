@@ -11,10 +11,11 @@ import com.example.aengine.AInput;
 import com.example.aengine.AScene;
 import com.example.aengine.AndroidEngine;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class QuickBoardSelectionScene extends HistorySuperScene {
+public class QuickBoardSelectionScene extends HistorySuperScene implements Serializable {
     private boolean changeScene;
     private int boardSize;
 

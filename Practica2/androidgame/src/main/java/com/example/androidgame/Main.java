@@ -36,9 +36,8 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
-        this.myView = (SurfaceView)findViewById(R.id.surfaceView);
-        this.mAdView = (AdView)findViewById(R.id.adView);
-        //setContentView(this.myView);
+        this.myView = findViewById(R.id.surfaceView);
+        this.mAdView = findViewById(R.id.adView);
         this.myEngine = new AndroidEngine(this.myView);
         if (savedInstanceState!=null){
             this.myEngine.getCurrentState().restoreScene(savedInstanceState, this.myEngine);

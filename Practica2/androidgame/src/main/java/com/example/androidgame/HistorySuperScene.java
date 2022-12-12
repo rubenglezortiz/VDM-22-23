@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
 
 public class HistorySuperScene extends AScene {
     protected String filename, font;
-    private AImage coinsImage;
+    private String coinsImage;
     protected int coins, forestLevels, seaLevels, cityLevels, desertLevels;
     protected AColor[][] palettes;
     protected int actPalette;
@@ -34,7 +34,7 @@ public class HistorySuperScene extends AScene {
     HistorySuperScene(AGraphics graphics){
         this.filename = "super";
         this.font = ("font.TTF");
-        this.coinsImage = graphics.newImage("moneda.png");
+        this.coinsImage ="moneda.png";
         this.coins = 0;
         this.forestLevels = this.seaLevels = this.cityLevels = this.desertLevels = 1;
         this.actPalette = 0;

@@ -139,5 +139,3 @@ public class TitleScene extends HistorySuperScene implements Serializable {
         super.restoreSceneFromFile(myView);
     }
 }
-
-

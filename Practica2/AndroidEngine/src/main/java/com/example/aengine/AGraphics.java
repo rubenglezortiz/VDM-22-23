@@ -1,14 +1,10 @@
 package com.example.aengine;
 
 import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
-import android.graphics.fonts.Font;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -17,27 +13,23 @@ import java.util.HashMap;
 
 public class AGraphics  {
     // Android variables
-    private SurfaceView myView;
-    private SurfaceHolder holder;
+    private final SurfaceView myView;
+    private final SurfaceHolder holder;
     private Canvas canvas;
-    private Paint paint;
-    private AssetManager assetManager;
+    private final Paint paint;
+    private final AssetManager assetManager;
 
     // Class Variables
     private int screenWidth, screenHeight;
-    private int logicWidth, logicHeight;
-    private float scaleFactorX, scaleFactorY, scaleFactor;
+    private final int logicWidth, logicHeight;
+    private float scaleFactor;
     private int offsetX, offsetY;
-    private boolean scaleInX;
-    private Typeface defaultFont;
+    private final Typeface defaultFont;
 
-    // Thread
-    private Thread renderThread;
-    private boolean running;
-
-    // Other Variables
+    // Items Variables
     private  AColor background;
-    private HashMap<String, AFont> fonts;
+    private final HashMap<String, AFont> fonts;
+    private final HashMap<String, AImage> images;
 
     public AGraphics(SurfaceView myView_){
         this.myView = myView_;
@@ -49,7 +41,8 @@ public class AGraphics  {
         this.logicHeight = 600;
         this.defaultFont = this.paint.getTypeface();
         this.background = newColor(255,255,255,255);
-        fonts = new HashMap<>();
+        this.fonts = new HashMap<>();
+        this.images = new HashMap<>();
     }
 
     // Android functions
@@ -69,13 +62,13 @@ public class AGraphics  {
     public boolean changeBuffer() { return (this.holder.getSurface().isValid()); }
 
     public void setResolution(float newWidth, float newHeight){
-        this.scaleFactorX = newWidth / (float) this.logicWidth;
-        this.scaleFactorY = newHeight / (float) this.logicHeight;
-        this.scaleFactor = Math.min(this.scaleFactorX, this.scaleFactorY);
+        float scaleFactorX = newWidth / (float) this.logicWidth;
+        float scaleFactorY = newHeight / (float) this.logicHeight;
+        this.scaleFactor = Math.min(scaleFactorX, scaleFactorY);
 
-        this.scaleInX = screenWidth * 3 > screenHeight * 2;
+        boolean scaleInX = screenWidth * 3 > screenHeight * 2;
 
-        if (this.scaleInX){
+        if (scaleInX){
             this.offsetX = (int)(((float)getWidth() / 2.0f) - (((float) this.logicWidth / 2.0f) * this.scaleFactor));
             this.offsetY = 0;
         }
@@ -116,8 +109,10 @@ public class AGraphics  {
         return new AColor(r_, g_, b_, a_);
     }
 
-    public AImage newImage(String name) {
-        return new AImage(name, this.assetManager);
+    public void newImage(String name) {
+        if(this.images.containsKey(name))return;
+        AImage image = new AImage(name, this.assetManager);
+        this.images.put(name, image);
     }
 
     public void newFont(String name, boolean bold) {
@@ -169,13 +164,16 @@ public class AGraphics  {
         this.canvas.drawRect(x,y,x+w, y+h, this.paint);
     }
 
-    public void drawImage(AImage image, float x, float y, float w, float h) {
+    public void drawImage(String key, float x, float y, float w, float h) {
         x = logicToRealX(x);
         y = logicToRealY(y);
         w = logicToRealScale(w);
         h = logicToRealScale(h);
-        this.canvas.drawBitmap(image.getBitmap(), null,
-                new Rect((int)x, (int)y,(int)(x+w), (int)(y+h)), this.paint);
+        if(this.images.containsKey(key)) {
+            this.canvas.drawBitmap(images.get(key).getBitmap(), null,
+                    new Rect((int)x, (int)y,(int)(x+w), (int)(y+h)), this.paint);
+        }
+
     }
 
 

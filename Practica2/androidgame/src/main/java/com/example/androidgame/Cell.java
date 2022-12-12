@@ -3,7 +3,9 @@ package com.example.androidgame;
 import com.example.aengine.AColor;
 import com.example.aengine.AGraphics;
 
-public class Cell extends GameObject {
+import java.io.Serializable;
+
+public class Cell extends GameObject implements Serializable {
     enum State {UNMARKED, MARKED, REMOVED, INCORRECT};
     //Cuando se mantiene pulsada una casilla, se detectan los input LONG_TOUCH y RELEASED
     //este último cambia en la misma iteración el estado de la casilla de REMOVED a UNMARKED
