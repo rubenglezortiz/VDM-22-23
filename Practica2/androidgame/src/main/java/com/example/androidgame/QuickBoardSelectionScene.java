@@ -13,8 +13,7 @@ import com.example.aengine.AndroidEngine;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class QuickBoardSelectionScene extends AScene {
-    private AFont font;
+public class QuickBoardSelectionScene extends HistorySuperScene {
     private boolean changeScene;
     private int boardSize;
 
@@ -25,6 +24,7 @@ public class QuickBoardSelectionScene extends AScene {
     private AButton button10x10;
 
     public QuickBoardSelectionScene(AndroidEngine engine_){
+        super(engine_.getGraphics());
         this.changeScene = false;
         this.boardSize = 0;
         this.backToMenu = false;
@@ -87,9 +87,9 @@ public class QuickBoardSelectionScene extends AScene {
     public void update(AndroidEngine engine) {
         if(this.changeScene){
             this.changeScene = false;
-            if(this.boardSize == 1) engine.getCurrentState().addScene(new BoardScene(engine, 0,3,3));
-            else if (this.boardSize == 2) engine.getCurrentState().addScene(new BoardScene(engine, 0,5,5));
-            else if (this.boardSize == 3) engine.getCurrentState().addScene(new BoardScene(engine,0, 10,10));
+            if(this.boardSize == 1) engine.getCurrentState().addScene(new BoardScene(engine, 0, 0,3,3));
+            else if (this.boardSize == 2) engine.getCurrentState().addScene(new BoardScene(engine, 0, 0,5,5));
+            else if (this.boardSize == 3) engine.getCurrentState().addScene(new BoardScene(engine,0, 0, 10,10));
         }
         if(this.backToMenu){
             engine.getCurrentState().removeScene(1);
@@ -98,8 +98,8 @@ public class QuickBoardSelectionScene extends AScene {
 
     @Override
     public void render(AGraphics graphics) {
-        //graphics.setFont(this.font);
-        graphics.drawText("LEVEL",graphics.getLogicWidth()/2.0f - ((5*50)/2.0f),
+        super.render(graphics);
+        graphics.drawText(this.font,"LEVEL",graphics.getLogicWidth()/2.0f - ((5*50)/2.0f),
                 100, 45, graphics.newColor(0,0,0,255));
         graphics.drawButton(this.returnButton);
         graphics.drawButton(this.button3x3);

@@ -60,21 +60,21 @@ public class SelectCategoryScene extends HistorySuperScene {
         if (cityFinished < 5) desert = locked;
 
         this.forestButton = graphics.newButton("BOSQUE",
-                x1 - (w / 2), y1 - (h / 2), w, h,
+                x1 - (w / 2.0f), y1 - (h / 2.0f), w, h,
                 tx,ty, tSize,
                 this.font,
                 graphics.newColor(0, 0, 0, 255),
                 graphics.newColor(250, 215, 160, 255));
 
         this.seaButton = graphics.newButton(sea,
-                x2 - (w / 2), y1 - (h / 2), w, h,
+                x2 - (w / 2.0f), y1 - (h / 2.0f), w, h,
                 tx,ty, tSize,
                 this.font,
                 graphics.newColor(0, 0, 0, 255),
                 graphics.newColor(250, 215, 160, 255));
 
         this.cityButton = graphics.newButton(city,
-                x1 - (w / 2), y2 - (h / 2), w, h,
+                x1 - (w / 2.0f), y2 - (h / 2.0f), w, h,
                 tx,ty, tSize,
                 this.font,
                 graphics.newColor(0, 0, 0, 255),
@@ -108,12 +108,10 @@ public class SelectCategoryScene extends HistorySuperScene {
     @Override
     public void update(AndroidEngine engine) {
         if (this.changeScene != 0){
-            //saveSceneInFile(this.engine.getSurfaceView());
             engine.getCurrentState().addScene(new LevelScene(engine, this.changeScene - 1));
             this.changeScene = 0;
         }
         if(this.backToMenu){
-            //saveSceneInFile(this.engine.getSurfaceView());
             engine.getCurrentState().removeScene(1);
         }
     }
@@ -131,7 +129,7 @@ public class SelectCategoryScene extends HistorySuperScene {
         graphics.drawButton(this.cityButton);
         graphics.drawButton(this.desertButton);
         graphics.drawButton(this.returnButton);
-        graphics.drawText(Integer.toString(this.coins), 100,100, 20, graphics.newColor(0,0,0,255));
+        graphics.drawText(Integer.toString(this.forestLevels), 100,100, 20, graphics.newColor(0,0,0,255));
     }
 
     @Override

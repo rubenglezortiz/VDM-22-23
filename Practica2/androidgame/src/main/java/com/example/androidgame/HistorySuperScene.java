@@ -54,6 +54,7 @@ public class HistorySuperScene extends AScene {
 
     @Override
     public void render(AGraphics graphics) {
+        graphics.setFont(this.font);
         graphics.drawImage(this.coinsImage, 350,0,25,25);
         graphics.drawText(this.font, String.valueOf(this.coins), 320 ,17, 10, new AColor(0,0,0,255));
     }

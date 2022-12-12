@@ -19,17 +19,17 @@ public class BoardScene extends HistorySuperScene {
     private Board board;
     private AButton backToMenuButton, levelFinishedButton;
     private AImage liveImage, noLiveImage;
-    private AFont font;
     private boolean backToMenu, levelFinished, backToSelectionLevelScene;
-    private int levelId;
+    private int levelId, categoryId;
 
     private ASound winSound;
 
 
-    public BoardScene(AndroidEngine engine, int id_, int numCols, int numRows){
+    public BoardScene(AndroidEngine engine, int id_, int category, int numCols, int numRows){
         super(engine.getGraphics());
         this.levelFinished = false;
         this.levelId = id_;
+        this.categoryId = category;
         this.board = new Board(this.levelId,numCols,numRows, engine);
         setUpScene(engine.getGraphics(), engine.getAudio());
     }
@@ -78,9 +78,10 @@ public class BoardScene extends HistorySuperScene {
     public void update(AndroidEngine engine) {
         if(!this.levelFinished && this.board.checkWin() || this.board.getCurrentLives() == 0){
             this.levelFinished = true;
-
             if (this.levelId != 0){
-                if (this.levelId <= 20)      this.forestLevels++;
+                if (this.levelId <= 20) {
+                    this.forestLevels++;
+                }
                 else if (this.levelId <= 40) this.seaLevels++;
                 else if (this.levelId <= 60) this.cityLevels++;
                 else                    this.desertLevels++;
@@ -93,8 +94,8 @@ public class BoardScene extends HistorySuperScene {
     @Override
     public void render(AGraphics graphics) {
         super.render(graphics);
-        this.board.render();
         graphics.drawButton(this.backToMenuButton);
+        this.board.render();
         if(this.levelFinished) graphics.drawButton(this.levelFinishedButton);
         renderLives(graphics);
     }
@@ -168,5 +169,9 @@ public class BoardScene extends HistorySuperScene {
     public void restoreSceneFromFile(View myView) {
         super.restoreSceneFromFile(myView);
         this.board.setCellColor(this.palettes[this.actPalette][1]);
+    }
+
+    public boolean checkIfFinished() {
+        return this.levelFinished;
     }
 }

@@ -30,7 +30,6 @@ public class LevelScene extends HistorySuperScene {
         this.backToMenu = false;
         this.changeScene = 0;
 
-
         this.rows = 5;
         this.cols = 4;
 
@@ -112,7 +111,15 @@ public class LevelScene extends HistorySuperScene {
     @Override
     public void update(AndroidEngine engine){
         if (this.changeScene != 0){
-            engine.getCurrentState().addScene(new BoardScene(engine, this.changeScene,0,0));
+            BoardScene level = new BoardScene(engine, this.changeScene, this.categoryId, 0,0);
+            engine.getCurrentState().addScene(level);
+            /*if (level.checkIfFinished()){
+                if(this.categoryId == 0) this.forestLevels++;
+                else if(this.categoryId==1) this.seaLevels++;
+                else if (this.categoryId == 2) this.cityLevels++;
+                else this.desertLevels++;
+            }
+             */
             this.changeScene = 0;
         }
         if(this.backToMenu) engine.getCurrentState().removeScene(1);
@@ -135,7 +142,7 @@ public class LevelScene extends HistorySuperScene {
             }
         }
 
-        graphics.drawText(Integer.toString(this.coins), 300,100, 20, graphics.newColor(0,0,0,255));
+        graphics.drawText(Integer.toString(this.forestLevels), 300,100, 20, graphics.newColor(0,0,0,255));
     }
 
     @Override
@@ -202,5 +209,21 @@ public class LevelScene extends HistorySuperScene {
         } catch (IOException e) {
             e.printStackTrace();
         }*/
+        if(this.categoryId == 0) {
+            this.textId = "Bosque";
+            this.currentLevel = this.forestLevels;
+        }
+        else if (this.categoryId == 1){
+            this.textId = "Mar";
+            this.currentLevel = this.seaLevels;
+        }
+        else if (this.categoryId == 2) {
+            this.textId = "Ciudad";
+            this.currentLevel = this.cityLevels;
+        }
+        else {
+            this.textId = "Desierto";
+            this.currentLevel = this.desertLevels;
+        }
     }
 }
