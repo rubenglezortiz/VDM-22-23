@@ -158,4 +158,8 @@ public class QuickBoardScene extends HistorySuperScene {
         super.restoreSceneFromFile(myView);
         this.board.setCellColor(this.palettes[this.actPalette][1]);
     }
+
+    public boolean checkIfFinished(){
+        return this.levelFinished;
+    }
 }

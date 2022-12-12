@@ -110,7 +110,9 @@ public class LevelScene extends HistorySuperScene {
     public void update(){
         if (this.changeScene != 0){
             //saveSceneInFile(this.engine.getSurfaceView());
-            this.engine.getCurrentState().addScene(new QuickBoardScene(this.engine, this.changeScene,0,0));
+            QuickBoardScene level = new QuickBoardScene(this.engine, this.changeScene,0,0);
+            this.engine.getCurrentState().addScene(level);
+            if (level.checkIfFinished()) this.currentLevel++;
             this.changeScene = 0;
         }
         if(this.backToMenu){
@@ -150,8 +152,9 @@ public class LevelScene extends HistorySuperScene {
                         this.backToMenu = true;
                     else for (int i = 0; i < this.rows; ++i)
                             for (int j = 0; j < this.cols; ++j)
-                                if (this.levels[i][j].checkCollision(collisionX, collisionY))
-                                    this.changeScene = i * this.cols + j + 1 + (this.id * 20);
+                                if ((i * this.cols + j) < this.currentLevel)
+                                    if (this.levels[i][j].checkCollision(collisionX, collisionY))
+                                        this.changeScene = i * this.cols + j + 1 + (this.id * 20);
                     break;
                 //DEBUG
                 case LONG_TOUCH:
