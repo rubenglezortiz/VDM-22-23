@@ -7,7 +7,11 @@ import android.view.View;
 import com.example.aengine.AButton;
 import com.example.aengine.AColor;
 import com.example.aengine.AFont;
+import com.example.aengine.AGraphics;
+import com.example.aengine.AImage;
+import com.example.aengine.AInput;
 import com.example.aengine.AScene;
+import com.example.aengine.AState;
 import com.example.aengine.AndroidEngine;
 import com.google.gson.Gson;
 
@@ -20,16 +24,16 @@ import java.nio.charset.StandardCharsets;
 
 public class HistorySuperScene extends AScene {
     private String filename;
-    protected  AndroidEngine engine;
     protected AFont font;
+    private AImage coinsImage;
     protected int coins, currentLevel;
     protected AColor[][] palettes;
     protected int actPalette;
 
-    HistorySuperScene(AndroidEngine engine_){
+    HistorySuperScene(AGraphics graphics){
         this.filename = "super";
-        this.engine = engine_;
-        this.font = this.engine.getGraphics().newFont("font.TTF", false);
+        this.font = graphics.newFont("font.TTF", false);
+        this.coinsImage = graphics.newImage("moneda.png");
         this.coins = 0;
         this.currentLevel = 1;
         this.actPalette = 0;
@@ -42,17 +46,20 @@ public class HistorySuperScene extends AScene {
         this.palettes[2][1] = new AColor(255,255,0);
     }
 
-    @Override
-    protected void setUpScene() {}
+    //@Override
+    //protected void setUpScene() {}
 
     @Override
-    public void update() {}
+    public void update(AndroidEngine engine) {}
 
     @Override
-    public void render() {}
+    public void render(AGraphics graphics) {
+        graphics.drawImage(this.coinsImage, 350,0,25,25);
+        graphics.drawText(this.font, String.valueOf(this.coins), 320 ,17, 10, new AColor(0,0,0,255));
+    }
 
     @Override
-    public void handleInputs() {}
+    public void handleInputs(AGraphics graphics, AInput input) {}
 
     @Override
     public void saveScene(Bundle outState) {
@@ -79,7 +86,6 @@ public class HistorySuperScene extends AScene {
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-        this.engine = engine;
     }
 
     @Override
@@ -98,6 +104,6 @@ public class HistorySuperScene extends AScene {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.engine.getGraphics().setBackgroundColor(this.palettes[this.actPalette][0]);
+        //this.engine.getGraphics().setBackgroundColor(this.palettes[this.actPalette][0]);
     }
 }

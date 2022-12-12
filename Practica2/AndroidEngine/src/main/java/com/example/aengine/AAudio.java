@@ -3,10 +3,11 @@ package com.example.aengine;
 import android.content.res.AssetManager;
 
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class AAudio  {
+public class AAudio {
     private AssetManager assetManager;
     private ASound backgroundMusic;
     public AAudio(AssetManager aM){ this.assetManager = aM;}

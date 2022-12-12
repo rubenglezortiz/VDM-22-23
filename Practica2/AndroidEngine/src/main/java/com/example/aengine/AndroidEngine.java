@@ -31,7 +31,7 @@ public class AndroidEngine implements Runnable {
         this.myView.setOnLongClickListener(this.input);
         this.myView.setOnTouchListener(this.input);
         //this.myView.setLongClickable(true);
-        this.currentState = new AState(this.myView);
+        this.currentState = new AState(this.myView, this);
         this.currentThread = new Thread(this);
         this.currentThread.start();
     }

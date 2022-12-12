@@ -3,8 +3,10 @@ package com.example.androidgame;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AFont;
+import com.example.aengine.AGraphics;
 import com.example.aengine.AImage;
 import com.example.aengine.AInput;
 import com.example.aengine.AScene;
@@ -15,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class QuickBoardScene extends HistorySuperScene {
-    private AndroidEngine engine;
     private Board board;
     private AButton backToMenuButton, levelFinishedButton;
     private AImage liveImage, noLiveImage;
@@ -25,85 +26,83 @@ public class QuickBoardScene extends HistorySuperScene {
     private ASound winSound;
 
 
-    public QuickBoardScene(AndroidEngine engine_, int id, int numCols, int numRows){
-        super(engine_);
-        this.engine = engine_;
+    public QuickBoardScene(AndroidEngine engine, int id, int numCols, int numRows){
+        super(engine.getGraphics());
         this.levelFinished = false;
-        this.board = new Board(id,numCols,numRows,this.engine);
-        setUpScene();
+        this.board = new Board(id,numCols,numRows, engine);
+        setUpScene(engine.getGraphics(), engine.getAudio());
     }
 
-    private void createImages(){
-        this.liveImage = this.engine.getGraphics().newImage("corazon_con_vida.png");
-        this.noLiveImage = this.engine.getGraphics().newImage("corazon_sin_vida.png");
+    private void createImages(AGraphics graphics){
+        this.liveImage = graphics.newImage("corazon_con_vida.png");
+        this.noLiveImage = graphics.newImage("corazon_sin_vida.png");
     }
 
-    private void createSounds() {
-        this.winSound = this.engine.getAudio().newSound("win.wav");
-        this.engine.getAudio().setVolume(this.winSound, 0.75f);
+    private void createSounds(AAudio audio) {
+        this.winSound = audio.newSound("win.wav");
+        audio.setVolume(this.winSound, 0.75f);
     }
 
-    private void createButtons(){
+    private void createButtons(AGraphics graphics){
         float x,y,w,h;
-        x = this.engine.getGraphics().getLogicWidth()/10.0f;
-        y = this.engine.getGraphics().getLogicHeight()/10.0f;
-        w = this.engine.getGraphics().getLogicWidth() / 5.0f;
-        h = this.engine.getGraphics().getLogicHeight() / 15.0f;
+        x = graphics.getLogicWidth()/10.0f;
+        y = graphics.getLogicHeight()/10.0f;
+        w = graphics.getLogicWidth() / 5.0f;
+        h = graphics.getLogicHeight() / 15.0f;
 
-        this.backToMenuButton = this.engine.getGraphics().newButton("MENU",
+        this.backToMenuButton = graphics.newButton("MENU",
                 x - (w / 2), y - (h / 2), w, h,
                 10,25, 9,
                 this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
+                graphics.newColor(0, 0, 0, 255),
+                graphics.newColor(255, 255, 255, 255));
 
-        x = (this.engine.getGraphics().getLogicWidth()/2.0f - w/3 );
-        this.levelFinishedButton = this.engine.getGraphics().newButton("CONTINUE",
-                x, this.engine.getGraphics().getLogicHeight() / 5.0f * 4.0f, w,h,
+        x = (graphics.getLogicWidth()/2.0f - w/3 );
+        this.levelFinishedButton = graphics.newButton("CONTINUE",
+                x, graphics.getLogicHeight() / 5.0f * 4.0f, w,h,
                 4,25,8, this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
+                graphics.newColor(0, 0, 0, 255),
+                graphics.newColor(255, 255, 255, 255));
 
     }
 
-    @Override
-    protected void setUpScene(){
-        this.font = this.engine.getGraphics().newFont("font.TTF", false);
+    protected void setUpScene(AGraphics graphics, AAudio audio){
         this.backToMenu = this.backToSelectionLevelScene = false;
-        createImages();
-        createSounds();
-        createButtons();
+        createImages(graphics);
+        createSounds(audio);
+        createButtons(graphics);
     }
 
     @Override
-    public void update() {
+    public void update(AndroidEngine engine) {
         if(!this.levelFinished && this.board.checkWin() || this.board.getCurrentLives() == 0){ this.levelFinished = true;}
-        if(this.backToMenu) this.engine.getCurrentState().removeScene(2);
-        if(this.backToSelectionLevelScene) this.engine.getCurrentState().removeScene(1);
+        if(this.backToMenu) engine.getCurrentState().removeScene(2);
+        if(this.backToSelectionLevelScene) engine.getCurrentState().removeScene(1);
     }
 
     @Override
-    public void render() {
+    public void render(AGraphics graphics) {
+        super.render(graphics);
         this.board.render();
-        this.engine.getGraphics().drawButton(this.backToMenuButton);
-        if(this.levelFinished) this.engine.getGraphics().drawButton(this.levelFinishedButton);
-        renderLives();
+        graphics.drawButton(this.backToMenuButton);
+        if(this.levelFinished) graphics.drawButton(this.levelFinishedButton);
+        renderLives(graphics);
     }
 
-    private void renderLives() {
-        float offset = this.engine.getGraphics().getLogicWidth()/10.0f;
-        float x = (this.engine.getGraphics().getLogicWidth()/2.0f);
+    private void renderLives(AGraphics graphics) {
+        float offset = graphics.getLogicWidth()/10.0f;
+        float x = (graphics.getLogicWidth()/2.0f);
         for(int i = 0; i < this.board.getInitLives() ; i++){
             AImage image = (i < this.board.getCurrentLives()) ? liveImage : noLiveImage;
-           this.engine.getGraphics().drawImage(image, (int)(x + offset * (i-1)),
-                    this.engine.getGraphics().getLogicHeight()/7.0f*6.0f, this.engine.getGraphics().getLogicWidth()/10.0f,
-                    this.engine.getGraphics().getLogicWidth()/10.0f);
+            graphics.drawImage(image, (int)(x + offset * (i-1)),
+                    graphics.getLogicHeight()/7.0f*6.0f, graphics.getLogicWidth()/10.0f,
+                    graphics.getLogicWidth()/10.0f);
         }
     }
 
     @Override
-    public synchronized void handleInputs() {
-        ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) this.engine.getInput().getEventList().clone();
+    public synchronized void handleInputs(AGraphics graphics, AInput input) {
+        ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
             AInput.Event event = it.next();
@@ -113,8 +112,8 @@ public class QuickBoardScene extends HistorySuperScene {
                     if(!this.levelFinished) this.board.handleInputs(event);
                     break;
                 case TOUCH_RELEASED:
-                    float collisionX = this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent) event).x);
-                    float collisionY = this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent) event).y);
+                    float collisionX = graphics.realToLogicX(((AInput.TouchInputEvent) event).x);
+                    float collisionY = graphics.realToLogicY(((AInput.TouchInputEvent) event).y);
                     this.board.handleInputs(event);
                     if(this.backToMenuButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
                     else if (this.levelFinished && this.levelFinishedButton.checkCollision(collisionX, collisionY))
@@ -124,17 +123,17 @@ public class QuickBoardScene extends HistorySuperScene {
                     break;
             }
         }
-        this.engine.getInput().clearEventList();
+        input.clearEventList();
     }
 
     @Override
     public void saveScene(Bundle outState){
-        /*if(outState !=null){
+        if(outState !=null){
             outState.putSerializable("board", this.board);
             outState.putBoolean("levelFinished", this.levelFinished);
         }
 
-         */
+
     }
 
     @Override
@@ -144,13 +143,14 @@ public class QuickBoardScene extends HistorySuperScene {
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine){
-        if(savedInstanceState!=null){
+        /*if(savedInstanceState!=null){
             this.engine = engine;
             this.board.updateGraphics(this.engine.getGraphics());
             setUpScene();
             //this.board = (Board) savedInstanceState.getSerializable("board");
             //this.levelFinished = savedInstanceState.getBoolean("levelFinished");
         }
+         */
     }
 
     @Override

@@ -3,112 +3,116 @@ package com.example.androidgame;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AFont;
+import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.AScene;
 import com.example.aengine.ASound;
+import com.example.aengine.AState;
 import com.example.aengine.AndroidEngine;
 
+import java.net.DatagramPacket;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class TitleScene extends HistorySuperScene {
-    private AndroidEngine engine;
     private AButton storyButton, quickGameButton, paletteButton;
     private ASound backgroundMusic;
-    private AFont font;
     private int changeScene;
 
     public TitleScene(AndroidEngine engine_){
-        super(engine_);
+        super(engine_.getGraphics());
         this.changeScene = 0;
-        this.engine = engine_;
-        setUpScene();
+
+        setUpScene(engine_.getGraphics(), engine_.getAudio());
     }
 
-    private void createMusic(){
+    private void createMusic(AAudio audio) {
         //Background music
-        if(this.backgroundMusic == null) {
-            this.backgroundMusic = this.engine.getAudio().newSound("music.wav");
-            this.engine.getAudio().setLooping(this.backgroundMusic, true);
-            this.engine.getAudio().setVolume(this.backgroundMusic, 0.25f);
-            this.engine.getAudio().playSound(this.backgroundMusic);
-            this.engine.getAudio().setBackgroundMusic(this.backgroundMusic);
+        if (this.backgroundMusic == null) {
+            this.backgroundMusic = audio.newSound("music.wav");
+            audio.setLooping(this.backgroundMusic, true);
+            audio.setVolume(this.backgroundMusic, 0.25f);
+            audio.playSound(this.backgroundMusic);
+            audio.setBackgroundMusic(this.backgroundMusic);
         }
     }
 
-    private void createButtons(){
-        int x,y1, y2, y3, w,h;
-        x = this.engine.getGraphics().getLogicWidth() / 2;
-        y1 = this.engine.getGraphics().getLogicHeight() * 2 / 6;
-        w = this.engine.getGraphics().getLogicWidth() / 3;
-        h = this.engine.getGraphics().getLogicHeight() / 10;
 
-        this.storyButton = this.engine.getGraphics().newButton("Modo Historia",
+    private void createButtons(AGraphics graphics){
+        int x,y1, y2, y3, w,h;
+        x = graphics.getLogicWidth() / 2;
+        y1 = graphics.getLogicHeight() * 2 / 6;
+        w = graphics.getLogicWidth() / 3;
+        h = graphics.getLogicHeight() / 10;
+
+        this.storyButton = graphics.newButton("Modo Historia",
                 x - (w / 2), y1 - (h / 2), w, h,
                 8,35, 8,
                 this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
+                graphics.newColor(0, 0, 0, 255),
+                graphics.newColor(255, 255, 255, 255));
 
-        y2 = this.engine.getGraphics().getLogicHeight() * 3 / 6;
-        this.quickGameButton = this.engine.getGraphics().newButton("Partida Rápida",
+        y2 = graphics.getLogicHeight() * 3 / 6;
+        this.quickGameButton = graphics.newButton("Partida Rápida",
                 x - (w / 2), y2 - (h / 2), w, h,
                 5,35, 8,
                 this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
+                graphics.newColor(0, 0, 0, 255),
+                graphics.newColor(255, 255, 255, 255));
 
-        y3 = this.engine.getGraphics().getLogicHeight() * 4 / 6;
-        this.paletteButton = this.engine.getGraphics().newButton("Colores",
+        y3 = graphics.getLogicHeight() * 4 / 6;
+        this.paletteButton = graphics.newButton("Colores",
                 x - (w / 2), y3 - (h / 2), w, h,
                 5,35, 8,
                 this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
+                graphics.newColor(0, 0, 0, 255),
+                graphics.newColor(255, 255, 255, 255));
+    }
+
+    protected void setUpScene(AGraphics graphics, AAudio audio) {
+        this.font = graphics.newFont("font.TTF", false);
+        createButtons(graphics);
+        createMusic(audio);
     }
 
     @Override
-    protected void setUpScene() {
-        this.font = this.engine.getGraphics().newFont("font.TTF", false);
-        createButtons();
-        createMusic();
-    }
-
-    @Override
-    public void update() {
+    public void update(AndroidEngine engine) {
         if (this.changeScene != 0) {
             if (this.changeScene == 1)
-                this.engine.getCurrentState().addScene(new SelectCategoryScene(this.engine));
+                engine.getCurrentState().addScene(new SelectCategoryScene(engine));
             else if (this.changeScene == 2)
-                this.engine.getCurrentState().addScene(new QuickBoardSelectionScene(this.engine));
+                engine.getCurrentState().addScene(new QuickBoardSelectionScene(engine));
             else if(this.changeScene == 3)
-                this.engine.getCurrentState().addScene(new PaletteScene(this.engine));
+                engine.getCurrentState().addScene(new PaletteScene(engine));
+
             this.changeScene = 0;
         }
     }
 
     @Override
-    public void render() {
-        this.engine.getGraphics().drawText(this.font, "NONOGRAMS", this.engine.getGraphics().getLogicWidth()/2.0f - ((10*30)/2.0f),
-                100, 27, this.engine.getGraphics().newColor(0,0,0,255));
+    public void render(AGraphics graphics) {
+        super.render(graphics);
+        graphics.drawText(this.font, "NONOGRAMS", graphics.getLogicWidth()/2.0f - ((10*30)/2.0f),
+                75, 27, graphics.newColor(0,0,0,255));
 
-        this.engine.getGraphics().drawButton(this.storyButton);
-        this.engine.getGraphics().drawButton(this.quickGameButton);
-        this.engine.getGraphics().drawButton(this.paletteButton);
+        graphics.drawButton(this.storyButton);
+        graphics.drawButton(this.quickGameButton);
+        graphics.drawButton(this.paletteButton);
     }
 
     @Override
-    public synchronized void handleInputs() {
-        ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) this.engine.getInput().getEventList().clone();
+    public synchronized void handleInputs(AGraphics graphics, AInput input) {
+        ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
             AInput.Event event = it.next();
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    float collisionX = this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent) event).x);
-                    float collisionY = this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent) event).y);
+                    float collisionX = graphics.realToLogicX(((AInput.TouchInputEvent) event).x);
+                    float collisionY = graphics.realToLogicY(((AInput.TouchInputEvent) event).y);
                     if (this.storyButton.checkCollision(collisionX, collisionY)) this.changeScene = 1;
                     if (this.quickGameButton.checkCollision(collisionX, collisionY)) this.changeScene = 2;
                     if (this.paletteButton.checkCollision(collisionX, collisionY)) this.changeScene = 3;
@@ -117,7 +121,7 @@ public class TitleScene extends HistorySuperScene {
                     break;
             }
         }
-        this.engine.getInput().clearEventList();
+        input.clearEventList();
     }
 
     @Override
@@ -133,8 +137,7 @@ public class TitleScene extends HistorySuperScene {
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
         this.changeScene = savedInstanceState.getInt("changeScene");
-        this.engine = engine;
-        setUpScene();
+        setUpScene(engine.getGraphics(), engine.getAudio());
     }
 
     @Override

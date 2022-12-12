@@ -7,8 +7,10 @@ import android.view.View;
 import com.example.aengine.AButton;
 import com.example.aengine.AColor;
 import com.example.aengine.AFont;
+import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.AScene;
+import com.example.aengine.AState;
 import com.example.aengine.AndroidEngine;
 import com.google.gson.Gson;
 
@@ -34,7 +36,7 @@ public class LevelScene extends HistorySuperScene {
     private int rows, cols;
 
     public LevelScene(AndroidEngine engine_, int id_){
-        super(engine_);
+        super(engine_.getGraphics());
         this.filename = "level";
         this.backToMenu = false;
         this.changeScene = 0;
@@ -49,19 +51,19 @@ public class LevelScene extends HistorySuperScene {
         else if (this.id == 2) this.textId = "Ciudad";
         else this.textId = "Desierto";
 
-        restoreSceneFromFile(this.engine.getSurfaceView());
-        this.createButtons();
+        restoreSceneFromFile(engine_.getSurfaceView());
+        this.createButtons(engine_.getGraphics());
     }
 
-    private void createButtons(){
+    private void createButtons(AGraphics graphics){
         this.levels = new AButton[this.rows][this.cols]; //[y][x] : [i][j]
 
         int x0,y0, xi, yi, w,h;
-        x0 = this.engine.getGraphics().getLogicWidth() / 5;
-        y0 = this.engine.getGraphics().getLogicHeight() / 4;
-        xi = this.engine.getGraphics().getLogicWidth() / 5;
+        x0 = graphics.getLogicWidth() / 5;
+        y0 = graphics.getLogicHeight() / 4;
+        xi = graphics.getLogicWidth() / 5;
         yi = xi;
-        w = this.engine.getGraphics().getLogicWidth() / 6;
+        w = graphics.getLogicWidth() / 6;
         h = w;
 
         int tx = 15;
@@ -70,8 +72,8 @@ public class LevelScene extends HistorySuperScene {
 
         int x, y;
         String text;
-        AColor unlockedLevelColor = this.engine.getGraphics().newColor(250, 215, 160, 255);
-        AColor lockedLevelColor = this.engine.getGraphics().newColor(100, 65, 10, 255);
+        AColor unlockedLevelColor = graphics.newColor(250, 215, 160, 255);
+        AColor lockedLevelColor = graphics.newColor(100, 65, 10, 255);
         for(int i = 0; i < this.rows; ++i){
             y = y0 + (yi * i);
             for(int j = 0; j < this.cols; ++j){
@@ -79,88 +81,84 @@ public class LevelScene extends HistorySuperScene {
                 int level = i * this.cols + j + 1 + (this.id * 20);
                 text = Integer.toString(level);
                 AColor color = (this.currentLevel>=level) ?  unlockedLevelColor : lockedLevelColor;
-                this.levels[i][j] = this.engine.getGraphics().newButton(text,
+                this.levels[i][j] = graphics.newButton(text,
                         x - (w / 2), y - (h / 2), w, h,
                         tx,ty, tSize,
                         this.font,
-                        this.engine.getGraphics().newColor(0, 0, 0, 255),
+                        graphics.newColor(0, 0, 0, 255),
                         color);
             }
         }
 
-        x =  this.engine.getGraphics().getLogicWidth() / 7;
-        y =  this.engine.getGraphics().getLogicHeight() / 16;
-        w = this.engine.getGraphics().getLogicWidth() / 4;
-        h = this.engine.getGraphics().getLogicHeight() / 16;
+        x =  graphics.getLogicWidth() / 7;
+        y =  graphics.getLogicHeight() / 16;
+        w = graphics.getLogicWidth() / 4;
+        h = graphics.getLogicHeight() / 16;
         tx = 10;
         ty = 25;
         tSize = 12;
-        this.returnButton = this.engine.getGraphics().newButton("Volver",
+        this.returnButton = graphics.newButton("Volver",
                 x - (w / 2), y - (h / 2), w, h,
                 tx,ty, tSize,
                 this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
+                graphics.newColor(0, 0, 0, 255),
+                graphics.newColor(255, 255, 255, 255));
     }
 
-    @Override
     protected void setUpScene() {}
 
     @Override
-    public void update(){
+    public void update(AndroidEngine engine){
         if (this.changeScene != 0){
-            //saveSceneInFile(this.engine.getSurfaceView());
-            this.engine.getCurrentState().addScene(new QuickBoardScene(this.engine, this.changeScene,0,0));
+            engine.getCurrentState().addScene(new QuickBoardScene(engine, this.changeScene,0,0));
             this.changeScene = 0;
         }
-        if(this.backToMenu){
-            //saveSceneInFile(this.engine.getSurfaceView());
-            this.engine.getCurrentState().removeScene(1);
-        }
+        if(this.backToMenu) engine.getCurrentState().removeScene(1);
     }
 
     @Override
-    public void render(){
-        this.engine.getGraphics().setFont(this.font);
-        this.engine.getGraphics().drawText(this.textId,
-                this.engine.getGraphics().getLogicWidth() / 2.0f - 90,
-                this.engine.getGraphics().getLogicHeight() / 8.0f, 25,
-                this.engine.getGraphics().newColor(0,0,0,255));
+    public void render(AGraphics graphics){
+        super.render(graphics);
+        graphics.setFont(this.font);
+        graphics.drawText(this.textId,
+                graphics.getLogicWidth() / 2.0f - 90,
+                graphics.getLogicHeight() / 8.0f, 25,
+                graphics.newColor(0,0,0,255));
 
-        this.engine.getGraphics().drawButton(this.returnButton);
+        graphics.drawButton(this.returnButton);
 
         for (int i = 0; i < this.rows; ++i){
             for (int j = 0; j < this.cols; ++j){
-                this.engine.getGraphics().drawButton(this.levels[i][j]);
+                graphics.drawButton(this.levels[i][j]);
             }
         }
 
-        this.engine.getGraphics().drawText(Integer.toString(this.coins), 300,100, 20, this.engine.getGraphics().newColor(0,0,0,255));
+        graphics.drawText(Integer.toString(this.coins), 300,100, 20, graphics.newColor(0,0,0,255));
     }
 
     @Override
-    public void handleInputs(){
-        ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) this.engine.getInput().getEventList().clone();
+    public void handleInputs(AGraphics graphics, AInput input){
+        ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList)
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    float collisionX = this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent) event).x);
-                    float collisionY = this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent) event).y);
+                    float collisionX = graphics.realToLogicX(((AInput.TouchInputEvent) event).x);
+                    float collisionY = graphics.realToLogicY(((AInput.TouchInputEvent) event).y);
                     if (this.returnButton.checkCollision(collisionX, collisionY))
                         this.backToMenu = true;
                     else for (int i = 0; i < this.rows; ++i)
-                            for (int j = 0; j < this.cols; ++j)
-                                if (this.levels[i][j].checkCollision(collisionX, collisionY))
-                                    this.changeScene = i * this.cols + j + 1 + (this.id * 20);
+                        for (int j = 0; j < this.cols; ++j)
+                            if (this.levels[i][j].checkCollision(collisionX, collisionY))
+                                this.changeScene = i * this.cols + j + 1 + (this.id * 20);
                     break;
                 //DEBUG
                 case LONG_TOUCH:
-                  this.coins++;
-                  break;
+                    this.coins++;
+                    break;
                 default:
                     break;
             }
-        this.engine.getInput().clearEventList();
+        input.clearEventList();
     }
 
     @Override
@@ -183,7 +181,6 @@ public class LevelScene extends HistorySuperScene {
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-        this.engine = engine;
         this.currentLevel = savedInstanceState.getInt("currentLevel");
     }
 

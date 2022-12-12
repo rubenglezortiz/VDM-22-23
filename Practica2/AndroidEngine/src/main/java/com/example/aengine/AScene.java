@@ -3,14 +3,16 @@ package com.example.aengine;
 import android.os.Bundle;
 import android.view.View;
 
+import java.net.DatagramPacket;
+
 public abstract class AScene  {
-    protected abstract void setUpScene();
+    //protected abstract void setUpScene();
 
-    public abstract void update();
+    public abstract void update(AndroidEngine engine);
 
-    public abstract void render();
+    public abstract void render(AGraphics graphics);
 
-    public abstract void handleInputs();
+    public abstract void handleInputs(AGraphics graphics, AInput input);
 
     public abstract void saveScene(Bundle outState);
 

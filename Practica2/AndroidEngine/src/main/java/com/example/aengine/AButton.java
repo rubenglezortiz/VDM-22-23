@@ -2,6 +2,8 @@ package com.example.aengine;
 
 import android.widget.Button;
 
+import java.io.Serializable;
+
 
 public class AButton {
     private String text;

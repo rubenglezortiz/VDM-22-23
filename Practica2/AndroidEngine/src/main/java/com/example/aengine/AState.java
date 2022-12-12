@@ -11,25 +11,27 @@ import java.util.Stack;
 public class AState  {
     private Stack<AScene> scenes;
     private SurfaceView myView;
+    private AndroidEngine myEngine;
 
-    public AState(SurfaceView view) {
+    public AState(SurfaceView view, AndroidEngine engine) {
+        this.myEngine = engine;
         this.myView = view;
         this.scenes = new Stack<AScene>();
     }
 
     public void update() {
         if(this.scenes.size() > 0)
-            this.scenes.peek().update();
+            this.scenes.peek().update(this.myEngine);
     }
 
     public void render() {
         if(this.scenes.size() > 0)
-            this.scenes.peek().render();
+            this.scenes.peek().render(this.myEngine.getGraphics());
     }
 
     public void handleInputs() {
         if(this.scenes.size() > 0)
-            this.scenes.peek().handleInputs();
+            this.scenes.peek().handleInputs(this.myEngine.getGraphics(), this.myEngine.getInput());
     }
 
     public void saveScene(Bundle outState){

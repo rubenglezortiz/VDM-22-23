@@ -6,7 +6,9 @@ import android.view.View;
 
 import com.example.aengine.AButton;
 import com.example.aengine.AColor;
+import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
+import com.example.aengine.AState;
 import com.example.aengine.AndroidEngine;
 import com.google.gson.Gson;
 
@@ -26,87 +28,87 @@ public class PaletteScene extends HistorySuperScene {
     private AButton returnButton, p1, p2, p3;
 
     public PaletteScene(AndroidEngine engine_){
-        super(engine_);
+        super(engine_.getGraphics());
         this.filename = "palette";
         this.back = false;
         this.lockp2 = this.lockp3 = true;
         this.costp2 = 50;
         this.costp3 = 100;
-        restoreSceneFromFile(this.engine.getSurfaceView());
-        this.createButtons();
+        restoreSceneFromFile(engine_.getSurfaceView());
+        this.createButtons(engine_.getGraphics());
     }
 
-    private void createButtons(){
+    private void createButtons(AGraphics graphics){
         int x, x3x, x5x, x10x, y, w, h, tx, ty, tSize;
-        x3x = this.engine.getGraphics().getLogicWidth() / 4;
-        x5x = this.engine.getGraphics().getLogicWidth() * 2 / 4;
-        x10x = this.engine.getGraphics().getLogicWidth() * 3 / 4;
-        y = this.engine.getGraphics().getLogicHeight() / 2;
-        w = this.engine.getGraphics().getLogicWidth() / 5;
-        h = this.engine.getGraphics().getLogicHeight() / 10;
+        x3x = graphics.getLogicWidth() / 4;
+        x5x = graphics.getLogicWidth() * 2 / 4;
+        x10x = graphics.getLogicWidth() * 3 / 4;
+        y = graphics.getLogicHeight() / 2;
+        w = graphics.getLogicWidth() / 5;
+        h = graphics.getLogicHeight() / 10;
         ty = 35;
         tSize = 15;
 
-        this.p1 = this.engine.getGraphics().newButton("P1",
+        this.p1 = graphics.newButton("P1",
                 x3x - (w / 2), y - (h / 2), w, h,
                 18,ty, tSize,
                 this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
+                graphics.newColor(0, 0, 0, 255),
+                graphics.newColor(255, 255, 255, 255));
 
-        this.p2 = this.engine.getGraphics().newButton("P2",
+        this.p2 = graphics.newButton("P2",
                 x5x - (w / 2), y - (h / 2), w, h,
                 18,ty, tSize,
                 this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
+                graphics.newColor(0, 0, 0, 255),
+                graphics.newColor(255, 255, 255, 255));
 
-        this.p3 = this.engine.getGraphics().newButton("P3",
+        this.p3 = graphics.newButton("P3",
                 x10x - (w / 2), y - (h / 2), w, h,
                 7,ty, tSize,
                 this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
-        x =  this.engine.getGraphics().getLogicWidth() / 7;
-        y =  this.engine.getGraphics().getLogicHeight() / 16;
-        w = this.engine.getGraphics().getLogicWidth() / 4;
-        h = this.engine.getGraphics().getLogicHeight() / 16;
+                graphics.newColor(0, 0, 0, 255),
+                graphics.newColor(255, 255, 255, 255));
+        x =  graphics.getLogicWidth() / 7;
+        y =  graphics.getLogicHeight() / 16;
+        w = graphics.getLogicWidth() / 4;
+        h = graphics.getLogicHeight() / 16;
         tx = 10;
         ty = 25;
         tSize = 12;
-        this.returnButton = this.engine.getGraphics().newButton("Volver",
+        this.returnButton = graphics.newButton("Volver",
                 x - (w / 2), y - (h / 2), w, h,
                 tx,ty, tSize,
                 this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
+                graphics.newColor(0, 0, 0, 255),
+                graphics.newColor(255, 255, 255, 255));
     }
 
-    @Override
     protected void setUpScene() {}
 
     @Override
-    public void update(){
-        if (this.back) this.engine.getCurrentState().removeScene(1);
+    public void update(AndroidEngine engine){
+        if (this.back) engine.getCurrentState().removeScene(1);
     }
 
     @Override
-    public void render(){
-        this.engine.getGraphics().drawButton(this.returnButton);
-        this.engine.getGraphics().drawButton(this.p1);
-        this.engine.getGraphics().drawButton(this.p2);
-        this.engine.getGraphics().drawButton(this.p3);
-        this.engine.getGraphics().drawText(Integer.toString(this.actPalette), 300,100, 20, this.engine.getGraphics().newColor(0,0,0,255));
+    public void render(AGraphics graphics){
+        super.render(graphics);
+        graphics.drawButton(this.returnButton);
+        graphics.drawButton(this.p1);
+        graphics.drawButton(this.p2);
+        graphics.drawButton(this.p3);
+        graphics.drawText(Integer.toString(this.actPalette), 300,100, 20, graphics.newColor(0,0,0,255));
     }
 
     @Override
-    public void handleInputs(){
-        ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) this.engine.getInput().getEventList().clone();
+    public void handleInputs(AGraphics graphics, AInput input){
+        ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList)
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    float collisionX = this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent) event).x);
-                    float collisionY = this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent) event).y);
+                    float collisionX = graphics.realToLogicX(((AInput.TouchInputEvent) event).x);
+                    float collisionY = graphics.realToLogicY(((AInput.TouchInputEvent) event).y);
                     if (this.p1.checkCollision(collisionX, collisionY)) this.actPalette = 0;
                     else if (this.p2.checkCollision(collisionX, collisionY)){
                         if(this.lockp2 && this.costp2 <= this.coins) {
@@ -120,15 +122,15 @@ public class PaletteScene extends HistorySuperScene {
                             this.coins -= this.costp3;
                             this.lockp3 = false;
                         }
-                        if(!this.lockp3) this.actPalette = 1;
+                        if(!this.lockp3) this.actPalette = 2;
                     }
-                    this.engine.getGraphics().setBackgroundColor(this.palettes[this.actPalette][0]);
+                    graphics.setBackgroundColor(this.palettes[this.actPalette][0]);
                     if(this.returnButton.checkCollision(collisionX,collisionY)) this.back = true;
-                  break;
+                    break;
                 default:
                     break;
             }
-        this.engine.getInput().clearEventList();
+        input.clearEventList();
     }
 
     @Override
@@ -150,7 +152,6 @@ public class PaletteScene extends HistorySuperScene {
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-        this.engine = engine;
     }
 
     @Override
