@@ -69,9 +69,9 @@ public class Board implements Serializable {
             //Leer un archivo
             Resources resources = engine_.getSurfaceView().getResources();
             try {
-                InputStream iS = resources.getAssets().open("level.txt");
-                //String levelName = "level" + Integer.toString(id) + ".txt";
-                //InputStream iS = resources.getAssets().open(levelName);
+                //InputStream iS = resources.getAssets().open("level.txt");
+                String levelName = "level" + Integer.toString(id) + ".txt";
+                InputStream iS = resources.getAssets().open(levelName);
                 BufferedReader br = new BufferedReader(new InputStreamReader(iS));
                 this.numRows = Integer.parseInt(br.readLine());
                 this.numCols = Integer.parseInt(br.readLine());

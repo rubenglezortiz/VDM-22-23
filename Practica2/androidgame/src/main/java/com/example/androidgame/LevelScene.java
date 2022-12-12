@@ -110,7 +110,10 @@ public class LevelScene extends HistorySuperScene {
     @Override
     public void update(AndroidEngine engine){
         if (this.changeScene != 0){
-            engine.getCurrentState().addScene(new QuickBoardScene(engine, this.changeScene,0,0));
+            //saveSceneInFile(this.engine.getSurfaceView());
+            QuickBoardScene level = new QuickBoardScene(this.engine, this.changeScene,0,0);
+            engine.getCurrentState().addScene(level);
+            if (level.checkIfFinished()) this.currentLevel++;
             this.changeScene = 0;
         }
         if(this.backToMenu) engine.getCurrentState().removeScene(1);
@@ -147,9 +150,10 @@ public class LevelScene extends HistorySuperScene {
                     if (this.returnButton.checkCollision(collisionX, collisionY))
                         this.backToMenu = true;
                     else for (int i = 0; i < this.rows; ++i)
-                        for (int j = 0; j < this.cols; ++j)
-                            if (this.levels[i][j].checkCollision(collisionX, collisionY))
-                                this.changeScene = i * this.cols + j + 1 + (this.id * 20);
+                            for (int j = 0; j < this.cols; ++j)
+                                if ((i * this.cols + j) < this.currentLevel)
+                                    if (this.levels[i][j].checkCollision(collisionX, collisionY))
+                                        this.changeScene = i * this.cols + j + 1 + (this.id * 20);
                     break;
                 //DEBUG
                 case LONG_TOUCH:
