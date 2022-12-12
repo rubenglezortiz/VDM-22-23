@@ -9,27 +9,28 @@ import com.example.aengine.AFont;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AImage;
 import com.example.aengine.AInput;
-import com.example.aengine.AScene;
 import com.example.aengine.ASound;
 import com.example.aengine.AndroidEngine;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class QuickBoardScene extends HistorySuperScene {
+public class BoardScene extends HistorySuperScene {
     private Board board;
     private AButton backToMenuButton, levelFinishedButton;
     private AImage liveImage, noLiveImage;
     private AFont font;
     private boolean backToMenu, levelFinished, backToSelectionLevelScene;
+    private int levelId;
 
     private ASound winSound;
 
 
-    public QuickBoardScene(AndroidEngine engine, int id, int numCols, int numRows){
+    public BoardScene(AndroidEngine engine, int id_, int numCols, int numRows){
         super(engine.getGraphics());
         this.levelFinished = false;
-        this.board = new Board(id,numCols,numRows, engine);
+        this.levelId = id_;
+        this.board = new Board(this.levelId,numCols,numRows, engine);
         setUpScene(engine.getGraphics(), engine.getAudio());
     }
 
@@ -75,7 +76,16 @@ public class QuickBoardScene extends HistorySuperScene {
 
     @Override
     public void update(AndroidEngine engine) {
-        if(!this.levelFinished && this.board.checkWin() || this.board.getCurrentLives() == 0){ this.levelFinished = true;}
+        if(!this.levelFinished && this.board.checkWin() || this.board.getCurrentLives() == 0){
+            this.levelFinished = true;
+
+            if (this.levelId != 0){
+                if (this.levelId <= 20)      this.forestLevels++;
+                else if (this.levelId <= 40) this.seaLevels++;
+                else if (this.levelId <= 60) this.cityLevels++;
+                else                    this.desertLevels++;
+            }
+        }
         if(this.backToMenu) engine.getCurrentState().removeScene(2);
         if(this.backToSelectionLevelScene) engine.getCurrentState().removeScene(1);
     }
@@ -138,11 +148,12 @@ public class QuickBoardScene extends HistorySuperScene {
 
     @Override
     public void saveSceneInFile(View myView) {
-
+        super.saveSceneInFile(myView);
     }
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine){
+        super.restoreScene(savedInstanceState, engine);
         /*if(savedInstanceState!=null){
             this.engine = engine;
             this.board.updateGraphics(this.engine.getGraphics());
@@ -157,9 +168,5 @@ public class QuickBoardScene extends HistorySuperScene {
     public void restoreSceneFromFile(View myView) {
         super.restoreSceneFromFile(myView);
         this.board.setCellColor(this.palettes[this.actPalette][1]);
-    }
-
-    public boolean checkIfFinished(){
-        return this.levelFinished;
     }
 }

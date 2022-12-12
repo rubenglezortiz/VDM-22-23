@@ -26,7 +26,7 @@ public class HistorySuperScene extends AScene {
     private String filename;
     protected AFont font;
     private AImage coinsImage;
-    protected int coins, currentLevel;
+    protected int coins, forestLevels, seaLevels, cityLevels, desertLevels;
     protected AColor[][] palettes;
     protected int actPalette;
 
@@ -35,7 +35,7 @@ public class HistorySuperScene extends AScene {
         this.font = graphics.newFont("font.TTF", false);
         this.coinsImage = graphics.newImage("moneda.png");
         this.coins = 0;
-        this.currentLevel = 1;
+        this.forestLevels = this.seaLevels = this.cityLevels = this.desertLevels = 1;
         this.actPalette = 0;
         this.palettes = new AColor[3][2];
         this.palettes[0][0] = new AColor(255,255,255);
@@ -69,7 +69,10 @@ public class HistorySuperScene extends AScene {
     public void saveSceneInFile(View myView) {
         Gson gson = new Gson();
         String aux = gson.toJson(this.coins);
-        aux += '\n' + gson.toJson(this.currentLevel);
+        aux += '\n' + gson.toJson(this.forestLevels);
+        aux += '\n' + gson.toJson(this.seaLevels);
+        aux += '\n' + gson.toJson(this.cityLevels);
+        aux += '\n' + gson.toJson(this.desertLevels);
         aux += '\n' + gson.toJson(this.actPalette);
 
         try(FileOutputStream fos = myView.getContext().openFileOutput(this.filename, Context.MODE_PRIVATE)){
@@ -98,7 +101,13 @@ public class HistorySuperScene extends AScene {
             String line = reader.readLine();
             this.coins = gson.fromJson(line, int.class);
             line = reader.readLine();
-            this.currentLevel = gson.fromJson(line,int.class);
+            this.forestLevels = gson.fromJson(line,int.class);
+            line = reader.readLine();
+            this.seaLevels = gson.fromJson(line,int.class);
+            line = reader.readLine();
+            this.cityLevels = gson.fromJson(line,int.class);
+            line = reader.readLine();
+            this.desertLevels = gson.fromJson(line,int.class);
             line = reader.readLine();
             this.actPalette = gson.fromJson(line,int.class);
         } catch (IOException e) {

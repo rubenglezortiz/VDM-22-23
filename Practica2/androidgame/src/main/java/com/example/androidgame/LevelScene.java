@@ -1,28 +1,16 @@
 package com.example.androidgame;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
 import com.example.aengine.AButton;
 import com.example.aengine.AColor;
-import com.example.aengine.AFont;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
-import com.example.aengine.AScene;
-import com.example.aengine.AState;
 import com.example.aengine.AndroidEngine;
-import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Iterator;
+
 public class LevelScene extends HistorySuperScene {
     private String filename;
     private int changeScene;
@@ -31,7 +19,8 @@ public class LevelScene extends HistorySuperScene {
     private AButton returnButton;
     private AButton[][] levels;
 
-    private int id;
+    private int categoryId;
+    private int currentLevel;
     private String textId;
     private int rows, cols;
 
@@ -40,16 +29,29 @@ public class LevelScene extends HistorySuperScene {
         this.filename = "level";
         this.backToMenu = false;
         this.changeScene = 0;
-        this.currentLevel = 1;
+
+
         this.rows = 5;
         this.cols = 4;
 
         //En el futuro, se tendrá que leer de fichero para cargar partida guardada
-        this.id = id_;
-        if(this.id == 0) this.textId = "Bosque";
-        else if (this.id == 1) this.textId = "Mar";
-        else if (this.id == 2) this.textId = "Ciudad";
-        else this.textId = "Desierto";
+        this.categoryId = id_;
+        if(this.categoryId == 0) {
+            this.textId = "Bosque";
+            this.currentLevel = this.forestLevels;
+        }
+        else if (this.categoryId == 1){
+            this.textId = "Mar";
+            this.currentLevel = this.seaLevels;
+        }
+        else if (this.categoryId == 2) {
+            this.textId = "Ciudad";
+            this.currentLevel = this.cityLevels;
+        }
+        else {
+            this.textId = "Desierto";
+            this.currentLevel = this.desertLevels;
+        }
 
         restoreSceneFromFile(engine_.getSurfaceView());
         this.createButtons(engine_.getGraphics());
@@ -78,7 +80,7 @@ public class LevelScene extends HistorySuperScene {
             y = y0 + (yi * i);
             for(int j = 0; j < this.cols; ++j){
                 x = x0 + (xi * j);
-                int level = i * this.cols + j + 1 + (this.id * 20);
+                int level = i * this.cols + j + 1 + (this.categoryId * 20);
                 text = Integer.toString(level);
                 AColor color = (this.currentLevel>=level) ?  unlockedLevelColor : lockedLevelColor;
                 this.levels[i][j] = graphics.newButton(text,
@@ -110,10 +112,7 @@ public class LevelScene extends HistorySuperScene {
     @Override
     public void update(AndroidEngine engine){
         if (this.changeScene != 0){
-            //saveSceneInFile(this.engine.getSurfaceView());
-            QuickBoardScene level = new QuickBoardScene(this.engine, this.changeScene,0,0);
-            engine.getCurrentState().addScene(level);
-            if (level.checkIfFinished()) this.currentLevel++;
+            engine.getCurrentState().addScene(new BoardScene(engine, this.changeScene,0,0));
             this.changeScene = 0;
         }
         if(this.backToMenu) engine.getCurrentState().removeScene(1);
@@ -153,7 +152,7 @@ public class LevelScene extends HistorySuperScene {
                             for (int j = 0; j < this.cols; ++j)
                                 if ((i * this.cols + j) < this.currentLevel)
                                     if (this.levels[i][j].checkCollision(collisionX, collisionY))
-                                        this.changeScene = i * this.cols + j + 1 + (this.id * 20);
+                                        this.changeScene = i * this.cols + j + 1 + (this.categoryId * 20);
                     break;
                 //DEBUG
                 case LONG_TOUCH:
@@ -171,8 +170,8 @@ public class LevelScene extends HistorySuperScene {
     @Override
     public void saveSceneInFile(View myView) {
         super.saveSceneInFile(myView);
-        Gson gson = new Gson();
-        String aux = gson.toJson(this.currentLevel);
+        /*Gson gson = new Gson();
+        //String aux = gson.toJson(this.currentLevel);
 
         try(FileOutputStream fos = myView.getContext().openFileOutput(this.filename, Context.MODE_PRIVATE)){
             fos.write(aux.getBytes(StandardCharsets.UTF_8));
@@ -180,18 +179,18 @@ public class LevelScene extends HistorySuperScene {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-        this.currentLevel = savedInstanceState.getInt("currentLevel");
+        //this.currentLevel = savedInstanceState.getInt("currentLevel");
     }
 
     @Override
     public void restoreSceneFromFile(View myView) {
         super.restoreSceneFromFile(myView);
-        Gson gson = new Gson();
+        /*Gson gson = new Gson();
         try {
             FileInputStream fis = myView.getContext().openFileInput(this.filename);
             InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
@@ -202,6 +201,6 @@ public class LevelScene extends HistorySuperScene {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

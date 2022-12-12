@@ -87,9 +87,9 @@ public class QuickBoardSelectionScene extends AScene {
     public void update(AndroidEngine engine) {
         if(this.changeScene){
             this.changeScene = false;
-            if(this.boardSize == 1) engine.getCurrentState().addScene(new QuickBoardScene(engine, 0,3,3));
-            else if (this.boardSize == 2) engine.getCurrentState().addScene(new QuickBoardScene(engine, 0,5,5));
-            else if (this.boardSize == 3) engine.getCurrentState().addScene(new QuickBoardScene(engine,0, 10,10));
+            if(this.boardSize == 1) engine.getCurrentState().addScene(new BoardScene(engine, 0,3,3));
+            else if (this.boardSize == 2) engine.getCurrentState().addScene(new BoardScene(engine, 0,5,5));
+            else if (this.boardSize == 3) engine.getCurrentState().addScene(new BoardScene(engine,0, 10,10));
         }
         if(this.backToMenu){
             engine.getCurrentState().removeScene(1);
