@@ -21,13 +21,17 @@ import java.util.ArrayList;
 
 public class PaletteScene extends HistorySuperScene {
     private String filename;
-    private boolean back;
+    private boolean back, lockp2, lockp3;
+    private int costp2, costp3;
     private AButton returnButton, p1, p2, p3;
 
     public PaletteScene(AndroidEngine engine_){
         super(engine_);
         this.filename = "palette";
         this.back = false;
+        this.lockp2 = this.lockp3 = true;
+        this.costp2 = 50;
+        this.costp3 = 100;
         restoreSceneFromFile(this.engine.getSurfaceView());
         this.createButtons();
     }
@@ -104,8 +108,20 @@ public class PaletteScene extends HistorySuperScene {
                     float collisionX = this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent) event).x);
                     float collisionY = this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent) event).y);
                     if (this.p1.checkCollision(collisionX, collisionY)) this.actPalette = 0;
-                    else if (this.p2.checkCollision(collisionX, collisionY)) this.actPalette = 1;
-                    else if (this.p3.checkCollision(collisionX, collisionY)) this.actPalette = 2;
+                    else if (this.p2.checkCollision(collisionX, collisionY)){
+                        if(this.lockp2 && this.costp2 <= this.coins) {
+                            this.coins -= this.costp2;
+                            this.lockp2 = false;
+                        }
+                        if(!this.lockp2) this.actPalette = 1;
+                    }
+                    else if (this.p3.checkCollision(collisionX, collisionY)){
+                        if(this.lockp3 && this.costp3 <= this.coins) {
+                            this.coins -= this.costp3;
+                            this.lockp3 = false;
+                        }
+                        if(!this.lockp3) this.actPalette = 1;
+                    }
                     this.engine.getGraphics().setBackgroundColor(this.palettes[this.actPalette][0]);
                     if(this.returnButton.checkCollision(collisionX,collisionY)) this.back = true;
                   break;
@@ -121,16 +137,15 @@ public class PaletteScene extends HistorySuperScene {
     @Override
     public void saveSceneInFile(View myView) {
         super.saveSceneInFile(myView);
-        /*Gson gson = new Gson();
-        String aux = gson.toJson(this.currentLevel);
+        Gson gson = new Gson();
+        String aux = gson.toJson(this.lockp2);
+        aux += '\n' + gson.toJson(this.lockp3);
 
         try(FileOutputStream fos = myView.getContext().openFileOutput(this.filename, Context.MODE_PRIVATE)){
             fos.write(aux.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-         */
     }
 
     @Override
@@ -141,19 +156,19 @@ public class PaletteScene extends HistorySuperScene {
     @Override
     public void restoreSceneFromFile(View myView) {
         super.restoreSceneFromFile(myView);
-        /*
         Gson gson = new Gson();
         try {
             FileInputStream fis = myView.getContext().openFileInput(this.filename);
             InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
             BufferedReader reader = new BufferedReader(isr);
             String line = reader.readLine();
+            this.lockp2 = gson.fromJson(line, boolean.class);
+            line = reader.readLine();
+            this.lockp3 = gson.fromJson(line,boolean.class);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-         */
     }
 }

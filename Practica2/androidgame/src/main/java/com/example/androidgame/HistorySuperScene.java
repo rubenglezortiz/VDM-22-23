@@ -33,7 +33,7 @@ public class HistorySuperScene extends AScene {
         this.coins = 0;
         this.currentLevel = 1;
         this.actPalette = 0;
-        this.palettes = new AColor[3][2]; //[y][x] : [i][j]
+        this.palettes = new AColor[3][2];
         this.palettes[0][0] = new AColor(255,255,255);
         this.palettes[0][1] = new AColor(0,0,255);
         this.palettes[1][0] = new AColor(255,0,128);
