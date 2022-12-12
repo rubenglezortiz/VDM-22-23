@@ -3,16 +3,13 @@ package com.example.androidgame;
 import android.content.res.Resources;
 
 import com.example.aengine.AAudio;
+import com.example.aengine.AColor;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.ASound;
 import com.example.aengine.AndroidEngine;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
@@ -68,8 +65,7 @@ public class Board implements Serializable {
                 }
             }
         }
-        else
-        {
+        else {
             //Leer un archivo
             Resources resources = engine_.getSurfaceView().getResources();
             try {
@@ -105,7 +101,6 @@ public class Board implements Serializable {
             }
 
         }
-
         //Aquí la generación de las casillas ya se ha terminado.
         clueGenerator();
         createSounds();
@@ -311,4 +306,10 @@ public class Board implements Serializable {
     public int getInitLives(){return this.initLives;}
 
     public int getCurrentLives(){return this.currentLives;}
+
+    public void setCellColor(AColor cellColor_) {
+        for (int i = 0; i < this.numRows; i++)
+            for (int j = 0; j < this.numCols; j++)
+                this.board[j][i].setMarkedColor(cellColor_);
+    }
 }

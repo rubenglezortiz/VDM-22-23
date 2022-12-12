@@ -14,7 +14,7 @@ import com.example.aengine.AndroidEngine;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class QuickBoardScene extends AScene {
+public class QuickBoardScene extends HistorySuperScene {
     private AndroidEngine engine;
     private Board board;
     private AButton backToMenuButton, levelFinishedButton;
@@ -26,6 +26,7 @@ public class QuickBoardScene extends AScene {
 
 
     public QuickBoardScene(AndroidEngine engine_, int id, int numCols, int numRows){
+        super(engine_);
         this.engine = engine_;
         this.levelFinished = false;
         this.board = new Board(id,numCols,numRows,this.engine);
@@ -154,6 +155,7 @@ public class QuickBoardScene extends AScene {
 
     @Override
     public void restoreSceneFromFile(View myView) {
-
+        super.restoreSceneFromFile(myView);
+        this.board.setCellColor(this.palettes[this.actPalette][1]);
     }
 }

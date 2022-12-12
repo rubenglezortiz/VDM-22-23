@@ -11,6 +11,7 @@ public class Cell extends GameObject {
     private boolean solution, recentlyRemoved;
     private int row, col;
     private State state;
+    private AColor markedColor;
 
     public Cell(int row_, int col_, int w, int h, boolean sol, AGraphics graphics_){
         super(w, h, graphics_);
@@ -18,7 +19,7 @@ public class Cell extends GameObject {
         this.row = row_;
         this.col = col_;
         this.solution = sol;
-
+        this.markedColor = new AColor(255,255,255,255);
         this.recentlyRemoved = false;
     }
 
@@ -62,7 +63,7 @@ public class Cell extends GameObject {
                 icolor = graphics.newColor(200,200,200,255); // Grey
                 break;
             case MARKED:
-                icolor = graphics.newColor(0,0,255,255); // BLue
+                icolor = this.markedColor;
                 break;
             case REMOVED:
                 icolor = graphics.newColor(0,0,0,255); // White
@@ -89,4 +90,6 @@ public class Cell extends GameObject {
                 y >= this.graphics.logicToRealY(this.y)  &&
                 y <= this.graphics.logicToRealY(this.y + this.h));
     }
+
+    public void setMarkedColor(AColor c){ this.markedColor = c;}
 }

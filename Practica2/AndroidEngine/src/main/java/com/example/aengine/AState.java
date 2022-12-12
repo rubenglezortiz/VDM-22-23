@@ -47,9 +47,7 @@ public class AState  {
     }
 
     public void restoreSceneFromFile(View myView) {
-        Iterator<AScene> it = this.scenes.iterator();
-        while(it.hasNext())
-            it.next().restoreSceneFromFile(myView);
+        for (AScene scene : this.scenes) scene.restoreSceneFromFile(myView);
     }
 
     public void addScene(AScene scene) {
@@ -64,7 +62,7 @@ public class AState  {
         while (this.scenes.size()>1&& i<numScenes) { //COMPROBAR SI FUNCIONA CUANDO SE BORRA MÁS DE UNA ESCENA DE GOLPE
             this.scenes.pop().saveSceneInFile(this.myView);
             if(this.scenes.size()>0)
-            this.scenes.peek().restoreSceneFromFile(this.myView);
+                this.scenes.peek().restoreSceneFromFile(this.myView);
             i++;
         }
     }

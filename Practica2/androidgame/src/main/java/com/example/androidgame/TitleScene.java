@@ -13,15 +13,15 @@ import com.example.aengine.AndroidEngine;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class TitleScene extends AScene {
+public class TitleScene extends HistorySuperScene {
     private AndroidEngine engine;
-    private AButton storyButton;
-    private AButton quickGameButton;
+    private AButton storyButton, quickGameButton, paletteButton;
     private ASound backgroundMusic;
     private AFont font;
     private int changeScene;
 
     public TitleScene(AndroidEngine engine_){
+        super(engine_);
         this.changeScene = 0;
         this.engine = engine_;
         setUpScene();
@@ -39,9 +39,9 @@ public class TitleScene extends AScene {
     }
 
     private void createButtons(){
-        int x,y1, y2, w,h;
+        int x,y1, y2, y3, w,h;
         x = this.engine.getGraphics().getLogicWidth() / 2;
-        y1 = this.engine.getGraphics().getLogicHeight() * 2 / 4;
+        y1 = this.engine.getGraphics().getLogicHeight() * 2 / 6;
         w = this.engine.getGraphics().getLogicWidth() / 3;
         h = this.engine.getGraphics().getLogicHeight() / 10;
 
@@ -52,9 +52,17 @@ public class TitleScene extends AScene {
                 this.engine.getGraphics().newColor(0, 0, 0, 255),
                 this.engine.getGraphics().newColor(255, 255, 255, 255));
 
-        y2 = this.engine.getGraphics().getLogicHeight() * 3 / 4;
+        y2 = this.engine.getGraphics().getLogicHeight() * 3 / 6;
         this.quickGameButton = this.engine.getGraphics().newButton("Partida Rápida",
                 x - (w / 2), y2 - (h / 2), w, h,
+                5,35, 8,
+                this.font,
+                this.engine.getGraphics().newColor(0, 0, 0, 255),
+                this.engine.getGraphics().newColor(255, 255, 255, 255));
+
+        y3 = this.engine.getGraphics().getLogicHeight() * 4 / 6;
+        this.paletteButton = this.engine.getGraphics().newButton("Colores",
+                x - (w / 2), y3 - (h / 2), w, h,
                 5,35, 8,
                 this.font,
                 this.engine.getGraphics().newColor(0, 0, 0, 255),
@@ -73,9 +81,10 @@ public class TitleScene extends AScene {
         if (this.changeScene != 0) {
             if (this.changeScene == 1)
                 this.engine.getCurrentState().addScene(new SelectCategoryScene(this.engine));
-            else
+            else if (this.changeScene == 2)
                 this.engine.getCurrentState().addScene(new QuickBoardSelectionScene(this.engine));
-
+            else if(this.changeScene == 3)
+                this.engine.getCurrentState().addScene(new PaletteScene(this.engine));
             this.changeScene = 0;
         }
     }
@@ -87,6 +96,7 @@ public class TitleScene extends AScene {
 
         this.engine.getGraphics().drawButton(this.storyButton);
         this.engine.getGraphics().drawButton(this.quickGameButton);
+        this.engine.getGraphics().drawButton(this.paletteButton);
     }
 
     @Override
@@ -99,13 +109,9 @@ public class TitleScene extends AScene {
                 case TOUCH_RELEASED:
                     float collisionX = this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent) event).x);
                     float collisionY = this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent) event).y);
-                    if (this.storyButton.checkCollision(collisionX, collisionY)){
-                        this.changeScene = 1;
-                    }
-                    if (this.quickGameButton.checkCollision(this.engine.getGraphics().realToLogicX(((AInput.TouchInputEvent)event).x),
-                            this.engine.getGraphics().realToLogicY(((AInput.TouchInputEvent)event).y))){
-                        this.changeScene = 2;
-                    }
+                    if (this.storyButton.checkCollision(collisionX, collisionY)) this.changeScene = 1;
+                    if (this.quickGameButton.checkCollision(collisionX, collisionY)) this.changeScene = 2;
+                    if (this.paletteButton.checkCollision(collisionX, collisionY)) this.changeScene = 3;
                     break;
                 default:
                     break;
@@ -133,7 +139,7 @@ public class TitleScene extends AScene {
 
     @Override
     public void restoreSceneFromFile(View myView) {
-
+        super.restoreSceneFromFile(myView);
     }
 }
 

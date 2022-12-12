@@ -33,6 +33,9 @@ public class AGraphics  {
     private Thread renderThread;
     private boolean running;
 
+    // Other Variables
+    private  AColor background;
+
     public AGraphics(SurfaceView myView_){
         this.myView = myView_;
         this.holder = this.myView.getHolder();
@@ -42,6 +45,7 @@ public class AGraphics  {
         this.logicWidth = 400;
         this.logicHeight = 600;
         this.defaultFont = this.paint.getTypeface();
+        this.background = newColor(255,255,255,255);
     }
 
     // Android functions
@@ -51,7 +55,7 @@ public class AGraphics  {
         this.screenHeight = metrics.heightPixels;
         this.screenWidth = metrics.widthPixels;
         setResolution((float)this.screenWidth, (float)this.screenHeight);
-        this.clear(newColor(220,220,220,255));
+        this.clear();
     }
 
     public void finishFrame() {
@@ -120,9 +124,12 @@ public class AGraphics  {
         return new AButton(text, x, y, w, h, tX, tY, tSize, f,  mColor, bgColor);
     }
 
+    public void setBackgroundColor(AColor backgroundColor){
+        this.background = backgroundColor;
+    }
 
-    public void clear(AColor color) {
-        setColor(color);
+    public void clear() {
+        setColor(this.background);
         this.canvas.drawRect(0,0, getWidth(), getHeight(), this.paint);
     }
 
