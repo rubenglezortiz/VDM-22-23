@@ -10,6 +10,12 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.aengine.AndroidEngine;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -21,6 +27,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class Main extends AppCompatActivity {
+    private AdView mAdView;
     private SurfaceView myView;
     private AndroidEngine myEngine;
     private int jsonInt;
@@ -28,8 +35,10 @@ public class Main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        this.myView = new SurfaceView(this);
-        setContentView(this.myView);
+        setContentView(R.layout.activity_main);
+        this.myView = (SurfaceView)findViewById(R.id.surfaceView);
+        this.mAdView = (AdView)findViewById(R.id.adView);
+        //setContentView(this.myView);
         this.myEngine = new AndroidEngine(this.myView);
         if (savedInstanceState!=null){
             this.myEngine.getCurrentState().restoreScene(savedInstanceState, this.myEngine);
@@ -40,6 +49,13 @@ public class Main extends AppCompatActivity {
             this.myEngine.getCurrentState().restoreSceneFromFile(this.myView);
         }
         this.myEngine.getCurrentState().saveSceneInFile(myView);
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+        AdRequest adRequest = new AdRequest.Builder().build();
+        this.mAdView.loadAd(adRequest);
     }
 
     @Override

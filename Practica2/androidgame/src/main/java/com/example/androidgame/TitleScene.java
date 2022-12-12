@@ -12,7 +12,8 @@ import com.example.aengine.AScene;
 import com.example.aengine.ASound;
 import com.example.aengine.AState;
 import com.example.aengine.AndroidEngine;
-
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import java.net.DatagramPacket;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,7 +22,7 @@ public class TitleScene extends HistorySuperScene {
     private AButton storyButton, quickGameButton, paletteButton;
     private ASound backgroundMusic;
     private int changeScene;
-
+    private AdView mAdView;
     public TitleScene(AndroidEngine engine_){
         super(engine_.getGraphics());
         this.changeScene = 0;
