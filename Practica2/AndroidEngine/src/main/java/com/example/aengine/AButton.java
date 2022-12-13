@@ -6,12 +6,12 @@ import java.io.Serializable;
 
 
 public class AButton implements Serializable {
-    private String text, font;
+    private String name;
     private float posX, posY, width, height, textX, textY, textSize;
-    private AColor mainColor, backgroundColor;
+    private AColor backgroundColor;
 
-    public AButton(String buttonText, float x, float y, float w, float h, float tX, float tY, int tSize, String f, AColor mColor, AColor bgColor) {
-        this.text = buttonText;
+    public AButton(String buttonName, float x, float y, float w, float h, float tX, float tY, int tSize, AColor bgColor) {
+        this.name = buttonName;
         this.posX = x;
         this.posY = y;
         this.width = w;
@@ -19,8 +19,6 @@ public class AButton implements Serializable {
         this.textX = tX;
         this.textY = tY;
         this.textSize = tSize;
-        this.font = f;
-        this.mainColor = mColor;
         this.backgroundColor = bgColor;
     }
 
@@ -38,17 +36,13 @@ public class AButton implements Serializable {
 
     public float getHeight() { return this.height; }
 
-    public String getText() { return this.text; }
+    public String getName() { return this.name; }
 
     public float getTextX() { return this.textX; }
 
     public float getTextY() { return this.textY; }
 
     public float getTextSize() { return this.textSize; }
-
-    public String getFont() { return this.font; }
-
-    public AColor getMainColor() { return this.mainColor; }
 
     public AColor getBackgroundColor() { return this.backgroundColor; }
 

@@ -49,42 +49,33 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
         ty = 12;
         tSize = 12;
 
-        String locked = "BLOQUEADO";
-        String sea = "MAR";
-        String city = "CIUDAD";
-        String desert = "DESIERTO";
+        String sea = "Mar.png";
+        String city = "Ciudad.png";
+        String desert = "Desierto.png";
 
-        if (forestFinished < 5) sea = locked;
-        if (seaFinished < 5) city = locked;
-        if (cityFinished < 5) desert = locked;
+        if (this.forestFinished < 5) sea = "MarBloqueado.png";
+        if (this.seaFinished < 5) city = "CiudadBloqueado.png";
+        if (this.cityFinished < 5) desert = "DesiertoBloqueado.png";
 
-        this.forestButton = graphics.newButton("BOSQUE",
+        this.forestButton = graphics.newButton("Bosque.png",
                 x1 - (w / 2.0f), y1 - (h / 2.0f), w, h,
                 tx,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
-                graphics.newColor(250, 215, 160, 255));
+                this.palettes[this.data.actPalette][0]);
 
         this.seaButton = graphics.newButton(sea,
                 x2 - (w / 2.0f), y1 - (h / 2.0f), w, h,
                 tx,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
-                graphics.newColor(250, 215, 160, 255));
+                this.palettes[this.data.actPalette][0]);
 
         this.cityButton = graphics.newButton(city,
                 x1 - (w / 2.0f), y2 - (h / 2.0f), w, h,
                 tx,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
-                graphics.newColor(250, 215, 160, 255));
+                this.palettes[this.data.actPalette][0]);
 
         this.desertButton = graphics.newButton(desert,
                 x2 - (w / 2), y2 - (h / 2), w, h,
                 tx,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
-                graphics.newColor(250, 215, 160, 255));
+                this.palettes[this.data.actPalette][0]);
 
 
         int x, y;
@@ -93,12 +84,10 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
         w = graphics.getLogicWidth() / 4;
         h = graphics.getLogicHeight() / 16;
 
-        this.returnButton = graphics.newButton("Volver",
+        this.returnButton = graphics.newButton("Volver.png",
                 x - (w / 2), y - (h / 2), w, h,
                 tx,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
-                graphics.newColor(255, 255, 255, 255));
+                this.palettes[this.data.actPalette][0]);
 
     }
 

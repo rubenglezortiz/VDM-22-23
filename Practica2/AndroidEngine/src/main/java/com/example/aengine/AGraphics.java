@@ -123,14 +123,8 @@ public class AGraphics  {
         this.fonts.put(name, font);
     }
 
-    public AButton newButton(String text, float x, float y, float w, float h, float tX, float tY, int tSize, String f, AColor mColor, AColor bgColor) {
-        if(fonts.containsKey(f)) {
-            return new AButton(text, x, y, w, h, tX, tY, tSize, f, mColor, bgColor);
-        }
-        else{
-            System.out.println("!!!!!!!!!DEFAULT FONT ASSIGNED TO BUTTON!!!!!!!!!");
-            return newButton(text, x, y, w, h, tX, tY, tSize, this.defaultFont, mColor, bgColor);
-        }
+    public AButton newButton(String text, float x, float y, float w, float h, float tX, float tY, int tSize, AColor bgColor) {
+        return new AButton(text, x, y, w, h, tX, tY, tSize, bgColor);
     }
 
     public void setBackgroundColor(AColor backgroundColor){
@@ -205,12 +199,7 @@ public class AGraphics  {
         float butH = button.getHeight();
 
         this.fillRectangle(butX,butY,butW,butH, button.getBackgroundColor());
-        this.drawRectangle(butX,butY,butW,butH, button.getMainColor());
-
-        if(button.getFont()!=null)
-            this.drawText(button.getFont(), button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
-        else this.drawText(button.getText(), butX + button.getTextX(), butY + button.getTextY(), button.getTextSize(), button.getMainColor());
-
+        this.drawImage(button.getName(), butX, butY, butW, butH);
     }
 
     // Getters
