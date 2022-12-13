@@ -1,26 +1,18 @@
 package com.example.androidgame;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-
-import androidx.annotation.NonNull;
-
 import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AColor;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.AndroidEngine;
-import com.google.android.gms.ads.OnUserEarnedRewardListener;
-import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class LevelScene extends HistorySuperScene implements Serializable {
-    private String filename;
     private int changeScene;
     private boolean backToMenu;
     private final String TAG = "LevelScene";
@@ -32,16 +24,14 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     private String textId;
     private int rows, cols;
     private RewardedAd mRewardedAd;
+
     public LevelScene(AndroidEngine engine_, int id_, GameData data){
         super(engine_.getGraphics(), data);
-        this.filename = "level";
         this.backToMenu = false;
         this.changeScene = 0;
-
         this.rows = 5;
         this.cols = 4;
 
-        //En el futuro, se tendrá que leer de fichero para cargar partida guardada
         this.categoryId = id_;
         if(this.categoryId == 0) {
             this.textId = "Bosque";
@@ -120,25 +110,14 @@ public class LevelScene extends HistorySuperScene implements Serializable {
         if (this.changeScene != 0){
             BoardScene level = new BoardScene(engine, this.changeScene, this.categoryId, 0,0, this.data);
             engine.getCurrentState().addScene(level);
-            /*if (level.checkIfFinished()){
-                if(this.categoryId == 0) this.data.forestLevels++;
-                else if(this.categoryId==1) this.data.seaLevels++;
-                else if (this.categoryId == 2) this.data.cityLevels++;
-                else this.data.desertLevels++;
-            }
-             */
-
             this.changeScene = 0;
         }
-        if(this.backToMenu) {
-            engine.getCurrentState().removeScene(1);
-        }
+        if(this.backToMenu) engine.getCurrentState().removeScene(1);
     }
 
     @Override
     public void render(AGraphics graphics){
         super.render(graphics);
-        //graphics.setFont(this.font);
         graphics.drawText(this.textId,
                 graphics.getLogicWidth() / 2.0f - 90,
                 graphics.getLogicHeight() / 8.0f, 25,
@@ -151,19 +130,18 @@ public class LevelScene extends HistorySuperScene implements Serializable {
                 graphics.drawButton(this.levels[i][j]);
             }
         }
-
         graphics.drawText(Integer.toString(this.data.forestLevels), 300,100, 20, graphics.newColor(0,0,0,255));
     }
 
     @Override
-    public void handleInputs(AGraphics graphics, AInput input, AAudio audio){
-        super.handleInputs(graphics, input, audio);
+    public void handleInputs(AInput input, AAudio audio){
+        super.handleInputs(input, audio);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList)
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    float collisionX = graphics.realToLogicX(((AInput.TouchInputEvent) event).x);
-                    float collisionY = graphics.realToLogicY(((AInput.TouchInputEvent) event).y);
+                    float collisionX = ((AInput.TouchInputEvent) event).x;
+                    float collisionY = ((AInput.TouchInputEvent) event).y;
                     if (this.returnButton.checkCollision(collisionX, collisionY))
                         this.backToMenu = true;
                     else for (int i = 0; i < this.rows; ++i)
@@ -184,38 +162,17 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     @Override
     public void saveSceneInFile(View myView) {
         super.saveSceneInFile(myView);
-        /*Gson gson = new Gson();
-        //String aux = gson.toJson(this.currentLevel);
-
-        try(FileOutputStream fos = myView.getContext().openFileOutput(this.filename, Context.MODE_PRIVATE)){
-            fos.write(aux.getBytes(StandardCharsets.UTF_8));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
     }
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-        //this.currentLevel = savedInstanceState.getInt("currentLevel");
+        super.restoreScene(savedInstanceState, engine);
     }
 
     @Override
     public void restoreSceneFromFile(View myView) {
         super.restoreSceneFromFile(myView);
-        /*Gson gson = new Gson();
-        try {
-            FileInputStream fis = myView.getContext().openFileInput(this.filename);
-            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
-            BufferedReader reader = new BufferedReader(isr);
-            String line = reader.readLine();
-            this.currentLevel = gson.fromJson(line, int.class);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+
         if(this.categoryId == 0) {
             this.textId = "Bosque";
             this.currentLevel = this.data.forestLevels;

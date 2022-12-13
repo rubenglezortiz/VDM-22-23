@@ -24,13 +24,12 @@ public class AndroidEngine implements Runnable {
     @SuppressLint("ClickableViewAccessibility")
     public AndroidEngine(SurfaceView myView_){
         this.myView = myView_;
-        this.graphics = new AGraphics(this.myView); //DESDE DÓNDE SE PASA EL SURFACE VIEW???
+        this.graphics = new AGraphics(this.myView);
         this.audio = new AAudio(this.myView.getContext().getAssets());
-        this.input = new AInput();
+        this.input = new AInput(this.graphics);
 
         this.myView.setOnLongClickListener(this.input);
         this.myView.setOnTouchListener(this.input);
-        //this.myView.setLongClickable(true);
         this.currentState = new AState(this.myView, this);
         this.currentThread = new Thread(this);
         this.currentThread.start();

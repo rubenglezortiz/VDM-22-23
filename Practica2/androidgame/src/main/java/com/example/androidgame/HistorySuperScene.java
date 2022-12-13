@@ -1,28 +1,13 @@
 package com.example.androidgame;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-
 import com.example.aengine.AAudio;
-import com.example.aengine.AButton;
 import com.example.aengine.AColor;
-import com.example.aengine.AFont;
 import com.example.aengine.AGraphics;
-import com.example.aengine.AImage;
 import com.example.aengine.AInput;
 import com.example.aengine.AScene;
-import com.example.aengine.AState;
 import com.example.aengine.AndroidEngine;
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class HistorySuperScene extends AScene {
@@ -32,7 +17,7 @@ public class HistorySuperScene extends AScene {
 
     HistorySuperScene(AGraphics graphics, GameData data_){
         this.filename = "super";
-        this.font = ("font.TTF");
+        this.font = "font.TTF";
         this.coinsImage ="moneda.png";
         setUpScene(graphics);
         this.data = data_;
@@ -60,7 +45,7 @@ public class HistorySuperScene extends AScene {
     }
 
     @Override
-    public void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
+    public void handleInputs(AInput input, AAudio audio) {
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList) {
             if (event.type == AInput.InputType.LONG_TOUCH)
@@ -85,7 +70,6 @@ public class HistorySuperScene extends AScene {
         this.coinsImage = savedInstanceState.getString("coins_image");
         setUpScene(engine.getGraphics());
     }
-
 
     @Override
     public void restoreSceneFromFile(View myView) {

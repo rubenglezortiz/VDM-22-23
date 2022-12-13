@@ -119,8 +119,8 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public synchronized void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
-        super.handleInputs(graphics, input, audio);
+    public synchronized void handleInputs(AInput input, AAudio audio) {
+        super.handleInputs(input, audio);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
@@ -131,8 +131,8 @@ public class BoardScene extends HistorySuperScene implements Serializable {
                     if(!this.levelFinished) this.board.handleInputs(event,audio);
                     break;
                 case TOUCH_RELEASED:
-                    float collisionX = graphics.realToLogicX(((AInput.TouchInputEvent) event).x);
-                    float collisionY = graphics.realToLogicY(((AInput.TouchInputEvent) event).y);
+                    float collisionX = ((AInput.TouchInputEvent) event).x;
+                    float collisionY = ((AInput.TouchInputEvent) event).y;
                     this.board.handleInputs(event, audio);
                     if(this.backToMenuButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
                     else if (this.levelFinished && this.levelFinishedButton.checkCollision(collisionX, collisionY))

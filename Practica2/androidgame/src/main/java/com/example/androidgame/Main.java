@@ -61,6 +61,8 @@ public class Main extends AppCompatActivity {
             this.myEngine.getCurrentState().addScene(titleScene);
             this.myEngine.getCurrentState().restoreSceneFromFile(this.myView);
         }
+
+        //_______________ADS_______________
         this.myEngine.getCurrentState().saveSceneInFile(myView);
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override

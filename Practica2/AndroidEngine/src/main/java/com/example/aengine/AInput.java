@@ -7,8 +7,11 @@ import java.util.ArrayList;
 
 public class AInput implements View.OnTouchListener, View.OnLongClickListener{
     private float xTouch, yTouch;
+    private AGraphics graphics;
 
-    public static enum InputType{
+    public AInput(AGraphics graphics_) {this.graphics = graphics_;}
+
+    public enum InputType{
         TOUCH_PRESSED,
         TOUCH_RELEASED,
         LONG_TOUCH
@@ -56,7 +59,7 @@ public class AInput implements View.OnTouchListener, View.OnLongClickListener{
     }
 
     public void addEvent(float x, float y, InputType type){
-        this.events.add(new TouchInputEvent(x, y, 1, 0, type));
+        this.events.add(new TouchInputEvent(this.graphics.realToLogicX(x), this.graphics.realToLogicY(y), 1, 0, type));
     }
 
     public ArrayList<Event> getEventList() {return this.events;}

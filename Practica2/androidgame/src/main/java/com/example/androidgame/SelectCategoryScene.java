@@ -22,7 +22,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class SelectCategoryScene extends HistorySuperScene implements Serializable {
-    private String filename;
     private int changeScene;
     private boolean backToMenu;
     private AButton returnButton, forestButton, seaButton, cityButton, desertButton;
@@ -30,7 +29,6 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
 
     public SelectCategoryScene(AndroidEngine engine_, GameData data_){
         super(engine_.getGraphics(), data_);
-        this.filename = "category";
         this.changeScene = 0;
         this.backToMenu = false;
 
@@ -134,14 +132,14 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     }
 
     @Override
-    public void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
-        super.handleInputs(graphics, input, audio);
+    public void handleInputs(AInput input, AAudio audio) {
+        super.handleInputs(input, audio);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList) {
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    float collisionX = graphics.realToLogicX(((AInput.TouchInputEvent) event).x);
-                    float collisionY = graphics.realToLogicY(((AInput.TouchInputEvent) event).y);
+                    float collisionX = ((AInput.TouchInputEvent) event).x;
+                    float collisionY = ((AInput.TouchInputEvent) event).y;
                     if (this.forestButton.checkCollision(collisionX, collisionY))
                         this.changeScene = 1;
                     else if (this.forestButton.checkCollision(collisionX, collisionY)) {

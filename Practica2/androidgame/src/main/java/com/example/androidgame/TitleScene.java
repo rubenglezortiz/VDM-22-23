@@ -1,6 +1,5 @@
 package com.example.androidgame;
 
-import android.media.MediaRouter2;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,7 +8,6 @@ import com.example.aengine.AButton;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.AndroidEngine;
-import com.google.android.gms.ads.AdView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -33,6 +31,7 @@ public class TitleScene extends HistorySuperScene implements Serializable {
         audio.playSound(this.backgroundMusic);
         audio.setVolume(this.backgroundMusic, 0.25f);
         audio.setLooping(this.backgroundMusic, true);
+        audio.setBackgroundMusic(this.backgroundMusic);
     }
 
     private void createButtons(AGraphics graphics){
@@ -97,16 +96,16 @@ public class TitleScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public synchronized void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
-        super.handleInputs(graphics,input,audio);
+    public synchronized void handleInputs(AInput input, AAudio audio) {
+        super.handleInputs(input,audio);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
             AInput.Event event = it.next();
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    float collisionX = graphics.realToLogicX(((AInput.TouchInputEvent) event).x);
-                    float collisionY = graphics.realToLogicY(((AInput.TouchInputEvent) event).y);
+                    float collisionX = ((AInput.TouchInputEvent) event).x;
+                    float collisionY = ((AInput.TouchInputEvent) event).y;
                     if (this.storyButton.checkCollision(collisionX, collisionY)) this.changeScene = 1;
                     if (this.quickGameButton.checkCollision(collisionX, collisionY)) this.changeScene = 2;
                     if (this.paletteButton.checkCollision(collisionX, collisionY)) this.changeScene = 3;

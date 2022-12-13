@@ -30,7 +30,6 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
         this.changeScene = false;
         this.boardSize = 0;
         this.backToMenu = false;
-        //setUpScene();
         createButtons(engine_.getGraphics());
     }
 
@@ -108,16 +107,16 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
     }
 
     @Override
-    public synchronized void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
-        super.handleInputs(graphics, input, audio);
+    public synchronized void handleInputs(AInput input, AAudio audio) {
+        super.handleInputs(input, audio);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
             AInput.Event event = it.next();
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    float collisionX = graphics.realToLogicX(((AInput.TouchInputEvent) event).x);
-                    float collisionY = graphics.realToLogicY(((AInput.TouchInputEvent) event).y);
+                    float collisionX = ((AInput.TouchInputEvent) event).x;
+                    float collisionY = ((AInput.TouchInputEvent) event).y;
                     if (this.button3x3.checkCollision(collisionX, collisionY)){
                         this.changeScene = true;
                         this.boardSize = 1;

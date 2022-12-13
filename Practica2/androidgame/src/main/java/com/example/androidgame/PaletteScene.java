@@ -24,14 +24,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class PaletteScene extends HistorySuperScene implements Serializable {
-    private String filename;
     private boolean back;
     private int costp2, costp3;
     private AButton returnButton, p1, p2, p3;
 
     public PaletteScene(AndroidEngine engine_, GameData data){
         super(engine_.getGraphics(), data);
-        this.filename = "palette";
         this.back = false;
         this.costp2 = 50;
         this.costp3 = 100;
@@ -102,14 +100,14 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public void handleInputs(AGraphics graphics, AInput input, AAudio audio){
-        super.handleInputs(graphics, input, audio);
+    public void handleInputs(AInput input, AAudio audio){
+        super.handleInputs(input, audio);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList)
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    float collisionX = graphics.realToLogicX(((AInput.TouchInputEvent) event).x);
-                    float collisionY = graphics.realToLogicY(((AInput.TouchInputEvent) event).y);
+                    float collisionX = ((AInput.TouchInputEvent) event).x;
+                    float collisionY = ((AInput.TouchInputEvent) event).y;
                     if (this.p1.checkCollision(collisionX, collisionY)) this.data.actPalette = 0;
                     else if (this.p2.checkCollision(collisionX, collisionY)){
                         if(this.data.lockp2 && this.costp2 <= this.data.coins) {

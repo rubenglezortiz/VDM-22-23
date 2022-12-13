@@ -11,15 +11,12 @@ public class Cell extends GameObject implements Serializable {
     //este último cambia en la misma iteración el estado de la casilla de REMOVED a UNMARKED
     //la variable recentlyRemoved evita esto
     private boolean solution, recentlyRemoved;
-    private int row, col;
     private State state;
     private AColor markedColor;
 
-    public Cell(int row_, int col_, int w, int h, boolean sol, AGraphics graphics_){
-        super(w, h, graphics_);
+    public Cell(int w, int h, boolean sol){
+        super(w, h);
         this.state = State.UNMARKED;
-        this.row = row_;
-        this.col = col_;
         this.solution = sol;
         this.markedColor = new AColor(255,255,255,255);
         this.recentlyRemoved = false;
@@ -57,8 +54,7 @@ public class Cell extends GameObject implements Serializable {
         return this.solution && this.state == State.MARKED || !this.solution && this.state!=State.MARKED;
     }
 
-    public void render(int xGraphic_, int yGraphic_, AGraphics graphics_){
-        this.graphics = graphics_;
+    public void render(int xGraphic_, int yGraphic_, AGraphics graphics){
         AColor icolor;
         switch (state){
             case UNMARKED:
@@ -87,10 +83,8 @@ public class Cell extends GameObject implements Serializable {
     }
 
     public boolean checkCollisions(float x, float y) {
-        return (x >= this.graphics.logicToRealX(this.x) &&
-                x <= this.graphics.logicToRealX(this.x + this.w) &&
-                y >= this.graphics.logicToRealY(this.y)  &&
-                y <= this.graphics.logicToRealY(this.y + this.h));
+        return (x >= this.x && x <= this.x + this.w &&
+                y >= (this.y) && y <= this.y + this.h);
     }
 
     public void setMarkedColor(AColor c){ this.markedColor = c;}

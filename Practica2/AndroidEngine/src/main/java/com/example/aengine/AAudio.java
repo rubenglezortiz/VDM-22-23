@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 public class AAudio {
     private AssetManager assetManager;
-
     private HashMap<String, ASound> sounds;
+    private String backgroundMusic;
     public AAudio(AssetManager aM){
         this.sounds = new HashMap<>();
         this.assetManager = aM;
@@ -20,8 +20,6 @@ public class AAudio {
         ASound sound = new ASound(file, this.assetManager);
         this.sounds.put(file,sound);
     }
-
-    public void playSound(ASound sound) { sound.play();}
 
     public void playSound(String key) {
         try {
@@ -34,11 +32,27 @@ public class AAudio {
         }
     }
 
-    public void stopSound(ASound sound) { sound.stop(); }
+    public void stopSound(String key) {
+        try {
+            if (this.sounds.containsKey(key))
+                this.sounds.get(key).stop();
+            else throw new IOException("!!!!!!!!!!!!!!Key audio does not exist!!!!!!!!!!!!!!");
+        }
+        catch (IOException e){
+            System.err.println(e.getMessage());
+        }
+    }
 
-    public void pauseSound(ASound sound) { sound.pause();}
-
-    public void setLooping(ASound sound, boolean looping) { ((ASound)sound).setLooping(looping); }
+    public void pauseSound(String key) {
+        try {
+            if (this.sounds.containsKey(key))
+                this.sounds.get(key).pause();
+            else throw new IOException("!!!!!!!!!!!!!!Key audio does not exist!!!!!!!!!!!!!!");
+        }
+        catch (IOException e){
+            System.err.println(e.getMessage());
+        }
+    }
 
     public void setLooping(String key, boolean looping){
         try {
@@ -51,7 +65,6 @@ public class AAudio {
         }
     }
 
-    public void setVolume(ASound sound, float volume) { sound.setVolume(volume); }
     public void setVolume(String key, float volume){
         try {
             if (this.sounds.containsKey(key))
@@ -63,13 +76,15 @@ public class AAudio {
         }
     }
 
-    public void setBackgroundMusic(ASound backgroundMusic) {
-        //this.backgroundMusic = backgroundMusic;
+    public void setBackgroundMusic(String backgroundMusic) {
+        if(this.sounds.containsKey(backgroundMusic)) this.backgroundMusic = backgroundMusic;
     }
 
-    public void pauseAllSounds(){ //this.backgroundMusic.pause();
-         }
+    public void pauseAllSounds(){
+       if(this.sounds.containsKey(this.backgroundMusic)) this.sounds.get(this.backgroundMusic).pause();
+   }
 
-    public void resumeAllSounds(){ //this.backgroundMusic.play();
-         }
+    public void resumeAllSounds(){
+        if(this.sounds.containsKey(this.backgroundMusic)) this.sounds.get(this.backgroundMusic).play();
+    }
 }

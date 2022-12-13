@@ -48,8 +48,8 @@ public class Board implements Serializable {
                         isSol = rnd < numCells * 0.65; //En teoría se añaden el 65% de las casillas
                         if (isSol) cont++;
                     }
-                    this.board[i][j] = new Cell(i, j, cellSize / this.numCols,
-                            cellSize / this.numRows, isSol, graphics);
+                    this.board[i][j] = new Cell(cellSize / this.numCols,
+                            cellSize / this.numRows, isSol);
                 }
             }
 
@@ -89,8 +89,8 @@ public class Board implements Serializable {
                         }
                         else throw new Exception("El nivel está mal creado.");
 
-                        this.board[j][i] = new Cell(i, j, cellSize / this.numCols,
-                                cellSize / this.numRows, isSol, graphics);
+                        this.board[j][i] = new Cell(cellSize / this.numCols,
+                                cellSize / this.numRows, isSol);
                     }
                 }
 
@@ -291,14 +291,6 @@ public class Board implements Serializable {
         audio.newSound(this.cellSound);
         audio.newSound(this.failSound);
         audio.setVolume(this.failSound, 0.5f);
-    }
-
-    public void updateGraphics(AGraphics graphics_) {
-        for(int i=0; i < this.numRows; i++){
-            for (int j = 0; j < this.numCols; j++){
-                this.board[i][j].updateGraphics(graphics_);
-            }
-        }
     }
 
     public int getInitLives(){return this.initLives;}
