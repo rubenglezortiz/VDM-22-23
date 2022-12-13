@@ -4,12 +4,12 @@ import android.content.res.AssetManager;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Typeface;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class AGraphics  {
     // Android variables
@@ -24,10 +24,10 @@ public class AGraphics  {
     private final int logicWidth, logicHeight;
     private float scaleFactor;
     private int offsetX, offsetY;
-    private final Typeface defaultFont;
 
     // Items Variables
     private  AColor background;
+    private final String defaultFont;
     private final HashMap<String, AFont> fonts;
     private final HashMap<String, AImage> images;
 
@@ -39,10 +39,11 @@ public class AGraphics  {
         this.assetManager = this.myView.getContext().getAssets();
         this.logicWidth = 400;
         this.logicHeight = 600;
-        this.defaultFont = this.paint.getTypeface();
         this.background = newColor(255,255,255,255);
         this.fonts = new HashMap<>();
         this.images = new HashMap<>();
+        this.defaultFont = "default";
+        this.fonts.put(this.defaultFont, new AFont(this.paint.getTypeface()));
     }
 
     // Android functions
@@ -78,9 +79,9 @@ public class AGraphics  {
         }
     }
 
-    public void translate(int x, int y) {
+    /*public void translate(int x, int y) {
         this.canvas.translate(x, y);
-    }
+    }*/
 
     public float logicToRealX(float x) { return x * getScaleFactor() + this.offsetX ; }
 
@@ -88,20 +89,21 @@ public class AGraphics  {
 
     public float logicToRealScale(float s) {  return s * getScaleFactor(); }
 
-    public float realToLogicX(float x) { return ((float)(x - this.offsetX) / getScaleFactor());}
+    public float realToLogicX(float x) { return ((x - this.offsetX) / getScaleFactor());}
 
-    public float realToLogicY(float y){ return ((float)(y - this.offsetY) / getScaleFactor());}
+    public float realToLogicY(float y){ return ((y - this.offsetY) / getScaleFactor());}
 
     public int realToLogicScale(int s){ return (int) ((float) s / getScaleFactor()); }
 
     public void setColor(AColor color){
-        this.paint.setColor(((AColor)color).getARGBColor());
+        this.paint.setColor(color.getColor());
     }
 
-    public void setFont(AFont font){
-        this.paint.setTypeface(((AFont)font).getTypeface());
-        this.paint.setTextSize(((AFont)font).getSize());
+    /*public void setFont(AFont font){
+        this.paint.setTypeface(font.getTypeface());
+        this.paint.setTextSize(font.getSize());
     }
+     */
 
     // Create
 
@@ -125,7 +127,10 @@ public class AGraphics  {
         if(fonts.containsKey(f)) {
             return new AButton(text, x, y, w, h, tX, tY, tSize, f, mColor, bgColor);
         }
-        return null;
+        else{
+            System.out.println("!!!!!!!!!DEFAULT FONT ASSIGNED TO BUTTON!!!!!!!!!");
+            return newButton(text, x, y, w, h, tX, tY, tSize, this.defaultFont, mColor, bgColor);
+        }
     }
 
     public void setBackgroundColor(AColor backgroundColor){
@@ -170,17 +175,15 @@ public class AGraphics  {
         w = logicToRealScale(w);
         h = logicToRealScale(h);
         if(this.images.containsKey(key)) {
-            this.canvas.drawBitmap(images.get(key).getBitmap(), null,
+            this.canvas.drawBitmap(Objects.requireNonNull(images.get(key)).getBitmap(), null,
                     new Rect((int)x, (int)y,(int)(x+w), (int)(y+h)), this.paint);
         }
-
     }
-
 
     public void drawText(String text, float x, float y, float textSize, AColor color) {
         float prevTextSize = this.paint.getTextSize();
         this.paint.setTextSize(logicToRealScale((int) textSize));
-        this.paint.setColor(((AColor)color).getARGBColor());
+        this.paint.setColor((color).getColor());
         this.canvas.drawText(text,logicToRealX((int)x),logicToRealY((int)y), this.paint);
         this.paint.setTextSize(prevTextSize);
     }
@@ -188,18 +191,18 @@ public class AGraphics  {
     public void drawText(String font, String text, float x, float y, float textSize, AColor color) {
         setColor(color);
         if(this.fonts.containsKey(font)) {
-            this.paint.setTypeface(this.fonts.get(font).getTypeface());
+            this.paint.setTypeface(Objects.requireNonNull(this.fonts.get(font)).getTypeface());
             this.paint.setTextSize(logicToRealScale((int) textSize));
             this.canvas.drawText(text, logicToRealX((int) x), logicToRealY((int) y), this.paint);
-            this.paint.setTypeface(this.defaultFont);
+            this.paint.setTypeface(Objects.requireNonNull(this.fonts.get(defaultFont)).getTypeface());
         }
     }
 
     public void drawButton(AButton button) {
-        float butX = (float) button.getPosX();
-        float butY = (float) button.getPosY();
-        float butW = (float) button.getWidth();
-        float butH = (float) button.getHeight();
+        float butX = button.getPosX();
+        float butY = button.getPosY();
+        float butW = button.getWidth();
+        float butH = button.getHeight();
 
         this.fillRectangle(butX,butY,butW,butH, button.getBackgroundColor());
         this.drawRectangle(butX,butY,butW,butH, button.getMainColor());

@@ -23,21 +23,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class HistorySuperScene extends AScene {
-    protected String filename, font;
-    private String coinsImage;
-    protected int coins, forestLevels, seaLevels, cityLevels, desertLevels;
+    protected String filename, font, coinsImage;
+    protected GameData data;
     protected AColor[][] palettes;
-    protected int actPalette;
 
-    HistorySuperScene(AGraphics graphics){
+    HistorySuperScene(AGraphics graphics, GameData data_){
         this.filename = "super";
         this.font = ("font.TTF");
         this.coinsImage ="moneda.png";
-        this.coins = 0;
-        this.forestLevels = this.seaLevels = this.cityLevels = this.desertLevels = 1;
-        this.actPalette = 0;
+        setUpScene(graphics);
+        this.data = data_;
         this.palettes = new AColor[3][2];
         this.palettes[0][0] = new AColor(255,255,255);
         this.palettes[0][1] = new AColor(0,0,255);
@@ -47,74 +45,50 @@ public class HistorySuperScene extends AScene {
         this.palettes[2][1] = new AColor(255,255,0);
     }
 
-    //@Override
-    //protected void setUpScene() {}
+    private void setUpScene(AGraphics graphics) {
+        graphics.newImage(this.coinsImage);
+    }
 
     @Override
     public void update(AndroidEngine engine) {}
 
     @Override
     public void render(AGraphics graphics) {
-        //graphics.setFont(this.font);
+        graphics.setBackgroundColor(this.palettes[this.data.actPalette][0]);
         graphics.drawImage(this.coinsImage, 350,0,25,25);
-        graphics.drawText(this.font, String.valueOf(this.coins), 320 ,17, 10, new AColor(0,0,0,255));
+        graphics.drawText(this.font, String.valueOf(this.data.coins), 320 ,17, 20, new AColor(0,0,0,255));
     }
 
     @Override
-    public void handleInputs(AGraphics graphics, AInput input, AAudio audio) {}
+    public void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
+        ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
+        for (AInput.Event event : eventList) {
+            if (event.type == AInput.InputType.LONG_TOUCH)
+                this.data.coins += 10;
+        }
+    }
 
     @Override
     public void saveScene(Bundle outState) {
+        outState.putSerializable("data", this.data);
+        outState.putString("coins_image", this.coinsImage);
     }
 
     @Override
     public void saveSceneInFile(View myView) {
-        Gson gson = new Gson();
-        String aux = gson.toJson(this.coins);
-        aux += '\n' + gson.toJson(this.forestLevels);
-        aux += '\n' + gson.toJson(this.seaLevels);
-        aux += '\n' + gson.toJson(this.cityLevels);
-        aux += '\n' + gson.toJson(this.desertLevels);
-        aux += '\n' + gson.toJson(this.actPalette);
-
-        try(FileOutputStream fos = myView.getContext().openFileOutput(this.filename, Context.MODE_PRIVATE)){
-            fos.write(aux.getBytes(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try(FileOutputStream fos = myView.getContext().openFileOutput(this.filename, Context.MODE_PRIVATE)){
-            fos.write(aux.getBytes(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        this.data.saveDataInFile(myView);
     }
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
+        this.data = (GameData) savedInstanceState.getSerializable("data");
+        this.coinsImage = savedInstanceState.getString("coins_image");
+        setUpScene(engine.getGraphics());
     }
+
 
     @Override
     public void restoreSceneFromFile(View myView) {
-        Gson gson = new Gson();
-        try {
-            FileInputStream fis = myView.getContext().openFileInput(this.filename);
-            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
-            BufferedReader reader = new BufferedReader(isr);
-            String line = reader.readLine();
-            this.coins = gson.fromJson(line, int.class);
-            line = reader.readLine();
-            this.forestLevels = gson.fromJson(line,int.class);
-            line = reader.readLine();
-            this.seaLevels = gson.fromJson(line,int.class);
-            line = reader.readLine();
-            this.cityLevels = gson.fromJson(line,int.class);
-            line = reader.readLine();
-            this.desertLevels = gson.fromJson(line,int.class);
-            line = reader.readLine();
-            this.actPalette = gson.fromJson(line,int.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        //this.engine.getGraphics().setBackgroundColor(this.palettes[this.actPalette][0]);
+        this.data.restoreDataFromFile(myView);
     }
 }

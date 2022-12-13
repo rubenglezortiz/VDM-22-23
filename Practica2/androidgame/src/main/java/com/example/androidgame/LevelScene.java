@@ -26,8 +26,8 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     private String textId;
     private int rows, cols;
 
-    public LevelScene(AndroidEngine engine_, int id_){
-        super(engine_.getGraphics());
+    public LevelScene(AndroidEngine engine_, int id_, GameData data){
+        super(engine_.getGraphics(), data);
         this.filename = "level";
         this.backToMenu = false;
         this.changeScene = 0;
@@ -39,22 +39,21 @@ public class LevelScene extends HistorySuperScene implements Serializable {
         this.categoryId = id_;
         if(this.categoryId == 0) {
             this.textId = "Bosque";
-            this.currentLevel = this.forestLevels;
+            this.currentLevel = this.data.forestLevels;
         }
         else if (this.categoryId == 1){
             this.textId = "Mar";
-            this.currentLevel = this.seaLevels;
+            this.currentLevel = this.data.seaLevels;
         }
         else if (this.categoryId == 2) {
             this.textId = "Ciudad";
-            this.currentLevel = this.cityLevels;
+            this.currentLevel = this.data.cityLevels;
         }
         else {
             this.textId = "Desierto";
-            this.currentLevel = this.desertLevels;
+            this.currentLevel = this.data.desertLevels;
         }
 
-        restoreSceneFromFile(engine_.getSurfaceView());
         this.createButtons(engine_.getGraphics());
     }
 
@@ -113,15 +112,16 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     @Override
     public void update(AndroidEngine engine){
         if (this.changeScene != 0){
-            BoardScene level = new BoardScene(engine, this.changeScene, this.categoryId, 0,0);
+            BoardScene level = new BoardScene(engine, this.changeScene, this.categoryId, 0,0, this.data);
             engine.getCurrentState().addScene(level);
             /*if (level.checkIfFinished()){
-                if(this.categoryId == 0) this.forestLevels++;
-                else if(this.categoryId==1) this.seaLevels++;
-                else if (this.categoryId == 2) this.cityLevels++;
-                else this.desertLevels++;
+                if(this.categoryId == 0) this.data.forestLevels++;
+                else if(this.categoryId==1) this.data.seaLevels++;
+                else if (this.categoryId == 2) this.data.cityLevels++;
+                else this.data.desertLevels++;
             }
              */
+
             this.changeScene = 0;
         }
         if(this.backToMenu) engine.getCurrentState().removeScene(1);
@@ -144,11 +144,12 @@ public class LevelScene extends HistorySuperScene implements Serializable {
             }
         }
 
-        graphics.drawText(Integer.toString(this.forestLevels), 300,100, 20, graphics.newColor(0,0,0,255));
+        graphics.drawText(Integer.toString(this.data.forestLevels), 300,100, 20, graphics.newColor(0,0,0,255));
     }
 
     @Override
     public void handleInputs(AGraphics graphics, AInput input, AAudio audio){
+        super.handleInputs(graphics, input, audio);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList)
             switch (event.type) {
@@ -162,10 +163,6 @@ public class LevelScene extends HistorySuperScene implements Serializable {
                                 if ((i * this.cols + j) < this.currentLevel)
                                     if (this.levels[i][j].checkCollision(collisionX, collisionY))
                                         this.changeScene = i * this.cols + j + 1 + (this.categoryId * 20);
-                    break;
-                //DEBUG
-                case LONG_TOUCH:
-                    this.coins++;
                     break;
                 default:
                     break;
@@ -213,19 +210,19 @@ public class LevelScene extends HistorySuperScene implements Serializable {
         }*/
         if(this.categoryId == 0) {
             this.textId = "Bosque";
-            this.currentLevel = this.forestLevels;
+            this.currentLevel = this.data.forestLevels;
         }
         else if (this.categoryId == 1){
             this.textId = "Mar";
-            this.currentLevel = this.seaLevels;
+            this.currentLevel = this.data.seaLevels;
         }
         else if (this.categoryId == 2) {
             this.textId = "Ciudad";
-            this.currentLevel = this.cityLevels;
+            this.currentLevel = this.data.cityLevels;
         }
         else {
             this.textId = "Desierto";
-            this.currentLevel = this.desertLevels;
+            this.currentLevel = this.data.desertLevels;
         }
     }
 }

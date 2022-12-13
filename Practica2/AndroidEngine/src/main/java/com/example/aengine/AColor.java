@@ -1,8 +1,5 @@
 package com.example.aengine;
 
-import android.graphics.Color;
-import android.os.Build;
-
 import java.io.Serializable;
 
 public class AColor implements Serializable {
@@ -15,15 +12,7 @@ public class AColor implements Serializable {
         this.r = r_; this.g = g_; this.b = b_; this.a = a_;
     }
 
-    public Color getColor(){
-        Color miColor = new Color();
-        miColor.red(this.r);
-        miColor.blue(this.b);
-        miColor.green(this.g);
-        return miColor;
-    }
-
-    public int getARGBColor() {
+    public int getColor() {
         return (this.a & 0xff) << 24 | (this.r & 0xff) << 16 | (this.g & 0xff) << 8 | (this.b & 0xff);
     }
 }

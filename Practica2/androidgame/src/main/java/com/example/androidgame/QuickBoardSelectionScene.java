@@ -25,8 +25,8 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
     private AButton button5x5;
     private AButton button10x10;
 
-    public QuickBoardSelectionScene(AndroidEngine engine_){
-        super(engine_.getGraphics());
+    public QuickBoardSelectionScene(AndroidEngine engine_, GameData data){
+        super(engine_.getGraphics(), data);
         this.changeScene = false;
         this.boardSize = 0;
         this.backToMenu = false;
@@ -81,17 +81,15 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
     }
 
 
-    protected void setUpScene() {
-
-    }
+    protected void setUpScene() {}
 
     @Override
     public void update(AndroidEngine engine) {
         if(this.changeScene){
             this.changeScene = false;
-            if(this.boardSize == 1) engine.getCurrentState().addScene(new BoardScene(engine, 0, 0,3,3));
-            else if (this.boardSize == 2) engine.getCurrentState().addScene(new BoardScene(engine, 0, 0,5,5));
-            else if (this.boardSize == 3) engine.getCurrentState().addScene(new BoardScene(engine,0, 0, 10,10));
+            if(this.boardSize == 1) engine.getCurrentState().addScene(new BoardScene(engine, 0, 0,3,3, this.data));
+            else if (this.boardSize == 2) engine.getCurrentState().addScene(new BoardScene(engine, 0, 0,5,5, this.data));
+            else if (this.boardSize == 3) engine.getCurrentState().addScene(new BoardScene(engine,0, 0, 10,10, this.data));
         }
         if(this.backToMenu){
             engine.getCurrentState().removeScene(1);
@@ -111,6 +109,7 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
 
     @Override
     public synchronized void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
+        super.handleInputs(graphics, input, audio);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
@@ -145,7 +144,6 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
     public void saveScene(Bundle outState) {
         outState.putInt("boardSize", this.boardSize);
         outState.putBoolean("changeScene", this.changeScene);
-
     }
 
     @Override
@@ -155,12 +153,9 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-        /*this.boardSize = savedInstanceState.getInt("boardSize");
+        this.boardSize = savedInstanceState.getInt("boardSize");
         this.changeScene = savedInstanceState.getBoolean("changeScene");
         setUpScene();
-
-        this.engine = engine;
-        */
     }
 
     @Override

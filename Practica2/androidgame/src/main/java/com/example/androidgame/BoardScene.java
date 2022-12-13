@@ -26,8 +26,8 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     private String winSound;
 
 
-    public BoardScene(AndroidEngine engine, int id_, int category, int numCols, int numRows){
-        super(engine.getGraphics());
+    public BoardScene(AndroidEngine engine, int id_, int category, int numCols, int numRows, GameData data){
+        super(engine.getGraphics(), data);
         this.winSound = "win.wav";
         this.liveImage = "corazon_con_vida.png";
         this.noLiveImage = "corazon_sin_vida.png";
@@ -35,6 +35,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         this.levelId = id_;
         this.categoryId = category;
         this.board = new Board(this.levelId,numCols,numRows, engine, engine.getGraphics(), engine.getAudio());
+        this.board.setCellColor(this.palettes[this.data.actPalette][1]);
         setUpScene(engine.getGraphics(), engine.getAudio());
     }
 
@@ -84,14 +85,16 @@ public class BoardScene extends HistorySuperScene implements Serializable {
             this.levelFinished = true;
             if (this.levelId != 0){
                 if (this.levelId <= 20) {
-                    this.forestLevels++;
+                    this.data.forestLevels++;
                 }
-                else if (this.levelId <= 40) this.seaLevels++;
-                else if (this.levelId <= 60) this.cityLevels++;
-                else                    this.desertLevels++;
+                else if (this.levelId <= 40) this.data.seaLevels++;
+                else if (this.levelId <= 60) this.data.cityLevels++;
+                else                    this.data.desertLevels++;
             }
         }
-        if(this.backToMenu) engine.getCurrentState().removeScene(2);
+        if(this.backToMenu) {
+            engine.getCurrentState().removeScene(2);
+        }
         if(this.backToSelectionLevelScene) engine.getCurrentState().removeScene(1);
     }
 
@@ -117,6 +120,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
 
     @Override
     public synchronized void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
+        super.handleInputs(graphics, input, audio);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
@@ -147,8 +151,6 @@ public class BoardScene extends HistorySuperScene implements Serializable {
             outState.putSerializable("board", this.board);
             outState.putBoolean("levelFinished", this.levelFinished);
         }
-
-
     }
 
     @Override
@@ -172,7 +174,6 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     @Override
     public void restoreSceneFromFile(View myView) {
         super.restoreSceneFromFile(myView);
-        this.board.setCellColor(this.palettes[this.actPalette][1]);
     }
 
     public boolean checkIfFinished() {

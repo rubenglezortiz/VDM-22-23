@@ -19,6 +19,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
+import java.io.DataInput;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -30,6 +31,7 @@ public class Main extends AppCompatActivity {
     private AdView mAdView;
     private SurfaceView myView;
     private AndroidEngine myEngine;
+    private GameData data;
     private int jsonInt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,8 @@ public class Main extends AppCompatActivity {
             this.myEngine.getCurrentState().restoreScene(savedInstanceState, this.myEngine);
         }
         else {
-            TitleScene titleScene = new TitleScene(this.myEngine);
+            this.data = new GameData();
+            TitleScene titleScene = new TitleScene(this.myEngine,data);
             this.myEngine.getCurrentState().addScene(titleScene);
             this.myEngine.getCurrentState().restoreSceneFromFile(this.myView);
         }

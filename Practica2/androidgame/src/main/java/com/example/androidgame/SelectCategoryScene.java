@@ -28,15 +28,14 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     private AButton returnButton, forestButton, seaButton, cityButton, desertButton;
     private int forestFinished, seaFinished, cityFinished, desertFinished;
 
-    public SelectCategoryScene(AndroidEngine engine_){
-        super(engine_.getGraphics());
+    public SelectCategoryScene(AndroidEngine engine_, GameData data_){
+        super(engine_.getGraphics(), data_);
         this.filename = "category";
         this.changeScene = 0;
         this.backToMenu = false;
 
         //En el futuro, se tendrá que leer de fichero para cargar partida guardada
         this.forestFinished = this.seaFinished = this.cityFinished = this.desertFinished = 0;
-        restoreSceneFromFile(engine_.getSurfaceView());
         this.createButtons(engine_.getGraphics());
     }
 
@@ -110,7 +109,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     @Override
     public void update(AndroidEngine engine) {
         if (this.changeScene != 0){
-            engine.getCurrentState().addScene(new LevelScene(engine, this.changeScene - 1));
+            engine.getCurrentState().addScene(new LevelScene(engine, this.changeScene - 1, this.data));
             this.changeScene = 0;
         }
         if(this.backToMenu){
@@ -120,6 +119,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
 
     @Override
     public void render(AGraphics graphics) {
+        super.render(graphics);
         //graphics.setFont(this.font);
         graphics.drawText("Elige la categoría en la que quieres jugar",
                 graphics.getLogicWidth()/10.0f,
@@ -131,11 +131,11 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
         graphics.drawButton(this.cityButton);
         graphics.drawButton(this.desertButton);
         graphics.drawButton(this.returnButton);
-        graphics.drawText(Integer.toString(this.forestLevels), 100,100, 20, graphics.newColor(0,0,0,255));
     }
 
     @Override
     public void handleInputs(AGraphics graphics, AInput input, AAudio audio) {
+        super.handleInputs(graphics, input, audio);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList) {
             switch (event.type) {
@@ -151,9 +151,6 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
                     else if (this.cityButton.checkCollision(collisionX, collisionY)) {
                         if (this.cityFinished >= 5) this.changeScene = 4;}
                     else if (this.returnButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
-                    break;
-                case LONG_TOUCH:
-                    this.coins+=10;
                     break;
                 default:
                     break;
