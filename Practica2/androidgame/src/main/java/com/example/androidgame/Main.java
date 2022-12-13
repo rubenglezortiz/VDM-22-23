@@ -3,19 +3,26 @@ package com.example.androidgame;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.SurfaceView;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.aengine.AndroidEngine;
 import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -28,11 +35,15 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 public class Main extends AppCompatActivity {
-    private AdView mAdView;
+    private static AdView mAdView;
     private SurfaceView myView;
     private AndroidEngine myEngine;
     private GameData data;
     private int jsonInt;
+    private RewardedAd mRewardedAd;
+    private final String TAG = "MainActivity";
+    private static AdRequest adRequestBanner;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +68,38 @@ public class Main extends AppCompatActivity {
             }
         });
         AdRequest adRequest = new AdRequest.Builder().build();
-        this.mAdView.loadAd(adRequest);
-    }
+        RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917",
+                adRequest, new RewardedAdLoadCallback() {
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error.
+                        Log.d(TAG, loadAdError.toString());
+                        mRewardedAd = null;
+                    }
 
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                        mRewardedAd = rewardedAd;
+                        Log.d(TAG, "Ad was loaded.");
+                    }
+                });
+        this.adRequestBanner = new AdRequest.Builder().build();
+        this.mAdView.loadAd(adRequestBanner);
+    }
+   // if (mRewardedAd != null) {
+   //     mRewardedAd.show(, new OnUserEarnedRewardListener() {
+   //         @Override
+   //         public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+   //             // Handle the reward.
+   //             Log.d(TAG, "The user earned the reward.");
+   //             //int rewardAmount = rewardItem.getAmount();
+   //             //String rewardType = rewardItem.getType();
+   //         }
+   //     });
+   // } else {
+   //     System.out.println("The rewarded ad wasn't ready yet.");
+   //     Log.d(TAG, "The rewarded ad wasn't ready yet.");
+   // };
     @Override
     protected void onResume() {
         System.out.println("_______________RESUME_______________");

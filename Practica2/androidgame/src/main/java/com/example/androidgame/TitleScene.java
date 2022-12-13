@@ -19,7 +19,6 @@ public class TitleScene extends HistorySuperScene implements Serializable {
     private AButton storyButton, quickGameButton, paletteButton;
     private String backgroundMusic;
     private int changeScene;
-    private AdView mAdView;
 
     public TitleScene(AndroidEngine engine_, GameData data_){
         super(engine_.getGraphics(), data_);
@@ -94,6 +93,7 @@ public class TitleScene extends HistorySuperScene implements Serializable {
         graphics.drawButton(this.storyButton);
         graphics.drawButton(this.quickGameButton);
         graphics.drawButton(this.paletteButton);
+
     }
 
     @Override

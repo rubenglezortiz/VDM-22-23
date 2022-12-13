@@ -1,7 +1,10 @@
 package com.example.androidgame;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 
 import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
@@ -9,6 +12,9 @@ import com.example.aengine.AColor;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.AndroidEngine;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,7 +23,7 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     private String filename;
     private int changeScene;
     private boolean backToMenu;
-
+    private final String TAG = "LevelScene";
     private AButton returnButton;
     private AButton[][] levels;
 
@@ -25,7 +31,7 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     private int currentLevel;
     private String textId;
     private int rows, cols;
-
+    private RewardedAd mRewardedAd;
     public LevelScene(AndroidEngine engine_, int id_, GameData data){
         super(engine_.getGraphics(), data);
         this.filename = "level";
@@ -124,7 +130,9 @@ public class LevelScene extends HistorySuperScene implements Serializable {
 
             this.changeScene = 0;
         }
-        if(this.backToMenu) engine.getCurrentState().removeScene(1);
+        if(this.backToMenu) {
+            engine.getCurrentState().removeScene(1);
+        }
     }
 
     @Override
