@@ -87,13 +87,11 @@ public class LevelScene extends HistorySuperScene implements Serializable {
             for(int j = 0; j < this.cols; ++j){
                 x = x0 + (xi * j);
                 int level = i * this.cols + j + 1 + (this.categoryId * 20);
-                text = Integer.toString(level);
+                text = "Level" + Integer.toString(level) + ".png";
                 AColor color = (this.currentLevel>=level) ?  unlockedLevelColor : lockedLevelColor;
                 this.levels[i][j] = graphics.newButton(text,
                         x - (w / 2), y - (h / 2), w, h,
                         tx,ty, tSize,
-                        this.font,
-                        graphics.newColor(0, 0, 0, 255),
                         color);
             }
         }
@@ -105,12 +103,10 @@ public class LevelScene extends HistorySuperScene implements Serializable {
         tx = 10;
         ty = 25;
         tSize = 12;
-        this.returnButton = graphics.newButton("Volver",
+        this.returnButton = graphics.newButton("Volver.png",
                 x - (w / 2), y - (h / 2), w, h,
                 tx,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
-                graphics.newColor(255, 255, 255, 255));
+                this.palettes[this.data.actPalette][0]);
     }
 
     protected void setUpScene() {}

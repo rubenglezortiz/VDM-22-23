@@ -49,25 +49,19 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
         ty = 35;
         tSize = 15;
 
-        this.p1 = graphics.newButton("P1",
+        this.p1 = graphics.newButton("Paleta1.png",
                 x3x - (w / 2), y - (h / 2), w, h,
                 18,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
-                graphics.newColor(255, 255, 255, 255));
+                this.palettes[this.data.actPalette][0]);
 
-        this.p2 = graphics.newButton("P2",
+        this.p2 = graphics.newButton("Paleta2.png",
                 x5x - (w / 2), y - (h / 2), w, h,
                 18,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
-                graphics.newColor(255, 255, 255, 255));
+                this.palettes[this.data.actPalette][0]);
 
-        this.p3 = graphics.newButton("P3",
+        this.p3 = graphics.newButton("Paleta3.png",
                 x10x - (w / 2), y - (h / 2), w, h,
                 7,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
                 graphics.newColor(255, 255, 255, 255));
         x =  graphics.getLogicWidth() / 7;
         y =  graphics.getLogicHeight() / 16;
@@ -76,12 +70,10 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
         tx = 10;
         ty = 25;
         tSize = 12;
-        this.returnButton = graphics.newButton("Volver",
+        this.returnButton = graphics.newButton("Volver.png",
                 x - (w / 2), y - (h / 2), w, h,
                 tx,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
-                graphics.newColor(255, 255, 255, 255));
+                this.palettes[this.data.actPalette][0]);
     }
 
     protected void setUpScene() {}

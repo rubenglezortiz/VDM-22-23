@@ -56,19 +56,16 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         w = graphics.getLogicWidth() / 5.0f;
         h = graphics.getLogicHeight() / 15.0f;
 
-        this.backToMenuButton = graphics.newButton("MENU",
+        this.backToMenuButton = graphics.newButton("Volver.png",
                 x - (w / 2), y - (h / 2), w, h,
                 10,25, 9,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
-                graphics.newColor(255, 255, 255, 255));
+                this.palettes[this.data.actPalette][0]);
 
         x = (graphics.getLogicWidth()/2.0f - w/3 );
-        this.levelFinishedButton = graphics.newButton("CONTINUE",
+        this.levelFinishedButton = graphics.newButton("Continuar.png",
                 x, graphics.getLogicHeight() / 5.0f * 4.0f, w,h,
-                4,25,8, this.font,
-                graphics.newColor(0, 0, 0, 255),
-                graphics.newColor(255, 255, 255, 255));
+                4,25,8,
+                this.palettes[this.data.actPalette][0]);
 
     }
 
