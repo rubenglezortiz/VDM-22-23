@@ -123,8 +123,10 @@ public class AGraphics  {
         this.fonts.put(name, font);
     }
 
-    public AButton newButton(String text, float x, float y, float w, float h, float tX, float tY, int tSize, AColor bgColor) {
-        return new AButton(text, x, y, w, h, tX, tY, tSize, bgColor);
+    public AButton newButton(String name, float x, float y, float w, float h, float tX, float tY, int tSize, AColor bgColor) {
+        if(!this.images.containsKey(name))
+            this.images.put(name, new AImage(name, this.assetManager));
+        return new AButton(name, x, y, w, h, tX, tY, tSize, bgColor);
     }
 
     public void setBackgroundColor(AColor backgroundColor){
@@ -199,7 +201,9 @@ public class AGraphics  {
         float butH = button.getHeight();
 
         this.fillRectangle(butX,butY,butW,butH, button.getBackgroundColor());
-        this.drawImage(button.getName(), butX, butY, butW, butH);
+        if(this.images.containsKey(button.getName()))
+            this.drawImage(button.getName(), butX, butY, butW, butH);
+        else System.out.println("!!!!!!!!!!!!!!NO VALID IMAGE NAME!!!!!!!!!!!!!!");
     }
 
     // Getters

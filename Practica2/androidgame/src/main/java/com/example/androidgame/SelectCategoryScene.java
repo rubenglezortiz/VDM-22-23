@@ -49,11 +49,11 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
         ty = 12;
         tSize = 12;
 
-        String sea = "Mar.png";
+        String sea = "Playa.png";
         String city = "Ciudad.png";
         String desert = "Desierto.png";
 
-        if (this.forestFinished < 5) sea = "MarBloqueado.png";
+        if (this.forestFinished < 5) sea = "PlayaBloqueado.png";
         if (this.seaFinished < 5) city = "CiudadBloqueado.png";
         if (this.cityFinished < 5) desert = "DesiertoBloqueado.png";
 

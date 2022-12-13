@@ -24,10 +24,4 @@ public class AImage  {
     public Bitmap getBitmap(){
         return this.bitmap;
     }
-
-    /*public void setWidth(float width) { this.mutableBitmap.setWidth((int)width); }
-
-    public void setHeight(float height) { this.mutableBitmap.setHeight((int)height); }
-
-     */
 }
