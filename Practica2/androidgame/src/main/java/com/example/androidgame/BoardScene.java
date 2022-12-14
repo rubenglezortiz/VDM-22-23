@@ -59,13 +59,13 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         this.backToMenuButton = graphics.newButton("Volver.png",
                 x - (w / 2), y - (h / 2), w, h,
                 10,25, 9,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
 
         x = (graphics.getLogicWidth()/2.0f - w/3 );
         this.levelFinishedButton = graphics.newButton("Continuar.png",
                 x, graphics.getLogicHeight() / 5.0f * 4.0f, w,h,
                 4,25,8,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
 
     }
 
@@ -81,12 +81,10 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         if(!this.levelFinished && this.board.checkWin() || this.board.getCurrentLives() == 0){
             this.levelFinished = true;
             if (this.levelId != 0){
-                if (this.levelId <= 20) {
-                    this.data.forestLevels++;
-                }
-                else if (this.levelId <= 40) this.data.seaLevels++;
-                else if (this.levelId <= 60) this.data.cityLevels++;
-                else                    this.data.desertLevels++;
+                if (this.levelId == this.data.forestLevels)             this.data.forestLevels++;
+                else if (this.levelId - 20 == this.data.seaLevels)      this.data.seaLevels++;
+                else if (this.levelId - 40 == this.data.cityLevels)     this.data.cityLevels++;
+                else if (this.levelId - 60 == this.data.desertLevels)   this.data.desertLevels++;
             }
         }
         if(this.backToMenu) {

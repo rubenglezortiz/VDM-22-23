@@ -25,7 +25,6 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     private int changeScene;
     private boolean backToMenu;
     private AButton returnButton, forestButton, seaButton, cityButton, desertButton;
-    private int forestFinished, seaFinished, cityFinished, desertFinished;
 
     public SelectCategoryScene(AndroidEngine engine_, GameData data_){
         super(engine_.getGraphics(), data_);
@@ -33,7 +32,6 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
         this.backToMenu = false;
 
         //En el futuro, se tendrá que leer de fichero para cargar partida guardada
-        this.forestFinished = this.seaFinished = this.cityFinished = this.desertFinished = 0;
         this.createButtons(engine_.getGraphics());
     }
 
@@ -53,29 +51,29 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
         String city = "Ciudad.png";
         String desert = "Desierto.png";
 
-        if (this.forestFinished < 5) sea = "PlayaBloqueado.png";
-        if (this.seaFinished < 5) city = "CiudadBloqueado.png";
-        if (this.cityFinished < 5) desert = "DesiertoBloqueado.png";
+        if (this.data.forestLevels < 5) sea = "PlayaBloqueado.png";
+        if (this.data.seaLevels < 5) city = "CiudadBloqueado.png";
+        if (this.data.cityLevels < 5) desert = "DesiertoBloqueado.png";
 
         this.forestButton = graphics.newButton("Bosque.png",
                 x1 - (w / 2.0f), y1 - (h / 2.0f), w, h,
                 tx,ty, tSize,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
 
         this.seaButton = graphics.newButton(sea,
                 x2 - (w / 2.0f), y1 - (h / 2.0f), w, h,
                 tx,ty, tSize,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
 
         this.cityButton = graphics.newButton(city,
                 x1 - (w / 2.0f), y2 - (h / 2.0f), w, h,
                 tx,ty, tSize,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
 
         this.desertButton = graphics.newButton(desert,
                 x2 - (w / 2), y2 - (h / 2), w, h,
                 tx,ty, tSize,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
 
 
         int x, y;
@@ -87,7 +85,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
         this.returnButton = graphics.newButton("Volver.png",
                 x - (w / 2), y - (h / 2), w, h,
                 tx,ty, tSize,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
 
     }
 
@@ -131,12 +129,12 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
                     float collisionY = ((AInput.TouchInputEvent) event).y;
                     if (this.forestButton.checkCollision(collisionX, collisionY))
                         this.changeScene = 1;
-                    else if (this.forestButton.checkCollision(collisionX, collisionY)) {
-                        if (this.forestFinished >= 5) this.changeScene = 2;}
                     else if (this.seaButton.checkCollision(collisionX, collisionY)) {
-                        if (this.seaFinished >= 5) this.changeScene = 3;}
+                        if (this.data.forestLevels >= 5) this.changeScene = 2;}
                     else if (this.cityButton.checkCollision(collisionX, collisionY)) {
-                        if (this.cityFinished >= 5) this.changeScene = 4;}
+                        if (this.data.seaLevels >= 5) this.changeScene = 3;}
+                    else if (this.desertButton.checkCollision(collisionX, collisionY)) {
+                        if (this.data.cityLevels >= 5) this.changeScene = 4;}
                     else if (this.returnButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
                     break;
                 default:
@@ -160,20 +158,6 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     @Override
     public void saveSceneInFile(View myView) {
         super.saveSceneInFile(myView);
-
-        Gson gson = new Gson();
-        String aux = gson.toJson(this.forestFinished);
-
-        try(FileOutputStream fos = myView.getContext().openFileOutput(this.filename, Context.MODE_PRIVATE)){
-            fos.write(aux.getBytes(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try(FileOutputStream fos = myView.getContext().openFileOutput(this.filename, Context.MODE_PRIVATE)){
-            fos.write(aux.getBytes(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -192,15 +176,5 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     @Override
     public void restoreSceneFromFile(View myView) {
         super.restoreSceneFromFile(myView);
-        Gson gson = new Gson();
-        try {
-            FileInputStream fis = myView.getContext().openFileInput(this.filename);
-            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
-            BufferedReader reader = new BufferedReader(isr);
-            String line = reader.readLine();
-            this.forestFinished = gson.fromJson(line, int.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

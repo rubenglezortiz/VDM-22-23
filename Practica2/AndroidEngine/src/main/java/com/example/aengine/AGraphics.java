@@ -26,7 +26,7 @@ public class AGraphics  {
     private int offsetX, offsetY;
 
     // Items Variables
-    private  AColor background;
+    private  AColor background, defaultColor;
     private final String defaultFont;
     private final HashMap<String, AFont> fonts;
     private final HashMap<String, AImage> images;
@@ -39,6 +39,7 @@ public class AGraphics  {
         this.assetManager = this.myView.getContext().getAssets();
         this.logicWidth = 400;
         this.logicHeight = 600;
+        this.defaultColor = newColor(255,255,255,255);
         this.background = newColor(255,255,255,255);
         this.fonts = new HashMap<>();
         this.images = new HashMap<>();
@@ -136,12 +137,16 @@ public class AGraphics  {
     public void clear() {
         setColor(this.background);
         this.canvas.drawRect(0,0, getWidth(), getHeight(), this.paint);
+
+        setColor(this.defaultColor);
     }
 
     public void drawLine(float x, float y, float x_stop, float y_stop, AColor color) {
         setColor(color);
         this.canvas.drawLine(logicToRealX((int)x), logicToRealY((int)y),
                 logicToRealX((int)x_stop), logicToRealY((int)y_stop), this.paint);
+
+        setColor(this.defaultColor);
     }
 
     public void drawRectangle(float x_, float y_, float w_, float h_, AColor color) {
@@ -154,6 +159,8 @@ public class AGraphics  {
         this.canvas.drawLine(x,y,x,y + h,this.paint);
         this.canvas.drawLine(x,y+h,x+w,y+h,this.paint);
         this.canvas.drawLine(x+w,y,x+w,y+h,this.paint);
+
+        setColor(this.defaultColor);
     }
 
     public void fillRectangle(float x_, float y_, float w_, float h_,AColor color){
@@ -163,6 +170,8 @@ public class AGraphics  {
         float w = logicToRealScale(w_);
         float h = logicToRealScale(h_);
         this.canvas.drawRect(x,y,x+w, y+h, this.paint);
+
+        setColor(this.defaultColor);
     }
 
     public void drawImage(String key, float x, float y, float w, float h) {

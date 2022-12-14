@@ -47,17 +47,17 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
         this.button3x3 = graphics.newButton("3x3.png",
                 x3x - (w / 2), y - (h / 2), w, h,
                 18,ty, tSize,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
 
         this.button5x5 = graphics.newButton("5x5.png",
                 x5x - (w / 2), y - (h / 2), w, h,
                 18,ty, tSize,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
 
         this.button10x10 = graphics.newButton("10x10.png",
                 x10x - (w / 2), y - (h / 2), w, h,
                 7,ty, tSize,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
         x =  graphics.getLogicWidth() / 7;
         y =  graphics.getLogicHeight() / 16;
         w = graphics.getLogicWidth() / 4;
@@ -68,7 +68,7 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
         this.returnButton = graphics.newButton("Volver.png",
                 x - (w / 2), y - (h / 2), w, h,
                 tx,ty, tSize,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
     }
 
 

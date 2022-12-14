@@ -76,7 +76,7 @@ public class LevelScene extends HistorySuperScene implements Serializable {
             y = y0 + (yi * i);
             for(int j = 0; j < this.cols; ++j){
                 x = x0 + (xi * j);
-                int level = i * this.cols + j + 1 + (this.categoryId * 20);
+                int level = i * this.cols + j + 1;
                 text = "Level" + Integer.toString(level) + ".png";
                 AColor color = (this.currentLevel>=level) ?  unlockedLevelColor : lockedLevelColor;
                 this.levels[i][j] = graphics.newButton(text,
@@ -96,7 +96,7 @@ public class LevelScene extends HistorySuperScene implements Serializable {
         this.returnButton = graphics.newButton("Volver.png",
                 x - (w / 2), y - (h / 2), w, h,
                 tx,ty, tSize,
-                this.palettes[this.data.actPalette][0]);
+                graphics.newColor(0,0,0,0));
     }
 
     protected void setUpScene() {}
