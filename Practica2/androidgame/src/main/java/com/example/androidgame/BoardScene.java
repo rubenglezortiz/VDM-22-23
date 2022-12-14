@@ -80,13 +80,26 @@ public class BoardScene extends HistorySuperScene implements Serializable {
 
     @Override
     public void update(AndroidEngine engine) {
-        if(!this.levelFinished && this.board.checkWin() || this.board.getCurrentLives() == 0){
+        boolean win = this.board.checkWin();
+        if(!this.levelFinished && win || this.board.getCurrentLives() == 0){
             this.levelFinished = true;
-            if (this.levelId != 0){
-                if (this.levelId == this.data.forestLevels)             this.data.forestLevels++;
-                else if (this.levelId - 20 == this.data.seaLevels)      this.data.seaLevels++;
-                else if (this.levelId - 40 == this.data.cityLevels)     this.data.cityLevels++;
-                else if (this.levelId - 60 == this.data.desertLevels)   this.data.desertLevels++;
+            if (this.levelId != 0 && win){
+                if (this.levelId == this.data.forestLevels){
+                    this.data.forestLevels++;
+                    this.data.coins += 5;
+                }
+                else if (this.levelId - 20 == this.data.seaLevels){
+                    this.data.seaLevels++;
+                    this.data.coins += 5;
+                }
+                else if (this.levelId - 40 == this.data.cityLevels){
+                    this.data.cityLevels++;
+                    this.data.coins += 5;
+                }
+                else if (this.levelId - 60 == this.data.desertLevels){
+                    this.data.desertLevels++;
+                    this.data.coins += 5;
+                }
             }
         }
         if(this.backToMenu) {
