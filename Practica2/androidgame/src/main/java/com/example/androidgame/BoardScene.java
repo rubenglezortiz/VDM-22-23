@@ -69,7 +69,9 @@ public class BoardScene extends HistorySuperScene implements Serializable {
 
     }
 
+    @Override
     protected void setUpScene(AGraphics graphics, AAudio audio){
+        super.setUpScene(graphics, audio);
         this.backToMenu = this.backToSelectionLevelScene = false;
         createImages(graphics);
         createSounds(audio);
@@ -156,14 +158,6 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine){
         super.restoreScene(savedInstanceState, engine);
-        /*if(savedInstanceState!=null){
-            this.engine = engine;
-            this.board.updateGraphics(this.engine.getGraphics());
-            setUpScene();
-            //this.board = (Board) savedInstanceState.getSerializable("board");
-            //this.levelFinished = savedInstanceState.getBoolean("levelFinished");
-        }
-         */
     }
 
     @Override

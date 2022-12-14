@@ -33,25 +33,9 @@ public class LevelScene extends HistorySuperScene implements Serializable {
         this.cols = 4;
 
         this.categoryId = id_;
-        if(this.categoryId == 0) {
-            this.textId = "Bosque";
-            this.currentLevel = this.data.forestLevels;
-        }
-        else if (this.categoryId == 1){
-            this.textId = "Mar";
-            this.currentLevel = this.data.seaLevels;
-        }
-        else if (this.categoryId == 2) {
-            this.textId = "Ciudad";
-            this.currentLevel = this.data.cityLevels;
-        }
-        else {
-            this.textId = "Desierto";
-            this.currentLevel = this.data.desertLevels;
-        }
-
-        this.createButtons(engine_.getGraphics());
+        setUpScene(engine_.getGraphics(), engine_.getAudio());
     }
+
 
     private void createButtons(AGraphics graphics){
         this.levels = new AButton[this.rows][this.cols]; //[y][x] : [i][j]
@@ -98,8 +82,27 @@ public class LevelScene extends HistorySuperScene implements Serializable {
                 tx,ty, tSize,
                 graphics.newColor(0,0,0,0));
     }
-
-    protected void setUpScene() {}
+    @Override
+    protected void setUpScene(AGraphics graphics, AAudio audio) {
+        super.setUpScene(graphics, audio);
+        if(this.categoryId == 0) {
+            this.textId = "Bosque";
+            this.currentLevel = this.data.forestLevels;
+        }
+        else if (this.categoryId == 1){
+            this.textId = "Mar";
+            this.currentLevel = this.data.seaLevels;
+        }
+        else if (this.categoryId == 2) {
+            this.textId = "Ciudad";
+            this.currentLevel = this.data.cityLevels;
+        }
+        else {
+            this.textId = "Desierto";
+            this.currentLevel = this.data.desertLevels;
+        }
+        createButtons(graphics);
+    }
 
     @Override
     public void update(AndroidEngine engine){

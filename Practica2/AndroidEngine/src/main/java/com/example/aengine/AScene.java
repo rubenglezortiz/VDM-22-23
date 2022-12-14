@@ -6,7 +6,7 @@ import android.view.View;
 import java.net.DatagramPacket;
 
 public abstract class AScene  {
-    //protected abstract void setUpScene();
+    protected abstract void setUpScene(AGraphics graphics, AAudio audio);
 
     public abstract void update(AndroidEngine engine);
 

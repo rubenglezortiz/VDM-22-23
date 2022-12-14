@@ -62,5 +62,6 @@ public class AState  {
             this.scenes.pop();
             i++;
         }
+        if(this.scenes.size() > 0) this.scenes.peek().setUpScene(this.myEngine.getGraphics(), this.myEngine.getAudio());
     }
 }

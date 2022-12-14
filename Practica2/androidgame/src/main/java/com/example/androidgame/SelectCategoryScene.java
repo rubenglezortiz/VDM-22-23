@@ -35,6 +35,12 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
         this.createButtons(engine_.getGraphics());
     }
 
+    @Override
+    protected void setUpScene(AGraphics graphics, AAudio audio) {
+        super.setUpScene(graphics, audio);
+        createButtons(graphics);
+    }
+
     private void createButtons(AGraphics graphics){
         int x1, x2, y1, y2, w, h, tx, ty, tSize;
         x1 = graphics.getLogicWidth() / 4;
@@ -88,8 +94,6 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
                 graphics.newColor(0,0,0,0));
 
     }
-
-    protected void setUpScene() {}
 
     @Override
     public void update(AndroidEngine engine) {
@@ -146,13 +150,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
 
     @Override
     public void saveScene(Bundle outState) {
-        /*outState.putInt("coins", this.coins);
-        outState.putInt("forest", this.forestFinished);
-        outState.putInt("sea", this.seaFinished);
-        outState.putInt("city", this.cityFinished);
-        outState.putInt("desert", this.desertFinished);
-        outState.putInt("changeScene", this.changeScene);
-         */
+        super.saveScene(outState);
     }
 
     @Override
@@ -163,14 +161,6 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
         super.restoreScene(savedInstanceState, engine);
-        /*this.coins = savedInstanceState.getInt("coins");
-        this.forestFinished = savedInstanceState.getInt("forest");
-        this.seaFinished = savedInstanceState.getInt("sea");
-        this.cityFinished = savedInstanceState.getInt("city");
-        this.desertFinished = savedInstanceState.getInt("desert");
-        this.changeScene = savedInstanceState.getInt("changeScene");
-        setUpScene();
-         */
     }
 
     @Override

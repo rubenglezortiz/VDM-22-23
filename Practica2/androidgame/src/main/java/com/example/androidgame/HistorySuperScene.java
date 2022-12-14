@@ -19,7 +19,6 @@ public class HistorySuperScene extends AScene {
         this.filename = "super";
         this.font = "font.TTF";
         this.coinsImage ="moneda.png";
-        setUpScene(graphics);
         this.data = data_;
         this.palettes = new AColor[3][2];
         this.palettes[0][0] = new AColor(255,255,255);
@@ -28,9 +27,11 @@ public class HistorySuperScene extends AScene {
         this.palettes[1][1] = new AColor(128,0,128);
         this.palettes[2][0] = new AColor(255,128,0);
         this.palettes[2][1] = new AColor(255,255,0);
+        graphics.newImage(this.coinsImage);
     }
 
-    private void setUpScene(AGraphics graphics) {
+    @Override
+    protected void setUpScene(AGraphics graphics, AAudio audio) {
         graphics.newImage(this.coinsImage);
     }
 
@@ -68,7 +69,7 @@ public class HistorySuperScene extends AScene {
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
         this.data = (GameData) savedInstanceState.getSerializable("data");
         this.coinsImage = savedInstanceState.getString("coins_image");
-        setUpScene(engine.getGraphics());
+        setUpScene(engine.getGraphics(), engine.getAudio());
     }
 
     @Override
