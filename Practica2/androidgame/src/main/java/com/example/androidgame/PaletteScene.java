@@ -26,7 +26,7 @@ import java.util.ArrayList;
 public class PaletteScene extends HistorySuperScene implements Serializable {
     private boolean back;
     private int costp2, costp3;
-    private AButton returnButton, p1, p2, p3;
+    private AButton p1, p2, p3;
 
     public PaletteScene(AndroidEngine engine_, GameData data){
         super(engine_.getGraphics(), data);
@@ -61,17 +61,6 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
                 x10x - (w / 2), y - (h / 2), w, h,
                 7,ty, tSize,
                 graphics.newColor(0,0,0,0));
-        x =  graphics.getLogicWidth() / 7;
-        y =  graphics.getLogicHeight() / 16;
-        w = graphics.getLogicWidth() / 4;
-        h = graphics.getLogicHeight() / 16;
-        tx = 10;
-        ty = 25;
-        tSize = 12;
-        this.returnButton = graphics.newButton("Volver.png",
-                x - (w / 2), y - (h / 2), w, h,
-                tx,ty, tSize,
-                this.palettes[this.data.actPalette][0]);
     }
 
     protected void setUpScene() {}

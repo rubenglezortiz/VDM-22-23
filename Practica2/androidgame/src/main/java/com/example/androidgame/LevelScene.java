@@ -16,7 +16,6 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     private int changeScene;
     private boolean backToMenu;
     private final String TAG = "LevelScene";
-    private AButton returnButton;
     private AButton[][] levels;
 
     private int categoryId;
@@ -69,18 +68,6 @@ public class LevelScene extends HistorySuperScene implements Serializable {
                         color);
             }
         }
-
-        x =  graphics.getLogicWidth() / 7;
-        y =  graphics.getLogicHeight() / 16;
-        w = graphics.getLogicWidth() / 4;
-        h = graphics.getLogicHeight() / 16;
-        tx = 10;
-        ty = 25;
-        tSize = 12;
-        this.returnButton = graphics.newButton("Volver.png",
-                x - (w / 2), y - (h / 2), w, h,
-                tx,ty, tSize,
-                graphics.newColor(0,0,0,0));
     }
     @Override
     protected void setUpScene(AGraphics graphics, AAudio audio) {

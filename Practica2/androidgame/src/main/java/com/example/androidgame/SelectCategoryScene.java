@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class SelectCategoryScene extends HistorySuperScene implements Serializable {
     private int changeScene;
     private boolean backToMenu;
-    private AButton returnButton, forestButton, seaButton, cityButton, desertButton;
+    private AButton forestButton, seaButton, cityButton, desertButton;
 
     public SelectCategoryScene(AndroidEngine engine_, GameData data_){
         super(engine_.getGraphics(), data_);
@@ -81,19 +81,6 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
                 x2 - (w / 2), y2 - (h / 2), w, h,
                 tx,ty, tSize,
                 graphics.newColor(0,0,0,0));
-
-
-        int x, y;
-        x =  graphics.getLogicWidth() / 7;
-        y =  graphics.getLogicHeight() / 16;
-        w = graphics.getLogicWidth() / 4;
-        h = graphics.getLogicHeight() / 16;
-
-        this.returnButton = graphics.newButton("Volver.png",
-                x - (w / 2), y - (h / 2), w, h,
-                tx,ty, tSize,
-                graphics.newColor(0,0,0,0));
-
     }
 
     @Override

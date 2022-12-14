@@ -3,6 +3,7 @@ package com.example.androidgame;
 import android.os.Bundle;
 import android.view.View;
 import com.example.aengine.AAudio;
+import com.example.aengine.AButton;
 import com.example.aengine.AColor;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
@@ -14,6 +15,7 @@ public class HistorySuperScene extends AScene {
     protected String filename, font, coinsImage;
     protected GameData data;
     protected AColor[][] palettes;
+    protected AButton returnButton;
 
     HistorySuperScene(AGraphics graphics, GameData data_){
         this.filename = "super";
@@ -28,6 +30,15 @@ public class HistorySuperScene extends AScene {
         this.palettes[2][0] = new AColor(255,128,0);
         this.palettes[2][1] = new AColor(255,255,0);
         graphics.newImage(this.coinsImage);
+
+        float x,y,w,h;
+        x = graphics.getLogicWidth()/ 9.0f;
+        y = graphics.getLogicHeight()/ 10.0f;
+        w = h = graphics.getLogicHeight() / 12.0f;
+        this.returnButton = graphics.newButton("Volver.png",
+                x - (w / 2), y - (h / 2), w, h,
+                10,25, 9,
+                graphics.newColor(0,0,0,0));
     }
 
     @Override

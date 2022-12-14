@@ -26,7 +26,7 @@ import java.util.Iterator;
 
 public class BoardScene extends HistorySuperScene implements Serializable {
     private Board board;
-    private AButton backToMenuButton, levelFinishedButton;
+    private AButton levelFinishedButton;
     private String liveImage, noLiveImage;
     private boolean backToMenu, levelFinished, backToSelectionLevelScene;
     private int levelId, categoryId;
@@ -62,15 +62,9 @@ public class BoardScene extends HistorySuperScene implements Serializable {
 
     private void createButtons(AGraphics graphics){
         float x,y,w,h;
-        x = graphics.getLogicWidth()/10.0f;
         y = graphics.getLogicHeight()/10.0f;
         w = graphics.getLogicWidth() / 5.0f;
         h = graphics.getLogicHeight() / 15.0f;
-
-        this.backToMenuButton = graphics.newButton("Volver.png",
-                x - (w / 2), y - (h / 2), w, h,
-                10,25, 9,
-                graphics.newColor(0,0,0,0));
 
         x = (graphics.getLogicWidth()/2.0f - w/3 );
         this.levelFinishedButton = graphics.newButton("Continuar.png",
@@ -123,7 +117,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     @Override
     public void render(AGraphics graphics) {
         super.render(graphics);
-        graphics.drawButton(this.backToMenuButton);
+        graphics.drawButton(this.returnButton);
         this.board.render(graphics);
         if(this.levelFinished) graphics.drawButton(this.levelFinishedButton);
         renderLives(graphics);
@@ -156,7 +150,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
                     float collisionX = ((AInput.TouchInputEvent) event).x;
                     float collisionY = ((AInput.TouchInputEvent) event).y;
                     this.board.handleInputs(event, audio);
-                    if(this.backToMenuButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
+                    if(this.returnButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
                     else if (this.levelFinished && this.levelFinishedButton.checkCollision(collisionX, collisionY))
                         this.backToSelectionLevelScene = true;
                     break;

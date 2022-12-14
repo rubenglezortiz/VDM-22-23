@@ -20,7 +20,6 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
     private int boardSize;
 
     private boolean backToMenu;
-    private AButton returnButton;
     private AButton button3x3;
     private AButton button5x5;
     private AButton button10x10;
@@ -57,17 +56,6 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
         this.button10x10 = graphics.newButton("10x10.png",
                 x10x - (w / 2), y - (h / 2), w, h,
                 7,ty, tSize,
-                graphics.newColor(0,0,0,0));
-        x =  graphics.getLogicWidth() / 7;
-        y =  graphics.getLogicHeight() / 16;
-        w = graphics.getLogicWidth() / 4;
-        h = graphics.getLogicHeight() / 16;
-        tx = 10;
-        ty = 25;
-        tSize = 12;
-        this.returnButton = graphics.newButton("Volver.png",
-                x - (w / 2), y - (h / 2), w, h,
-                tx,ty, tSize,
                 graphics.newColor(0,0,0,0));
     }
 
