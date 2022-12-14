@@ -1,5 +1,6 @@
 package com.example.androidgame;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,8 +12,15 @@ import com.example.aengine.AImage;
 import com.example.aengine.AInput;
 import com.example.aengine.ASound;
 import com.example.aengine.AndroidEngine;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -23,18 +31,21 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     private boolean backToMenu, levelFinished, backToSelectionLevelScene;
     private int levelId, categoryId;
 
-    private String winSound;
+    private String winSound, boardInProgressFile;
 
 
     public BoardScene(AndroidEngine engine, int id_, int category, int numCols, int numRows, GameData data){
         super(engine.getGraphics(), data);
         this.winSound = "win.wav";
+        this.boardInProgressFile = "board";
         this.liveImage = "corazon_con_vida.png";
         this.noLiveImage = "corazon_sin_vida.png";
         this.levelFinished = false;
         this.levelId = id_;
         this.categoryId = category;
         this.board = new Board(this.levelId,numCols,numRows, engine, engine.getGraphics(), engine.getAudio());
+        if(this.levelId == this.data.levelInProgress) restoreSceneFromFile(engine.getSurfaceView());
+        else this.data.levelInProgress = this.levelId;
         this.board.setCellColor(this.palettes[this.data.actPalette][1]);
         setUpScene(engine.getGraphics(), engine.getAudio());
     }
@@ -82,6 +93,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     public void update(AndroidEngine engine) {
         boolean win = this.board.checkWin();
         if(!this.levelFinished && win || this.board.getCurrentLives() == 0){
+            this.data.levelInProgress = 0;
             this.levelFinished = true;
             if (this.levelId != 0 && win){
                 if (this.levelId == this.data.forestLevels){
@@ -166,19 +178,36 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     @Override
     public void saveSceneInFile(View myView) {
         super.saveSceneInFile(myView);
+        Gson gson = new Gson();
+        String aux = gson.toJson(this.board);
+
+        try(FileOutputStream fos = myView.getContext().openFileOutput(this.boardInProgressFile, Context.MODE_PRIVATE)){
+            fos.write(aux.getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine){
         super.restoreScene(savedInstanceState, engine);
+        
     }
 
     @Override
     public void restoreSceneFromFile(View myView) {
         super.restoreSceneFromFile(myView);
+        Gson gson = new Gson();
+        try {
+            FileInputStream fis = myView.getContext().openFileInput(this.boardInProgressFile);
+            InputStreamReader isr = new InputStreamReader(fis, StandardCharsets.UTF_8);
+            BufferedReader reader = new BufferedReader(isr);
+            String line = reader.readLine();
+            this.board = gson.fromJson(line, Board.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     }
 
-    public boolean checkIfFinished() {
-        return this.levelFinished;
-    }
 }

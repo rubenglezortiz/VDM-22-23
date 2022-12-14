@@ -88,7 +88,6 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
         graphics.drawButton(this.p1);
         graphics.drawButton(this.p2);
         graphics.drawButton(this.p3);
-        graphics.drawText(Integer.toString(this.data.actPalette), 300,100, 20, graphics.newColor(0,0,0,255));
     }
 
     @Override
@@ -115,8 +114,10 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
                         }
                         if(!this.data.lockp3) this.data.actPalette = 2;
                     }
-
                     if(this.returnButton.checkCollision(collisionX,collisionY)) this.back = true;
+                    break;
+                case LONG_TOUCH:
+                    this.data.coins+=10;
                     break;
                 default:
                     break;

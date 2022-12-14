@@ -38,6 +38,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     @Override
     protected void setUpScene(AGraphics graphics, AAudio audio) {
         super.setUpScene(graphics, audio);
+        this.data.levelInProgress = 0;
         createButtons(graphics);
     }
 
@@ -109,12 +110,6 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     @Override
     public void render(AGraphics graphics) {
         super.render(graphics);
-        //graphics.setFont(this.font);
-        graphics.drawText("Elige la categoría en la que quieres jugar",
-                graphics.getLogicWidth()/10.0f,
-                graphics.getLogicHeight() * 3.0f/ 16.0f, 8,
-                graphics.newColor(0,0,0,255));
-
         graphics.drawButton(this.forestButton);
         graphics.drawButton(this.seaButton);
         graphics.drawButton(this.cityButton);

@@ -42,16 +42,11 @@ public class HistorySuperScene extends AScene {
     public void render(AGraphics graphics) {
         graphics.setBackgroundColor(this.palettes[this.data.actPalette][0]);
         graphics.drawImage(this.coinsImage, 350,0,25,25);
-        graphics.drawText(this.font, String.valueOf(this.data.coins), 320 ,17, 20, new AColor(0,0,0,255));
+        graphics.drawText(this.font, String.valueOf(this.data.coins), 300 ,20, 20, new AColor(0,0,0,255));
     }
 
     @Override
     public void handleInputs(AInput input, AAudio audio) {
-        ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
-        for (AInput.Event event : eventList) {
-            if (event.type == AInput.InputType.LONG_TOUCH)
-                this.data.coins += 10;
-        }
     }
 
     @Override
