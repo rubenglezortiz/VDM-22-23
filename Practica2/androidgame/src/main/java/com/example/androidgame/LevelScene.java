@@ -5,10 +5,10 @@ import android.view.View;
 import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AColor;
+import com.example.aengine.AExternal;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.AndroidEngine;
-import com.google.android.gms.ads.rewarded.RewardedAd;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -22,7 +22,6 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     private int currentLevel;
     private String textId;
     private int rows, cols;
-    private RewardedAd mRewardedAd;
 
     public LevelScene(AndroidEngine engine_, int id_, GameData data){
         super(engine_.getGraphics(), data);
@@ -120,8 +119,8 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public void handleInputs(AInput input, AAudio audio){
-        super.handleInputs(input, audio);
+    public void handleInputs(AInput input, AAudio audio, AExternal external){
+        super.handleInputs(input, audio, external);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList)
             switch (event.type) {

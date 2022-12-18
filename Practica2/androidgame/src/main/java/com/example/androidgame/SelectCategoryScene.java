@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
+import com.example.aengine.AExternal;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.AState;
@@ -105,8 +106,8 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     }
 
     @Override
-    public void handleInputs(AInput input, AAudio audio) {
-        super.handleInputs(input, audio);
+    public void handleInputs(AInput input, AAudio audio, AExternal external) {
+        super.handleInputs(input, audio,external);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList) {
             switch (event.type) {

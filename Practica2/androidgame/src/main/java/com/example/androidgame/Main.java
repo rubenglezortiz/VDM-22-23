@@ -42,7 +42,6 @@ public class Main extends AppCompatActivity {
     private int jsonInt;
     private RewardedAd mRewardedAd;
     private final String TAG = "MainActivity";
-    private static AdRequest adRequestBanner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +50,13 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.myView = findViewById(R.id.surfaceView);
         this.mAdView = findViewById(R.id.adView);
-        this.myEngine = new AndroidEngine(this.myView);
-        if (savedInstanceState!=null){
+        this.myEngine = new AndroidEngine(this.myView, this.mAdView);
+        this.myEngine.getExternal().setActivity(this);
+        if (savedInstanceState != null) {
             this.myEngine.getCurrentState().restoreScene(savedInstanceState, this.myEngine);
-        }
-        else {
+        } else {
             this.data = new GameData();
-            TitleScene titleScene = new TitleScene(this.myEngine,data);
+            TitleScene titleScene = new TitleScene(this.myEngine, data);
             this.myEngine.getCurrentState().addScene(titleScene);
             this.myEngine.getCurrentState().restoreSceneFromFile(this.myView);
         }
@@ -82,26 +81,13 @@ public class Main extends AppCompatActivity {
                     @Override
                     public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                         mRewardedAd = rewardedAd;
+                        myEngine.getExternal().setmRewardedAd(mRewardedAd);
                         Log.d(TAG, "Ad was loaded.");
                     }
                 });
-        this.adRequestBanner = new AdRequest.Builder().build();
-        this.mAdView.loadAd(adRequestBanner);
+
+
     }
-   // if (mRewardedAd != null) {
-   //     mRewardedAd.show(, new OnUserEarnedRewardListener() {
-   //         @Override
-   //         public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-   //             // Handle the reward.
-   //             Log.d(TAG, "The user earned the reward.");
-   //             //int rewardAmount = rewardItem.getAmount();
-   //             //String rewardType = rewardItem.getType();
-   //         }
-   //     });
-   // } else {
-   //     System.out.println("The rewarded ad wasn't ready yet.");
-   //     Log.d(TAG, "The rewarded ad wasn't ready yet.");
-   // };
     @Override
     protected void onResume() {
         System.out.println("_______________RESUME_______________");

@@ -31,7 +31,7 @@ public class AState  {
 
     public void handleInputs() {
         if(this.scenes.size() > 0)
-            this.scenes.peek().handleInputs(this.myEngine.getInput(), this.myEngine.getAudio());
+            this.scenes.peek().handleInputs(this.myEngine.getInput(), this.myEngine.getAudio(),this.myEngine.getExternal());
     }
 
     public void saveScene(Bundle outState){

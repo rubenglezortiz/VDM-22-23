@@ -8,6 +8,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import java.io.Serializable;
 
 public class AndroidEngine implements Runnable {
@@ -15,18 +18,23 @@ public class AndroidEngine implements Runnable {
     private AAudio audio;
     private AInput input;
     private AState currentState;
+    private AExternal external;
 
     private SurfaceView myView;
+    private AdView adView;
+    private AdRequest adRequestBanner;
     private Thread currentThread;
 
     private boolean running;
 
     @SuppressLint("ClickableViewAccessibility")
-    public AndroidEngine(SurfaceView myView_){
+    public AndroidEngine(SurfaceView myView_, AdView adView_){
         this.myView = myView_;
+        this.adView = adView_;
         this.graphics = new AGraphics(this.myView);
         this.audio = new AAudio(this.myView.getContext().getAssets());
         this.input = new AInput(this.graphics);
+        this.external = new AExternal(this.adView);
 
         this.myView.setOnLongClickListener(this.input);
         this.myView.setOnTouchListener(this.input);
@@ -42,6 +50,7 @@ public class AndroidEngine implements Runnable {
     public AState getCurrentState() { return this.currentState;}
 
     public AAudio getAudio() { return this.audio;}
+    public AExternal getExternal() { return this.external;}
 
     public int getTime() {
         long time = System.nanoTime() / 1000000;

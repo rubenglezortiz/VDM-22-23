@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
+import com.example.aengine.AExternal;
 import com.example.aengine.AFont;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AImage;
@@ -135,8 +136,8 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public synchronized void handleInputs(AInput input, AAudio audio) {
-        super.handleInputs(input, audio);
+    public synchronized void handleInputs(AInput input, AAudio audio, AExternal external) {
+        super.handleInputs(input, audio, external);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {

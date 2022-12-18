@@ -5,6 +5,7 @@ import android.view.View;
 import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AColor;
+import com.example.aengine.AExternal;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.AScene;
@@ -57,7 +58,7 @@ public class HistorySuperScene extends AScene {
     }
 
     @Override
-    public void handleInputs(AInput input, AAudio audio) {
+    public void handleInputs(AInput input, AAudio audio, AExternal external) {
     }
 
     @Override
