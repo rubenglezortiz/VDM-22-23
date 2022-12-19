@@ -3,6 +3,7 @@ package com.example.aengine;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
@@ -117,5 +118,9 @@ public class AExternal {
     public void setmRewardedAd(RewardedAd rewardedAd_)
     {
         this.mRewardedAd = rewardedAd_;
+    }
+    public void startActivity(Intent intent)
+    {
+        this.activity.startActivity(intent);
     }
 }

@@ -1,6 +1,8 @@
 package com.example.androidgame;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -24,7 +26,7 @@ import java.util.Iterator;
 
 public class BoardScene extends HistorySuperScene implements Serializable {
     private Board board;
-    private AButton levelFinishedButton, lifeAdButton;
+    private AButton levelFinishedButton, lifeAdButton,tweetButton;
     private String liveImage, noLiveImage;
     private boolean backToMenu, levelFinished, backToSelectionLevelScene, isHorizontal;
     private int levelId, categoryId;
@@ -69,17 +71,22 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     }
 
     private void createButtons(AGraphics graphics){
-        float x,y,w,h;
+        float x,y,w,h,xLife,xTweet;
         y = graphics.getLogicHeight() / 5.0f * 4.0f;
         w = graphics.getLogicWidth() / 5.0f;
         h = graphics.getLogicHeight() / 15.0f;
 
         x = (graphics.getLogicWidth()/2.0f - w/3 );
+        xLife = (graphics.getLogicWidth()/2.0f - w*1.5f );
+        xTweet = (graphics.getLogicWidth()/2.0f + w );
         this.levelFinishedButton = graphics.newButton("Continuar.png",
                 x, y, w,h,
                 graphics.newColor(0,0,0,0));
         this.lifeAdButton = graphics.newButton("Continuar.png",
-                x, y, w,h,
+                xLife, y, w,h,
+                graphics.newColor(0,0,0,0));
+        this.tweetButton = graphics.newButton("twitter.png",
+                xTweet, y, h,h,
                 graphics.newColor(0,0,0,0));
 
     }
@@ -136,6 +143,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         graphics.drawButton(this.returnButton);
         this.board.render(graphics);
         if(this.levelFinished) graphics.drawButton(this.levelFinishedButton);
+        if(this.board.checkWin())graphics.drawButton(this.tweetButton);
         renderLives(graphics);
     }
 
@@ -180,12 +188,21 @@ public class BoardScene extends HistorySuperScene implements Serializable {
                         external.loadRewardedAd();
                         this.board.gainLife();
                     }
+                    else if(this.tweetButton.checkCollision(collisionX, collisionY) && board.checkWin()) {
+                        Uri builtURI = Uri. parse("https://twitter.com/intent/tweet" ).buildUpon()
+                                .appendQueryParameter( "text", "He completado un nuevo nivel de Nonograms! Vaya juegazo >:)")
+                                .build() ; //Genera la URl https://twitter.com/intent/tweet?text=Este%20es%20mi%20texto%20a%20tweettear
+                        Intent intent = new Intent(Intent. ACTION_VIEW, builtURI);
+                        external.startActivity(intent); // startActivity es un método de Context
+                    }
                     else if (this.levelFinished && this.levelFinishedButton.checkCollision(collisionX, collisionY))
-                        this.backToSelectionLevelScene = true;
+                       this.backToSelectionLevelScene = true;
                     break;
                 default:
                     break;
             }
+
+
         }
         input.clearEventList();
     }
