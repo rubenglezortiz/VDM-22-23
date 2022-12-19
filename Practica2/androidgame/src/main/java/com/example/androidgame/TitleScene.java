@@ -101,10 +101,7 @@ public class TitleScene extends HistorySuperScene implements Serializable {
                 case TOUCH_RELEASED:
                     float collisionX = ((AInput.TouchInputEvent) event).x;
                     float collisionY = ((AInput.TouchInputEvent) event).y;
-                    if (this.storyButton.checkCollision(collisionX, collisionY)) {
-                        external.loadRewardedAd();
-                        this.changeScene = 1;
-                    }
+                    if (this.storyButton.checkCollision(collisionX, collisionY)) this.changeScene = 1;
                     if (this.quickGameButton.checkCollision(collisionX, collisionY)) this.changeScene = 2;
                     if (this.paletteButton.checkCollision(collisionX, collisionY)) this.changeScene = 3;
                     break;

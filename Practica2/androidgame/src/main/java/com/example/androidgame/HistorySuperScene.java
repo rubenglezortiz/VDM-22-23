@@ -10,7 +10,6 @@ import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
 import com.example.aengine.AScene;
 import com.example.aengine.AndroidEngine;
-import java.util.ArrayList;
 
 public class HistorySuperScene extends AScene {
     protected String filename, font, coinsImage;

@@ -2,39 +2,30 @@ package com.example.androidgame;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
-import android.app.Activity;
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.example.aengine.AndroidEngine;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
-import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.DataInput;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-
-public class Main extends AppCompatActivity {
+public class Main extends AppCompatActivity implements LocationListener {
     private static AdView mAdView;
     private SurfaceView myView;
     private AndroidEngine myEngine;
@@ -42,6 +33,8 @@ public class Main extends AppCompatActivity {
     private int jsonInt;
     private RewardedAd mRewardedAd;
     private final String TAG = "MainActivity";
+
+    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +50,7 @@ public class Main extends AppCompatActivity {
             this.myEngine.getCurrentState().restoreScene(savedInstanceState, this.myEngine);
         } else {
             this.data = new GameData();
-            TitleScene titleScene = new TitleScene(this.myEngine,data);
+            TitleScene titleScene = new TitleScene(this.myEngine, data);
             this.myEngine.getCurrentState().addScene(titleScene);
             this.myEngine.getCurrentState().restoreSceneFromFile(this.myView);
         }
@@ -86,6 +79,20 @@ public class Main extends AppCompatActivity {
                         Log.d(TAG, "Ad was loaded.");
                     }
                 });
+
+        //LOCATION
+        while (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            LocationPermission();
+
+        this.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+    }
+
+    private void LocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},0);
+        }
     }
 
     @Override
@@ -127,5 +134,10 @@ public class Main extends AppCompatActivity {
     protected void onDestroy() {
         System.out.println("_______________DESTROY_______________");
         super.onDestroy();
+    }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        double a = location.getLatitude();
     }
 }

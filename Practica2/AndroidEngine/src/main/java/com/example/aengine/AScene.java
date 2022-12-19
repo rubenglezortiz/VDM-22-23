@@ -3,8 +3,6 @@ package com.example.aengine;
 import android.os.Bundle;
 import android.view.View;
 
-import java.net.DatagramPacket;
-
 public abstract class AScene  {
     protected abstract void setUpScene(AGraphics graphics, AAudio audio);
 

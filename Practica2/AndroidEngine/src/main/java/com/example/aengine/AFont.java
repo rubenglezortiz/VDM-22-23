@@ -3,8 +3,6 @@ package com.example.aengine;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
-import androidx.annotation.NonNull;
-
 
 public class AFont  {
 

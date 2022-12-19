@@ -6,7 +6,6 @@ import com.example.aengine.AAudio;
 import com.example.aengine.AColor;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
-import com.example.aengine.ASound;
 import com.example.aengine.AndroidEngine;
 
 import java.io.BufferedReader;
@@ -27,10 +26,10 @@ public class Board implements Serializable {
     private int textMessagesSize;
     private String cellSound, failSound;
 
-    public Board(int id, int nC, int nR, AndroidEngine engine_, AGraphics graphics, AAudio audio){
+    public Board(int id, int nC, int nR, AndroidEngine engine_){
         this.initLives = this.currentLives = 3;
-        this.textMessagesSize = graphics.getLogicWidth() / 20;
-        int cellSize = Math.min(graphics.getLogicWidth() - this.margin * 3, graphics.getLogicHeight() - margin * 3);
+        this.textMessagesSize = engine_.getGraphics().getLogicWidth() / 20;
+        int cellSize = Math.min(engine_.getGraphics().getLogicWidth() - this.margin * 3, engine_.getGraphics().getLogicHeight() - margin * 3);
         this.cellSound = "cell.wav";
         this.failSound = "fail.wav";
         if (id == 0) {
@@ -101,7 +100,7 @@ public class Board implements Serializable {
         }
         //Aquí la generación de las casillas ya se ha terminado.
         clueGenerator();
-        createSounds(audio);
+        createSounds(engine_.getAudio());
     }
 
     private void clueGenerator(){
@@ -296,6 +295,8 @@ public class Board implements Serializable {
     public int getInitLives(){return this.initLives;}
 
     public int getCurrentLives(){return this.currentLives;}
+
+    public void gainLife(){ this.currentLives++;}
 
     public void setCellColor(AColor cellColor_) {
         for (int i = 0; i < this.numRows; i++)

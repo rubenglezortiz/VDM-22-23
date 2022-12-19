@@ -1,11 +1,8 @@
 package com.example.aengine;
 
 import android.os.Bundle;
-import android.transition.Scene;
 import android.view.SurfaceView;
 import android.view.View;
-
-import java.util.Iterator;
 import java.util.Stack;
 
 public class AState  {

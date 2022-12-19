@@ -6,10 +6,8 @@ import android.view.View;
 import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AExternal;
-import com.example.aengine.AFont;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
-import com.example.aengine.AScene;
 import com.example.aengine.AndroidEngine;
 
 import java.io.Serializable;
