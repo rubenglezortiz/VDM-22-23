@@ -28,9 +28,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     private String liveImage, noLiveImage;
     private boolean backToMenu, levelFinished, backToSelectionLevelScene, isHorizontal;
     private int levelId, categoryId;
-
     private String winSound, boardInProgressFile;
-
 
     public BoardScene(AndroidEngine engine, int id_, int category, int numCols, int numRows, GameData data){
         super(engine.getGraphics(), data);
@@ -41,11 +39,23 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         this.levelFinished = false;
         this.levelId = id_;
         this.categoryId = category;
-        this.board = new Board(this.levelId,numCols,numRows, engine, engine.getGraphics(), engine.getAudio());
-        if(this.levelId == this.data.levelInProgress) restoreSceneFromFile(engine.getSurfaceView());
-        else this.data.levelInProgress = this.levelId;
+        if(this.levelId!=0) createHistoryBoard(engine, numCols, numRows);
+        else createRandomBoard(engine, numCols, numRows);
         this.board.setCellColor(this.palettes[this.data.actPalette][1]);
         setUpScene(engine.getGraphics(), engine.getAudio());
+    }
+
+    private void createHistoryBoard(AndroidEngine engine, int numCols, int numRows) {
+        if (this.levelId == this.data.levelInProgress)
+            restoreSceneFromFile(engine.getSurfaceView());
+        else{
+            this.data.levelInProgress = this.levelId;
+            this.board = new Board(this.levelId, numCols, numRows, engine);
+        }
+    }
+
+    private void createRandomBoard(AndroidEngine engine, int numCols, int numRows) {
+        this.board = new Board(0, numCols, numRows, engine);
     }
 
     private void createImages(AGraphics graphics){
@@ -121,7 +131,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     public void render(AGraphics graphics) {
         super.render(graphics);
 
-        if (this.board.getCurrentLives()<this.board.getInitLives()&&!this.levelFinished)
+        if (this.board.getCurrentLives()<this.board.getInitLives())
             graphics.drawButton(this.lifeAdButton);
         graphics.drawButton(this.returnButton);
         this.board.render(graphics);
@@ -166,7 +176,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
                     float collisionY = ((AInput.TouchInputEvent) event).y;
                     this.board.handleInputs(event, audio);
                     if(this.returnButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
-                    else if(this.lifeAdButton.checkCollision(collisionX, collisionY) && this.board.getCurrentLives() < this.board.getInitLives()&&!this.levelFinished) {
+                    else if(this.lifeAdButton.checkCollision(collisionX, collisionY) && this.board.getCurrentLives() < this.board.getInitLives()) {
                         external.loadRewardedAd();
                         this.board.gainLife();
                     }
@@ -182,6 +192,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
 
     @Override
     public void saveScene(Bundle outState){
+        super.saveScene(outState);
         if(outState !=null){
             outState.putSerializable("board", this.board);
             outState.putBoolean("levelFinished", this.levelFinished);
@@ -204,7 +215,6 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine){
         super.restoreScene(savedInstanceState, engine);
-        
     }
 
     @Override
