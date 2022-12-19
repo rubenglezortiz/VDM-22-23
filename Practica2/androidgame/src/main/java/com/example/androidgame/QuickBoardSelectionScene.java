@@ -34,29 +34,24 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
     }
 
     private void createButtons(AGraphics graphics){
-        int x, x3x, x5x, x10x, y, w, h, tx, ty, tSize;
+        int x, x3x, x5x, x10x, y, w, h;
         x3x = graphics.getLogicWidth() / 4;
         x5x = graphics.getLogicWidth() * 2 / 4;
         x10x = graphics.getLogicWidth() * 3 / 4;
         y = graphics.getLogicHeight() / 2;
         w = graphics.getLogicWidth() / 5;
         h = graphics.getLogicHeight() / 10;
-        ty = 35;
-        tSize = 15;
 
         this.button3x3 = graphics.newButton("3x3.png",
                 x3x - (w / 2), y - (h / 2), w, h,
-                18,ty, tSize,
                 graphics.newColor(0,0,0,0));
 
         this.button5x5 = graphics.newButton("5x5.png",
                 x5x - (w / 2), y - (h / 2), w, h,
-                18,ty, tSize,
                 graphics.newColor(0,0,0,0));
 
         this.button10x10 = graphics.newButton("10x10.png",
                 x10x - (w / 2), y - (h / 2), w, h,
-                7,ty, tSize,
                 graphics.newColor(0,0,0,0));
     }
 

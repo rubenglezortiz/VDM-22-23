@@ -7,18 +7,15 @@ import java.io.Serializable;
 
 public class AButton implements Serializable {
     private String name;
-    private float posX, posY, width, height, textX, textY, textSize;
+    private float posX, posY, width, height;
     private AColor backgroundColor;
 
-    public AButton(String buttonName, float x, float y, float w, float h, float tX, float tY, int tSize, AColor bgColor) {
+    public AButton(String buttonName, float x, float y, float w, float h, AColor bgColor) {
         this.name = buttonName;
         this.posX = x;
         this.posY = y;
         this.width = w;
         this.height = h;
-        this.textX = tX;
-        this.textY = tY;
-        this.textSize = tSize;
         this.backgroundColor = bgColor;
     }
 
@@ -38,12 +35,6 @@ public class AButton implements Serializable {
 
     public String getName() { return this.name; }
 
-    public float getTextX() { return this.textX; }
-
-    public float getTextY() { return this.textY; }
-
-    public float getTextSize() { return this.textSize; }
-
     public AColor getBackgroundColor() { return this.backgroundColor; }
 
     public boolean checkCollision(float coordX, float coordY) {
@@ -51,5 +42,11 @@ public class AButton implements Serializable {
                 coordX <= this.posX + this.width &&
                 coordY >= this.posY &&
                 coordY <= this.posY + this.height);
+    }
+
+    public void  changePosition(float x, float  y)
+    {
+        this.posX = x;
+        this.posY = y;
     }
 }

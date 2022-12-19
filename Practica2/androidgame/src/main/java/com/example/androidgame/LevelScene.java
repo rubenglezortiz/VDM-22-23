@@ -46,10 +46,6 @@ public class LevelScene extends HistorySuperScene implements Serializable {
         w = graphics.getLogicWidth() / 6;
         h = w;
 
-        int tx = 15;
-        int ty = 40;
-        int tSize = 20;
-
         int x, y;
         String text;
         AColor unlockedLevelColor = graphics.newColor(250, 215, 160, 255);
@@ -63,7 +59,6 @@ public class LevelScene extends HistorySuperScene implements Serializable {
                 AColor color = (this.currentLevel>=level) ?  unlockedLevelColor : lockedLevelColor;
                 this.levels[i][j] = graphics.newButton(text,
                         x - (w / 2), y - (h / 2), w, h,
-                        tx,ty, tSize,
                         color);
             }
         }
