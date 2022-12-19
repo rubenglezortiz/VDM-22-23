@@ -105,6 +105,7 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
                         if(!this.data.lockp3) this.data.actPalette = 2;
                     }
                     if(this.returnButton.checkCollision(collisionX,collisionY)) this.back = true;
+                    external.pushNotification();
                     break;
                 case LONG_TOUCH:
                     this.data.coins+=10;
