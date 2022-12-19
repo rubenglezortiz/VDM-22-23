@@ -121,7 +121,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     public void render(AGraphics graphics) {
         super.render(graphics);
 
-        if (this.board.getCurrentLives()<this.board.getInitLives())
+        if (this.board.getCurrentLives()<this.board.getInitLives()&&!this.levelFinished)
             graphics.drawButton(this.lifeAdButton);
         graphics.drawButton(this.returnButton);
         this.board.render(graphics);
@@ -166,7 +166,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
                     float collisionY = ((AInput.TouchInputEvent) event).y;
                     this.board.handleInputs(event, audio);
                     if(this.returnButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
-                    else if(this.lifeAdButton.checkCollision(collisionX, collisionY) && this.board.getCurrentLives() < this.board.getInitLives()) {
+                    else if(this.lifeAdButton.checkCollision(collisionX, collisionY) && this.board.getCurrentLives() < this.board.getInitLives()&&!this.levelFinished) {
                         external.loadRewardedAd();
                         this.board.gainLife();
                     }
