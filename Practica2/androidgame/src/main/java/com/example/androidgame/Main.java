@@ -52,11 +52,12 @@ public class Main extends AppCompatActivity {
         this.mAdView = findViewById(R.id.adView);
         this.myEngine = new AndroidEngine(this.myView, this.mAdView);
         this.myEngine.getExternal().setActivity(this);
+        this.myEngine.getExternal().createNotification();
         if (savedInstanceState != null) {
             this.myEngine.getCurrentState().restoreScene(savedInstanceState, this.myEngine);
         } else {
             this.data = new GameData();
-            TitleScene titleScene = new TitleScene(this.myEngine, data);
+            TitleScene titleScene = new TitleScene(this.myEngine,data);
             this.myEngine.getCurrentState().addScene(titleScene);
             this.myEngine.getCurrentState().restoreSceneFromFile(this.myView);
         }
@@ -85,9 +86,8 @@ public class Main extends AppCompatActivity {
                         Log.d(TAG, "Ad was loaded.");
                     }
                 });
-
-
     }
+
     @Override
     protected void onResume() {
         System.out.println("_______________RESUME_______________");

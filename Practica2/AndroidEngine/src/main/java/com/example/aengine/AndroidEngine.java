@@ -22,7 +22,6 @@ public class AndroidEngine implements Runnable {
 
     private SurfaceView myView;
     private AdView adView;
-    private AdRequest adRequestBanner;
     private Thread currentThread;
 
     private boolean running;
@@ -34,7 +33,7 @@ public class AndroidEngine implements Runnable {
         this.graphics = new AGraphics(this.myView);
         this.audio = new AAudio(this.myView.getContext().getAssets());
         this.input = new AInput(this.graphics);
-        this.external = new AExternal(this.adView);
+        this.external = new AExternal(this.myView, this.adView);
 
         this.myView.setOnLongClickListener(this.input);
         this.myView.setOnTouchListener(this.input);
@@ -50,6 +49,7 @@ public class AndroidEngine implements Runnable {
     public AState getCurrentState() { return this.currentState;}
 
     public AAudio getAudio() { return this.audio;}
+
     public AExternal getExternal() { return this.external;}
 
     public int getTime() {
