@@ -29,24 +29,15 @@ public class HistorySuperScene extends AScene {
         this.palettes[1][1] = new AColor(128,0,128);
         this.palettes[2][0] = new AColor(255,128,0);
         this.palettes[2][1] = new AColor(255,255,0);
+
         graphics.newImage(this.coinsImage);
-
-        //Return button
-        float offx,offy,w,h;
-        offx = graphics.getLogicWidth()/ 9.0f;
-        offy = graphics.getLogicHeight()/ 10.0f;
-        w = h = graphics.getLogicHeight() / 12.0f;
-
-        this.returnButton = graphics.newButtonWithAlignment("Volver.png",
-                AButton.horizontalAlignment.LEFT,
-                AButton.verticalAlignment.TOP,
-                offx, offy, w, h,
-                graphics.newColor(0,0,0,0));
+        createReturnButton(graphics);
     }
 
     @Override
     protected void setUpScene(AGraphics graphics, AAudio audio) {
         graphics.newImage(this.coinsImage);
+        createReturnButton(graphics);
     }
 
     @Override
@@ -84,5 +75,17 @@ public class HistorySuperScene extends AScene {
     @Override
     public void restoreSceneFromFile(View myView) {
         this.data.restoreDataFromFile(myView);
+    }
+
+    private void createReturnButton(AGraphics graphics){
+        float offx,offy,w,h;
+        w = h = graphics.getLogicHeight() / 10.0f;
+        offx = offy = w / 2.0f;
+
+        this.returnButton = graphics.newButtonWithAlignment("Volver.png",
+                AButton.horizontalAlignment.LEFT,
+                AButton.verticalAlignment.TOP,
+                offx, offy, w, h,
+                graphics.newColor(0,0,0,0));
     }
 }

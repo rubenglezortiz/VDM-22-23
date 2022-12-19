@@ -8,8 +8,8 @@ public class AButton implements Serializable {
     public enum verticalAlignment{TOP, VMIDDLE, BOTTOM, NO_ALIGNMENT}
 
     private String name;
-    horizontalAlignment hAlign;
-    verticalAlignment vAlign;
+    private horizontalAlignment hAlign;
+    private verticalAlignment vAlign;
     private float offsetX, offsetY;
     private float width, height;
     private float posX, posY;
@@ -68,18 +68,22 @@ public class AButton implements Serializable {
         this.posY = y;
     }
 
-    public void newPosition(AGraphics graphics){
+    //Cambia la posición del botón según su alineación.
+    private void newPosition(AGraphics graphics){
         // COORD X
         int screenWidth = graphics.getWidth();
         switch(hAlign){
             case HMIDDLE:
                 this.posX = ((screenWidth / 2) - (this.width / 2)) + this.offsetX;
+                this.posX = graphics.realToLogicX(this.posX);
                 break;
             case RIGHT:
-                this.posX = (screenWidth - this.width) + this.offsetX;
+                this.posX = (screenWidth - this.width)  + this.offsetX;
+                this.posX = graphics.realToLogicX(this.posX);
                 break;
             case LEFT:
                 this.posX = this.offsetX;
+                this.posX = graphics.realToLogicX(this.posX);
                 break;
             default: //case NO_ALIGNMENT
                 break;
@@ -89,13 +93,16 @@ public class AButton implements Serializable {
         int screenHeight = graphics.getHeight();
         switch(vAlign){
             case VMIDDLE:
-                this.posY = ((screenHeight / 2) - (this.height / 2)) + this.offsetY;
+                this.posY = ((screenHeight / 2) - this.height) + this.offsetY;
+                this.posY = graphics.realToLogicY(this.posY);
                 break;
             case BOTTOM:
                 this.posY = (screenHeight - this.height) + this.offsetY;
+                this.posY = graphics.realToLogicY(this.posY);
                 break;
             case TOP:
                 this.posY = this.offsetY;
+                this.posY = graphics.realToLogicY(this.posY);
                 break;
             default: //case NO_ALIGNMENT
                 break;

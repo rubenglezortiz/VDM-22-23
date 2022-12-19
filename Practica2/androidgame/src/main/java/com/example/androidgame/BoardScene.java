@@ -73,8 +73,9 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     private void createButtons(AGraphics graphics){
         float offx, offy,w,h;
 
-        offx = - (graphics.getLogicWidth() / 6.0f);
-        offy = -(graphics.getLogicHeight() / 5.0f);
+        //offx = - (graphics.getLogicWidth() / 2.0f);
+        //offy = -(graphics.getLogicHeight() / 2.0f);
+        offx = offy = 0;
         w = graphics.getLogicWidth() / 5.0f;
         h = graphics.getLogicHeight() / 15.0f;
 
