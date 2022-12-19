@@ -38,7 +38,6 @@ public class HistorySuperScene extends AScene {
         w = h = graphics.getLogicHeight() / 12.0f;
         this.returnButton = graphics.newButton("Volver.png",
                 x - (w / 2), y - (h / 2), w, h,
-                10,25, 9,
                 graphics.newColor(0,0,0,0));
     }
 

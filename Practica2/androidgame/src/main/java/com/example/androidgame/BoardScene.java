@@ -29,7 +29,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     private Board board;
     private AButton levelFinishedButton;
     private String liveImage, noLiveImage;
-    private boolean backToMenu, levelFinished, backToSelectionLevelScene;
+    private boolean backToMenu, levelFinished, backToSelectionLevelScene, isHorizontal;
     private int levelId, categoryId;
 
     private String winSound, boardInProgressFile;
@@ -63,14 +63,13 @@ public class BoardScene extends HistorySuperScene implements Serializable {
 
     private void createButtons(AGraphics graphics){
         float x,y,w,h;
-        y = graphics.getLogicHeight()/10.0f;
+        y = graphics.getLogicHeight() / 5.0f * 4.0f;
         w = graphics.getLogicWidth() / 5.0f;
         h = graphics.getLogicHeight() / 15.0f;
 
         x = (graphics.getLogicWidth()/2.0f - w/3 );
         this.levelFinishedButton = graphics.newButton("Continuar.png",
-                x, graphics.getLogicHeight() / 5.0f * 4.0f, w,h,
-                4,25,8,
+                x, y, w,h,
                 graphics.newColor(0,0,0,0));
 
     }
@@ -82,6 +81,9 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         createImages(graphics);
         createSounds(audio);
         createButtons(graphics);
+
+        this.isHorizontal = graphics.getHorizontallyScaled();
+        if (this.isHorizontal) changeToHorizontal(graphics);
     }
 
     @Override
@@ -130,9 +132,18 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         for(int i = 0; i < this.board.getInitLives() ; i++){
             String key = (i < this.board.getCurrentLives()) ? this.liveImage : this.noLiveImage;
             graphics.drawImage(key, (int)(x + offset * (i-1)),
-                    graphics.getLogicHeight()/7.0f*6.0f, graphics.getLogicWidth()/10.0f,
+                    graphics.getLogicHeight()/7.0f*6.0f,
+                    graphics.getLogicWidth()/10.0f,
                     graphics.getLogicWidth()/10.0f);
         }
+    }
+
+    private void changeToHorizontal(AGraphics graphics){
+
+    }
+
+    private void changeToVertical(AGraphics graphics){
+
     }
 
     @Override

@@ -24,6 +24,7 @@ public class AGraphics  {
     private final int logicWidth, logicHeight;
     private float scaleFactor;
     private int offsetX, offsetY;
+    private boolean isHorizontallyScaled;
 
     // Items Variables
     private  AColor background, defaultColor;
@@ -68,9 +69,9 @@ public class AGraphics  {
         float scaleFactorY = newHeight / (float) this.logicHeight;
         this.scaleFactor = Math.min(scaleFactorX, scaleFactorY);
 
-        boolean scaleInX = screenWidth * 3 > screenHeight * 2;
+        this.isHorizontallyScaled = screenWidth * 3 > screenHeight * 2;
 
-        if (scaleInX){
+        if (this.isHorizontallyScaled){
             this.offsetX = (int)(((float)getWidth() / 2.0f) - (((float) this.logicWidth / 2.0f) * this.scaleFactor));
             this.offsetY = 0;
         }
@@ -124,10 +125,14 @@ public class AGraphics  {
         this.fonts.put(name, font);
     }
 
-    public AButton newButton(String name, float x, float y, float w, float h, float tX, float tY, int tSize, AColor bgColor) {
+    public AButton newButton(String name, float x, float y, float w, float h, AColor bgColor) {
         if(!this.images.containsKey(name))
             this.images.put(name, new AImage(name, this.assetManager));
-        return new AButton(name, x, y, w, h, tX, tY, tSize, bgColor);
+        return new AButton(name, x, y, w, h, bgColor);
+    }
+
+    public void changeButtonPosition(AButton button, float x, float y){
+         button.changePosition(x, y);
     }
 
     public void setBackgroundColor(AColor backgroundColor){
@@ -231,4 +236,6 @@ public class AGraphics  {
     }
 
     public float getScaleFactor() { return this.scaleFactor; }
+
+    public boolean getHorizontallyScaled(){ return this.isHorizontallyScaled; }
 }

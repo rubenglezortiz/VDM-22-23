@@ -50,17 +50,14 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
 
         this.p1 = graphics.newButton("Paleta1.png",
                 x3x - (w / 2), y - (h / 2), w, h,
-                18,ty, tSize,
                 graphics.newColor(0,0,0,0));
 
         this.p2 = graphics.newButton("Paleta2.png",
                 x5x - (w / 2), y - (h / 2), w, h,
-                18,ty, tSize,
                 graphics.newColor(0,0,0,0));
 
         this.p3 = graphics.newButton("Paleta3.png",
                 x10x - (w / 2), y - (h / 2), w, h,
-                7,ty, tSize,
                 graphics.newColor(0,0,0,0));
     }
 

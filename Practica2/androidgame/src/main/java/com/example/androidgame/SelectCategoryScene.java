@@ -51,9 +51,6 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
         y2 = graphics.getLogicHeight() * 11 / 16;
         w = graphics.getLogicWidth() * 5 / 13;
         h = graphics.getLogicHeight() / 4;
-        tx = 12;
-        ty = 12;
-        tSize = 12;
 
         String sea = "Playa.png";
         String city = "Ciudad.png";
@@ -65,22 +62,18 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
 
         this.forestButton = graphics.newButton("Bosque.png",
                 x1 - (w / 2.0f), y1 - (h / 2.0f), w, h,
-                tx,ty, tSize,
                 graphics.newColor(0,0,0,0));
 
         this.seaButton = graphics.newButton(sea,
                 x2 - (w / 2.0f), y1 - (h / 2.0f), w, h,
-                tx,ty, tSize,
                 graphics.newColor(0,0,0,0));
 
         this.cityButton = graphics.newButton(city,
                 x1 - (w / 2.0f), y2 - (h / 2.0f), w, h,
-                tx,ty, tSize,
                 graphics.newColor(0,0,0,0));
 
         this.desertButton = graphics.newButton(desert,
                 x2 - (w / 2), y2 - (h / 2), w, h,
-                tx,ty, tSize,
                 graphics.newColor(0,0,0,0));
     }
 
