@@ -23,7 +23,9 @@ public class TitleScene extends HistorySuperScene implements Serializable {
         super(engine_.getGraphics(), data_);
         this.changeScene = 0;
         this.backgroundMusic = "music.wav";
-        setUpScene(engine_.getGraphics(), engine_.getAudio(),engine_.getExternal());
+
+        setUpScene(engine_.getGraphics(), engine_.getAudio());
+        engine_.getExternal().loadBanner();
     }
 
     private void createMusic(AAudio audio) {
@@ -56,12 +58,12 @@ public class TitleScene extends HistorySuperScene implements Serializable {
                 x - (w / 2), y3 - (h / 2), w, h,
                 graphics.newColor(0,0,0,0));
     }
-
-    protected void setUpScene(AGraphics graphics, AAudio audio, AExternal external) {
+    @Override
+    protected void setUpScene(AGraphics graphics, AAudio audio) {
+        super.setUpScene(graphics,audio);
         graphics.newFont(this.font, false);
         createButtons(graphics);
         createMusic(audio);
-        external.loadBanner();
     }
 
     @Override
@@ -129,6 +131,7 @@ public class TitleScene extends HistorySuperScene implements Serializable {
         super.restoreScene(savedInstanceState, engine);
         this.changeScene = savedInstanceState.getInt("changeScene");
         setUpScene(engine.getGraphics(), engine.getAudio());
+        engine.getExternal().loadBanner();
     }
 
     @Override

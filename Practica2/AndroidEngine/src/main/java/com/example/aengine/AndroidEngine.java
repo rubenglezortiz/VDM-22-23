@@ -22,7 +22,6 @@ public class AndroidEngine implements Runnable {
 
     private SurfaceView myView;
     private AdView adView;
-    private AdRequest adRequestBanner;
     private Thread currentThread;
 
     private boolean running;
@@ -50,6 +49,7 @@ public class AndroidEngine implements Runnable {
     public AState getCurrentState() { return this.currentState;}
 
     public AAudio getAudio() { return this.audio;}
+
     public AExternal getExternal() { return this.external;}
 
     public int getTime() {

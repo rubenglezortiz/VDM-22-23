@@ -57,7 +57,7 @@ public class Main extends AppCompatActivity {
             this.myEngine.getCurrentState().restoreScene(savedInstanceState, this.myEngine);
         } else {
             this.data = new GameData();
-            TitleScene titleScene = new TitleScene(this.myEngine, data);
+            TitleScene titleScene = new TitleScene(this.myEngine,data);
             this.myEngine.getCurrentState().addScene(titleScene);
             this.myEngine.getCurrentState().restoreSceneFromFile(this.myView);
         }
