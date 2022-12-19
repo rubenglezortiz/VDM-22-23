@@ -62,14 +62,17 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     }
 
     private void createButtons(AGraphics graphics){
-        float x,y,w,h;
-        y = graphics.getLogicHeight() / 5.0f * 4.0f;
+        float offx, offy,w,h;
+
+        offx = - (graphics.getLogicWidth() / 6.0f);
+        offy = -(graphics.getLogicHeight() / 5.0f);
         w = graphics.getLogicWidth() / 5.0f;
         h = graphics.getLogicHeight() / 15.0f;
 
-        x = (graphics.getLogicWidth()/2.0f - w/3 );
-        this.levelFinishedButton = graphics.newButton("Continuar.png",
-                x, y, w,h,
+        this.levelFinishedButton = graphics.newButtonWithAlignment("Continuar.png",
+                AButton.horizontalAlignment.RIGHT,
+                AButton.verticalAlignment.BOTTOM,
+                offx, offy, w,h,
                 graphics.newColor(0,0,0,0));
 
     }

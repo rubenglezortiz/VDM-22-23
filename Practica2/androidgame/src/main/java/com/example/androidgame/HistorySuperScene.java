@@ -32,12 +32,16 @@ public class HistorySuperScene extends AScene {
         this.palettes[2][1] = new AColor(255,255,0);
         graphics.newImage(this.coinsImage);
 
-        float x,y,w,h;
-        x = graphics.getLogicWidth()/ 9.0f;
-        y = graphics.getLogicHeight()/ 10.0f;
+        //Return button
+        float offx,offy,w,h;
+        offx = graphics.getLogicWidth()/ 9.0f;
+        offy = graphics.getLogicHeight()/ 10.0f;
         w = h = graphics.getLogicHeight() / 12.0f;
-        this.returnButton = graphics.newButton("Volver.png",
-                x - (w / 2), y - (h / 2), w, h,
+
+        this.returnButton = graphics.newButtonWithAlignment("Volver.png",
+                AButton.horizontalAlignment.LEFT,
+                AButton.verticalAlignment.TOP,
+                offx, offy, w, h,
                 graphics.newColor(0,0,0,0));
     }
 

@@ -125,9 +125,18 @@ public class AGraphics  {
         this.fonts.put(name, font);
     }
 
-    public AButton newButton(String name, float x, float y, float w, float h, AColor bgColor) {
+    public AButton newButtonWithAlignment(String name, AButton.horizontalAlignment hA, AButton.verticalAlignment vA,
+                             float offX, float offY, float w, float h, AColor bgColor) {
         if(!this.images.containsKey(name))
             this.images.put(name, new AImage(name, this.assetManager));
+
+        return new AButton(this, name, hA, vA, offX, offY, w, h, bgColor);
+    }
+
+    public AButton newButton(String name, float x, float y, float w, float h, AColor bgColor){
+        if(!this.images.containsKey(name))
+            this.images.put(name, new AImage(name, this.assetManager));
+
         return new AButton(name, x, y, w, h, bgColor);
     }
 
