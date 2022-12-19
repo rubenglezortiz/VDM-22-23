@@ -7,11 +7,8 @@ import android.view.View;
 import com.example.aengine.AAudio;
 import com.example.aengine.AButton;
 import com.example.aengine.AExternal;
-import com.example.aengine.AFont;
 import com.example.aengine.AGraphics;
-import com.example.aengine.AImage;
 import com.example.aengine.AInput;
-import com.example.aengine.ASound;
 import com.example.aengine.AndroidEngine;
 import com.google.gson.Gson;
 
@@ -27,7 +24,7 @@ import java.util.Iterator;
 
 public class BoardScene extends HistorySuperScene implements Serializable {
     private Board board;
-    private AButton levelFinishedButton;
+    private AButton levelFinishedButton, lifeAdButton;
     private String liveImage, noLiveImage;
     private boolean backToMenu, levelFinished, backToSelectionLevelScene, isHorizontal;
     private int levelId, categoryId;
@@ -69,6 +66,9 @@ public class BoardScene extends HistorySuperScene implements Serializable {
 
         x = (graphics.getLogicWidth()/2.0f - w/3 );
         this.levelFinishedButton = graphics.newButton("Continuar.png",
+                x, y, w,h,
+                graphics.newColor(0,0,0,0));
+        this.lifeAdButton = graphics.newButton("Continuar.png",
                 x, y, w,h,
                 graphics.newColor(0,0,0,0));
 
@@ -120,6 +120,9 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     @Override
     public void render(AGraphics graphics) {
         super.render(graphics);
+
+        if (this.board.getCurrentLives()<this.board.getInitLives())
+            graphics.drawButton(this.lifeAdButton);
         graphics.drawButton(this.returnButton);
         this.board.render(graphics);
         if(this.levelFinished) graphics.drawButton(this.levelFinishedButton);
@@ -163,6 +166,10 @@ public class BoardScene extends HistorySuperScene implements Serializable {
                     float collisionY = ((AInput.TouchInputEvent) event).y;
                     this.board.handleInputs(event, audio);
                     if(this.returnButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
+                    else if(this.lifeAdButton.checkCollision(collisionX, collisionY) && this.board.getCurrentLives() < this.board.getInitLives()) {
+                        external.loadRewardedAd();
+                        this.board.gainLife();
+                    }
                     else if (this.levelFinished && this.levelFinishedButton.checkCollision(collisionX, collisionY))
                         this.backToSelectionLevelScene = true;
                     break;

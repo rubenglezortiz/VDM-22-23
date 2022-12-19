@@ -1,6 +1,4 @@
 package com.example.androidgame;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,17 +7,8 @@ import com.example.aengine.AButton;
 import com.example.aengine.AExternal;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
-import com.example.aengine.AState;
 import com.example.aengine.AndroidEngine;
-import com.google.gson.Gson;
-
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.Serializable;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class SelectCategoryScene extends HistorySuperScene implements Serializable {

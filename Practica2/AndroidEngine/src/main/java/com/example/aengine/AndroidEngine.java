@@ -1,17 +1,7 @@
 package com.example.aengine;
-
-
 import android.annotation.SuppressLint;
-import android.icu.util.Calendar;
-import android.text.format.Time;
-import android.view.MotionEvent;
 import android.view.SurfaceView;
-import android.view.View;
-
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-
-import java.io.Serializable;
 
 public class AndroidEngine implements Runnable {
     private AGraphics graphics;

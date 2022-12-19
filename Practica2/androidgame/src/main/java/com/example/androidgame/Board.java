@@ -6,7 +6,6 @@ import com.example.aengine.AAudio;
 import com.example.aengine.AColor;
 import com.example.aengine.AGraphics;
 import com.example.aengine.AInput;
-import com.example.aengine.ASound;
 import com.example.aengine.AndroidEngine;
 
 import java.io.BufferedReader;
@@ -296,6 +295,8 @@ public class Board implements Serializable {
     public int getInitLives(){return this.initLives;}
 
     public int getCurrentLives(){return this.currentLives;}
+
+    public void gainLife(){ this.currentLives++;}
 
     public void setCellColor(AColor cellColor_) {
         for (int i = 0; i < this.numRows; i++)

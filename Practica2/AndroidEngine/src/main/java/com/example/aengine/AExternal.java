@@ -13,9 +13,11 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 public class AExternal {
     private String TAG;
@@ -51,6 +53,22 @@ public class AExternal {
                             //String rewardType = rewardItem.getType();
                         }
                     });
+                    AdRequest adRequest = new AdRequest.Builder().build();
+                    RewardedAd.load(activity, "ca-app-pub-3940256099942544/5224354917",
+                            adRequest, new RewardedAdLoadCallback() {
+                                @Override
+                                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                                    // Handle the error.
+                                    Log.d(TAG, loadAdError.toString());
+                                    mRewardedAd = null;
+                                }
+
+                                @Override
+                                public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                                    mRewardedAd = rewardedAd;
+                                    Log.d(TAG, "Ad was loaded.");
+                                }
+                            });
                 }
                 else {
                     System.out.println("The rewarded ad wasn't ready yet.");
