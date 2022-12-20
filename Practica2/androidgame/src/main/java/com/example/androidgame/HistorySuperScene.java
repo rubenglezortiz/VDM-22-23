@@ -46,7 +46,7 @@ public class HistorySuperScene extends AScene {
                 x - (w / 2), y - (h / 2), w, h,
                 engine.getGraphics().newColor(0,0,0,0));
         
-        createReturnButton(graphics);
+        createReturnButton(engine.getGraphics());
         this.firstFrame = true;
     }
 

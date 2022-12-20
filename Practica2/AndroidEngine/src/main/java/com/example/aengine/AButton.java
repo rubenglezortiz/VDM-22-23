@@ -11,9 +11,9 @@ public class AButton implements Serializable {
 
     private horizontalAlignment hAlign;
     private verticalAlignment vAlign;
+    private float posX, posY;
     private float offsetX, offsetY;
     private float width, height;
-    private AColor backgroundColor;
     private int screenWidth, screenHeight;
 
     //Botones alineados
