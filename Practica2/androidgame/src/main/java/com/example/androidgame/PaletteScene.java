@@ -52,6 +52,7 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
 
     @Override
     public void update(AndroidEngine engine){
+        super.update(engine);
         if (this.back) engine.getCurrentState().removeScene(1);
     }
 
@@ -65,30 +66,30 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public void handleInputs(AInput input, AAudio audio, AExternal external){
-        super.handleInputs(input, audio, external);
+    public void handleInputs(AGraphics graphics, AInput input, AAudio audio, AExternal external){
+        super.handleInputs(graphics, input, audio, external);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList)
             switch (event.type) {
                 case TOUCH_RELEASED:
                     float collisionX = ((AInput.TouchInputEvent) event).x;
                     float collisionY = ((AInput.TouchInputEvent) event).y;
-                    if (this.p1.checkCollision(collisionX, collisionY)) this.data.actPalette = 0;
-                    else if (this.p2.checkCollision(collisionX, collisionY)){
+                    if (this.p1.checkCollision(graphics, collisionX, collisionY)) this.data.actPalette = 0;
+                    else if (this.p2.checkCollision(graphics, collisionX, collisionY)){
                         if(this.data.lockp2 && this.costp2 <= this.data.coins) {
                             this.data.coins -= this.costp2;
                             this.data.lockp2 = false;
                         }
                         if(!this.data.lockp2) this.data.actPalette = 1;
                     }
-                    else if (this.p3.checkCollision(collisionX, collisionY)){
+                    else if (this.p3.checkCollision(graphics, collisionX, collisionY)){
                         if(this.data.lockp3 && this.costp3 <= this.data.coins) {
                             this.data.coins -= this.costp3;
                             this.data.lockp3 = false;
                         }
                         if(!this.data.lockp3) this.data.actPalette = 2;
                     }
-                    if(this.returnButton.checkCollision(collisionX,collisionY)) this.back = true;
+                    if(this.returnButton.checkCollision(graphics, collisionX,collisionY)) this.back = true;
                     external.pushNotification();
                     break;
                 case LONG_TOUCH:

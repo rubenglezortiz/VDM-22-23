@@ -71,27 +71,32 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     }
 
     private void createButtons(AGraphics graphics){
-        float offx, offy,w,h;
+        float offx, offy, wContinue, w, wLife, h, hLife, offxTweet;
+        wContinue = graphics.logicToRealScale(150.0f);
+        w = h = wContinue / 3.0f; //50.0f
+        //offxContinue = offy = 0;
+        offx = offy = - (w / 4.0f);
 
-        //offx = - (graphics.getLogicWidth() / 2.0f);
-        //offy = -(graphics.getLogicHeight() / 2.0f);
-        offx = offy = 0;
-        w = graphics.getLogicWidth() / 5.0f;
-        h = graphics.getLogicHeight() / 15.0f;
+        offxTweet = (offx * 2.0f) - wContinue;
 
-        x = (graphics.getLogicWidth()/2.0f - w/3 );
-        xLife = (graphics.getLogicWidth()/2.0f - w*1.5f );
-        xTweet = (graphics.getLogicWidth()/2.0f + w );
+        wLife = hLife = w * 2.0f;
+
         this.levelFinishedButton = graphics.newButtonWithAlignment("Continuar.png",
                 AButton.horizontalAlignment.RIGHT,
                 AButton.verticalAlignment.BOTTOM,
-                offx, offy, w,h,
+                offx, offy, wContinue,h,
                 graphics.newColor(0,0,0,0));
-        this.lifeAdButton = graphics.newButton("Continuar.png",
-                xLife, y, w,h,
+
+        this.lifeAdButton = graphics.newButtonWithAlignment("VidaExtra.png",
+                AButton.horizontalAlignment.RIGHT,
+                AButton.verticalAlignment.BOTTOM,
+                offx, offy, wLife,hLife,
                 graphics.newColor(0,0,0,0));
-        this.tweetButton = graphics.newButton("twitter.png",
-                xTweet, y, h,h,
+
+        this.tweetButton = graphics.newButtonWithAlignment("twitter.png",
+                AButton.horizontalAlignment.RIGHT,
+                AButton.verticalAlignment.BOTTOM,
+                offxTweet, offy, w,h,
                 graphics.newColor(0,0,0,0));
 
     }
@@ -110,6 +115,24 @@ public class BoardScene extends HistorySuperScene implements Serializable {
 
     @Override
     public void update(AndroidEngine engine) {
+        super.update(engine);
+        //Botones
+        float offx, offy, wContinue, w, wLife, h, hLife, offxTweet;
+        wContinue = engine.getGraphics().logicToRealScale(150.0f);
+        w = h = wContinue / 3.0f; //50.0f
+        //offxContinue = offy = 0;
+        offx = offy = - (w / 4.0f);
+
+        offxTweet = (offx * 2.0f) - wContinue;
+
+        wLife = hLife = w * 2.0f;
+
+        this.lifeAdButton.changeButton(engine.getGraphics(), offx, offy, wLife, hLife);
+        this.tweetButton.changeButton(engine.getGraphics(), offxTweet, offy, w, h);
+        this.levelFinishedButton.changeButton(engine.getGraphics(), offx, offy, wContinue, h);
+
+
+        //Cambio de escena
         boolean win = this.board.checkWin();
         if(!this.levelFinished && win || this.board.getCurrentLives() == 0){
             this.data.levelInProgress = 0;
@@ -160,7 +183,8 @@ public class BoardScene extends HistorySuperScene implements Serializable {
             graphics.drawImage(key, (int)(x + offset * (i-1)),
                     graphics.getLogicHeight()/7.0f*6.0f,
                     graphics.getLogicWidth()/10.0f,
-                    graphics.getLogicWidth()/10.0f);
+                    graphics.getLogicWidth()/10.0f,
+                    true);
         }
     }
 
@@ -173,8 +197,8 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public synchronized void handleInputs(AInput input, AAudio audio, AExternal external) {
-        super.handleInputs(input, audio, external);
+    public synchronized void handleInputs(AGraphics graphics, AInput input, AAudio audio, AExternal external) {
+        super.handleInputs(graphics, input, audio, external);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
@@ -182,25 +206,25 @@ public class BoardScene extends HistorySuperScene implements Serializable {
             switch (event.type) {
                 case TOUCH_PRESSED:
                 case LONG_TOUCH:
-                    if(!this.levelFinished) this.board.handleInputs(event,audio);
+                    if(!this.levelFinished) this.board.handleInputs(graphics, event,audio);
                     break;
                 case TOUCH_RELEASED:
                     float collisionX = ((AInput.TouchInputEvent) event).x;
                     float collisionY = ((AInput.TouchInputEvent) event).y;
-                    this.board.handleInputs(event, audio);
-                    if(this.returnButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
-                    else if(this.lifeAdButton.checkCollision(collisionX, collisionY) && this.board.getCurrentLives() < this.board.getInitLives()&&!this.levelFinished) {
+                    this.board.handleInputs(graphics, event, audio);
+                    if(this.returnButton.checkCollision(graphics, collisionX, collisionY)) this.backToMenu = true;
+                    else if(this.lifeAdButton.checkCollision(graphics, collisionX, collisionY) && this.board.getCurrentLives() < this.board.getInitLives()&&!this.levelFinished) {
                         external.loadRewardedAd();
                         this.board.gainLife();
                     }
-                    else if(this.tweetButton.checkCollision(collisionX, collisionY) && board.checkWin()) {
+                    else if(this.tweetButton.checkCollision(graphics, collisionX, collisionY) && board.checkWin()) {
                         Uri builtURI = Uri. parse("https://twitter.com/intent/tweet" ).buildUpon()
                                 .appendQueryParameter( "text", "He completado un nuevo nivel de Nonograms! Vaya juegazo >:)")
                                 .build() ; //Genera la URl https://twitter.com/intent/tweet?text=Este%20es%20mi%20texto%20a%20tweettear
                         Intent intent = new Intent(Intent. ACTION_VIEW, builtURI);
                         external.startActivity(intent); // startActivity es un método de Context
                     }
-                    else if (this.levelFinished && this.levelFinishedButton.checkCollision(collisionX, collisionY))
+                    else if (this.levelFinished && this.levelFinishedButton.checkCollision(graphics, collisionX, collisionY))
                        this.backToSelectionLevelScene = true;
                     break;
                 default:

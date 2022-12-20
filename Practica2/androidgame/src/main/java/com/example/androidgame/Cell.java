@@ -79,7 +79,7 @@ public class Cell extends GameObject implements Serializable {
             graphics.drawRectangle(this.x, this.y, this.w, this.h, icolor);
             graphics.drawLine( this.x, this.y,this.x+w, this.y +this.h, icolor);
         }
-        else graphics.fillRectangle(this.x, this.y, this.w, this.h, icolor);
+        else graphics.fillRectangle(this.x, this.y, this.w, this.h, icolor, true);
     }
 
     public boolean checkCollisions(float x, float y) {

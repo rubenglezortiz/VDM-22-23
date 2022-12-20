@@ -14,7 +14,9 @@ public class AButton implements Serializable {
     private float width, height;
     private float posX, posY;
     private AColor backgroundColor;
+    private int screenWidth, screenHeight;
 
+    //Botones alineados
     public AButton(AGraphics graphics, String buttonName, horizontalAlignment hA, verticalAlignment vA, float offX, float offY,
                    float w, float h, AColor bgColor) {
         this.name = buttonName;
@@ -26,9 +28,17 @@ public class AButton implements Serializable {
         this.height = h;
         this.backgroundColor = bgColor;
 
+        //DESAJUSTE POR DEBAJO DE LA PANTALLA
+        if (this.vAlign == verticalAlignment.BOTTOM){
+            this.offsetY -= graphics.logicToRealScale(30.0f); //desajuste
+        }
+
         newPosition(graphics);
+
+
     }
 
+    //Contrusctora de botónes lógicos
     public AButton(String buttonName, float x, float y, float w, float h, AColor bgColor){
         this.name = buttonName;
         this.posX = x;
@@ -55,11 +65,24 @@ public class AButton implements Serializable {
 
     public AColor getBackgroundColor() { return this.backgroundColor; }
 
-    public boolean checkCollision(float coordX, float coordY) {
-        return (coordX >= this.posX &&
-                coordX <= this.posX + this.width &&
-                coordY >= this.posY &&
-                coordY <= this.posY + this.height);
+    public boolean checkCollision(AGraphics graphics, float coordX, float coordY) {
+        float xPos, yPos, w, h;
+        xPos = this.posX;
+        yPos = this.posY;
+        w = this.width;
+        h = this.height;
+
+        if (isLogic()){
+            xPos = graphics.logicToRealX(xPos);
+            yPos = graphics.logicToRealY(yPos);
+            w = graphics.logicToRealScale(w);
+            h = graphics.logicToRealScale(h);
+        }
+
+        return (coordX >= xPos &&
+                coordX <= xPos + w &&
+                coordY >= yPos &&
+                coordY <= yPos + h);
     }
 
     public void  changePosition(float x, float  y)
@@ -68,44 +91,56 @@ public class AButton implements Serializable {
         this.posY = y;
     }
 
+    public boolean isLogic(){
+        return (vAlign == verticalAlignment.NO_ALIGNMENT && hAlign == horizontalAlignment.NO_ALIGNMENT);
+    }
+
     //Cambia la posición del botón según su alineación.
     private void newPosition(AGraphics graphics){
         // COORD X
-        int screenWidth = graphics.getWidth();
+        this.screenWidth = graphics.getWidth();
         switch(hAlign){
             case HMIDDLE:
-                this.posX = ((screenWidth / 2) - (this.width / 2)) + this.offsetX;
-                this.posX = graphics.realToLogicX(this.posX);
+                this.posX = ((this.screenWidth / 2) - (this.width / 2)) + this.offsetX;
                 break;
             case RIGHT:
-                this.posX = (screenWidth - this.width)  + this.offsetX;
-                this.posX = graphics.realToLogicX(this.posX);
+                this.posX = (this.screenWidth - this.width) + this.offsetX;
                 break;
             case LEFT:
                 this.posX = this.offsetX;
-                this.posX = graphics.realToLogicX(this.posX);
                 break;
             default: //case NO_ALIGNMENT
                 break;
         }
 
         //COORD Y
-        int screenHeight = graphics.getHeight();
+        this.screenHeight = graphics.getHeight();
         switch(vAlign){
             case VMIDDLE:
-                this.posY = ((screenHeight / 2) - this.height) + this.offsetY;
-                this.posY = graphics.realToLogicY(this.posY);
+                this.posY = ((this.screenHeight / 2) - this.height) + this.offsetY;
                 break;
             case BOTTOM:
-                this.posY = (screenHeight - this.height) + this.offsetY;
-                this.posY = graphics.realToLogicY(this.posY);
+                this.posY = (this.screenHeight - this.height) + this.offsetY;
                 break;
             case TOP:
                 this.posY = this.offsetY;
-                this.posY = graphics.realToLogicY(this.posY);
                 break;
             default: //case NO_ALIGNMENT
                 break;
         }
+    }
+
+    public void changeButton(AGraphics graphics, float offX, float offY, float w, float h){
+        this.offsetX = offX;
+        this.offsetY = offY;
+        this.width = w;
+        this.height = h;
+
+        //DESAJUSTE POR DEBAJO DE LA PANTALLA
+        if (this.vAlign == verticalAlignment.BOTTOM){
+            this.offsetY -= graphics.logicToRealScale(30.0f); //desajuste
+        }
+
+        this.newPosition(graphics);
     }
 }

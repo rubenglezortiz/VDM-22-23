@@ -236,16 +236,18 @@ public class Board implements Serializable {
 
     }
 
-    public void handleInputs(AInput.Event event, AAudio audio) {
+    public void handleInputs(AGraphics graphics, AInput.Event event, AAudio audio) {
         if(event.type == AInput.InputType.TOUCH_RELEASED && checkWin()) return;
         if(((AInput.TouchInputEvent)event).mouseButton == 1){
-            checkCellsCollision(((AInput.TouchInputEvent)event).x, ((AInput.TouchInputEvent)event).y, event.type, audio);
+            checkCellsCollision(graphics, ((AInput.TouchInputEvent)event).x, ((AInput.TouchInputEvent)event).y, event.type, audio);
         }
     }
 
-    private void checkCellsCollision(float mouseX, float mouseY, AInput.InputType type, AAudio audio){
+    private void checkCellsCollision(AGraphics graphics, float mouseX, float mouseY, AInput.InputType type, AAudio audio){
         int i = 0, j;
         boolean checked = false;
+        mouseX = graphics.realToLogicX(mouseX);
+        mouseY = graphics.realToLogicY(mouseY);
         while(i < this.numCols && !checked){
             j = 0;
             while(j < this.numRows && !checked){

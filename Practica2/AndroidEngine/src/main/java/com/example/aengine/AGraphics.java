@@ -165,10 +165,12 @@ public class AGraphics  {
 
     public void drawRectangle(float x_, float y_, float w_, float h_, AColor color) {
         setColor(color);
+
         float x = logicToRealX(x_);
         float y = logicToRealY(y_);
         float w = logicToRealScale(w_);
         float h = logicToRealScale(h_);
+
         this.canvas.drawLine(x,y,x+w,y,this.paint);
         this.canvas.drawLine(x,y,x,y + h,this.paint);
         this.canvas.drawLine(x,y+h,x+w,y+h,this.paint);
@@ -177,22 +179,38 @@ public class AGraphics  {
         setColor(this.defaultColor);
     }
 
-    public void fillRectangle(float x_, float y_, float w_, float h_,AColor color){
+    public void fillRectangle(float x_, float y_, float w_, float h_,AColor color, boolean isLogic){
         setColor(color);
-        float x = logicToRealX(x_);
-        float y = logicToRealY(y_);
-        float w = logicToRealScale(w_);
-        float h = logicToRealScale(h_);
+        float x = x_;
+        float y = y_;
+        float w = w_;
+        float h = h_;
+
+        if (isLogic){
+            x = logicToRealX(x);
+            y = logicToRealY(y);
+            w = logicToRealScale(w);
+            h = logicToRealScale(h);
+        }
+
         this.canvas.drawRect(x,y,x+w, y+h, this.paint);
 
         setColor(this.defaultColor);
     }
 
-    public void drawImage(String key, float x, float y, float w, float h) {
-        x = logicToRealX(x);
-        y = logicToRealY(y);
-        w = logicToRealScale(w);
-        h = logicToRealScale(h);
+    public void drawImage(String key, float x_, float y_, float w_, float h_, boolean isLogic) {
+        float x = x_;
+        float y = y_;
+        float w = w_;
+        float h = h_;
+
+        if (isLogic){
+            x = logicToRealX(x);
+            y = logicToRealY(y);
+            w = logicToRealScale(w);
+            h = logicToRealScale(h);
+        }
+
         if(this.images.containsKey(key)) {
             this.canvas.drawBitmap(Objects.requireNonNull(images.get(key)).getBitmap(), null,
                     new Rect((int)x, (int)y,(int)(x+w), (int)(y+h)), this.paint);
@@ -222,10 +240,11 @@ public class AGraphics  {
         float butY = button.getPosY();
         float butW = button.getWidth();
         float butH = button.getHeight();
+        boolean isLogic = button.isLogic();
 
-        this.fillRectangle(butX,butY,butW,butH, button.getBackgroundColor());
+        this.fillRectangle(butX,butY,butW,butH, button.getBackgroundColor(), isLogic);
         if(this.images.containsKey(button.getName()))
-            this.drawImage(button.getName(), butX, butY, butW, butH);
+            this.drawImage(button.getName(), butX, butY, butW, butH, isLogic);
         else System.out.println("!!!!!!!!!!!!!!NO VALID IMAGE NAME!!!!!!!!!!!!!!");
     }
 

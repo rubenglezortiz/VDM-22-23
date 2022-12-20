@@ -58,6 +58,7 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
 
     @Override
     public void update(AndroidEngine engine) {
+        super.update(engine);
         if(this.changeScene){
             this.changeScene = false;
             if(this.boardSize == 1) engine.getCurrentState().addScene(new BoardScene(engine, 0, 0,3,3, this.data));
@@ -81,8 +82,8 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
     }
 
     @Override
-    public synchronized void handleInputs(AInput input, AAudio audio, AExternal external) {
-        super.handleInputs(input, audio,external);
+    public synchronized void handleInputs(AGraphics graphics, AInput input, AAudio audio, AExternal external) {
+        super.handleInputs(graphics, input, audio,external);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
@@ -91,19 +92,19 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
                 case TOUCH_RELEASED:
                     float collisionX = ((AInput.TouchInputEvent) event).x;
                     float collisionY = ((AInput.TouchInputEvent) event).y;
-                    if (this.button3x3.checkCollision(collisionX, collisionY)){
+                    if (this.button3x3.checkCollision(graphics, collisionX, collisionY)){
                         this.changeScene = true;
                         this.boardSize = 1;
                     }
-                    if (this.button5x5.checkCollision(collisionX, collisionY)){
+                    if (this.button5x5.checkCollision(graphics, collisionX, collisionY)){
                         this.changeScene = true;
                         this.boardSize = 2;
                     }
-                    if (this.button10x10.checkCollision(collisionX, collisionY)){
+                    if (this.button10x10.checkCollision(graphics, collisionX, collisionY)){
                         this.changeScene = true;
                         this.boardSize = 3;
                     }
-                    if (this.returnButton.checkCollision(collisionX, collisionY))
+                    if (this.returnButton.checkCollision(graphics, collisionX, collisionY))
                         this.backToMenu = true;
                     break;
                 default:

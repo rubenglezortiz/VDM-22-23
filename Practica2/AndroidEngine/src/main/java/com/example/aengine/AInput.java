@@ -59,7 +59,9 @@ public class AInput implements View.OnTouchListener, View.OnLongClickListener{
     }
 
     public void addEvent(float x, float y, InputType type){
-        this.events.add(new TouchInputEvent(this.graphics.realToLogicX(x), this.graphics.realToLogicY(y), 1, 0, type));
+        //this.events.add(new TouchInputEvent(this.graphics.realToLogicX(x), this.graphics.realToLogicY(y), 1, 0, type));
+        this.events.add(new TouchInputEvent(x, y, 1, 0, type));
+
     }
 
     public ArrayList<Event> getEventList() {return this.events;}

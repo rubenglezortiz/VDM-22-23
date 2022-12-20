@@ -16,6 +16,8 @@ public class HistorySuperScene extends AScene {
     protected GameData data;
     protected AColor[][] palettes;
     protected AButton returnButton;
+    protected boolean firstFrame;
+
 
     HistorySuperScene(AGraphics graphics, GameData data_){
         this.filename = "super";
@@ -30,28 +32,37 @@ public class HistorySuperScene extends AScene {
         this.palettes[2][0] = new AColor(255,128,0);
         this.palettes[2][1] = new AColor(255,255,0);
 
+
         graphics.newImage(this.coinsImage);
         createReturnButton(graphics);
+        this.firstFrame = true;
     }
 
     @Override
     protected void setUpScene(AGraphics graphics, AAudio audio) {
         graphics.newImage(this.coinsImage);
         createReturnButton(graphics);
+        this.firstFrame = true;
     }
 
     @Override
-    public void update(AndroidEngine engine) {}
+    public void update(AndroidEngine engine) {
+        float offx,offy,w,h;
+        w = h = engine.getGraphics().logicToRealScale(60.0f);
+        offx = offy = w / 4.0f;
+
+        this.returnButton.changeButton(engine.getGraphics(), offx, offy, w, h);
+    }
 
     @Override
     public void render(AGraphics graphics) {
         graphics.setBackgroundColor(this.palettes[this.data.actPalette][0]);
-        graphics.drawImage(this.coinsImage, 350,0,25,25);
+        graphics.drawImage(this.coinsImage, 350,0,25,25, true);
         graphics.drawText(this.font, String.valueOf(this.data.coins), 300 ,20, 20, new AColor(0,0,0,255));
     }
 
     @Override
-    public void handleInputs(AInput input, AAudio audio, AExternal external) {
+    public void handleInputs(AGraphics graphics, AInput input, AAudio audio, AExternal external) {
     }
 
     @Override
@@ -79,12 +90,13 @@ public class HistorySuperScene extends AScene {
 
     private void createReturnButton(AGraphics graphics){
         float offx,offy,w,h;
-        w = h = graphics.getLogicHeight() / 10.0f;
-        offx = offy = w / 2.0f;
+        w = h = graphics.logicToRealScale(60.0f);
+        offx = offy = w / 4.0f;
+        //offx = offy = 0;
 
         this.returnButton = graphics.newButtonWithAlignment("Volver.png",
                 AButton.horizontalAlignment.LEFT,
-                AButton.verticalAlignment.TOP,
+                    AButton.verticalAlignment.TOP,
                 offx, offy, w, h,
                 graphics.newColor(0,0,0,0));
     }

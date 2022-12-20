@@ -68,6 +68,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
 
     @Override
     public void update(AndroidEngine engine) {
+        super.update(engine);
         if (this.changeScene != 0){
             engine.getCurrentState().addScene(new LevelScene(engine, this.changeScene - 1, this.data));
             this.changeScene = 0;
@@ -88,23 +89,23 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     }
 
     @Override
-    public void handleInputs(AInput input, AAudio audio, AExternal external) {
-        super.handleInputs(input, audio,external);
+    public void handleInputs(AGraphics graphics, AInput input, AAudio audio, AExternal external) {
+        super.handleInputs(graphics, input, audio,external);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList) {
             switch (event.type) {
                 case TOUCH_RELEASED:
                     float collisionX = ((AInput.TouchInputEvent) event).x;
                     float collisionY = ((AInput.TouchInputEvent) event).y;
-                    if (this.forestButton.checkCollision(collisionX, collisionY))
+                    if (this.forestButton.checkCollision(graphics, collisionX, collisionY))
                         this.changeScene = 1;
-                    else if (this.seaButton.checkCollision(collisionX, collisionY)) {
+                    else if (this.seaButton.checkCollision(graphics, collisionX, collisionY)) {
                         if (this.data.forestLevels >= 5) this.changeScene = 2;}
-                    else if (this.cityButton.checkCollision(collisionX, collisionY)) {
+                    else if (this.cityButton.checkCollision(graphics, collisionX, collisionY)) {
                         if (this.data.seaLevels >= 5) this.changeScene = 3;}
-                    else if (this.desertButton.checkCollision(collisionX, collisionY)) {
+                    else if (this.desertButton.checkCollision(graphics, collisionX, collisionY)) {
                         if (this.data.cityLevels >= 5) this.changeScene = 4;}
-                    else if (this.returnButton.checkCollision(collisionX, collisionY)) this.backToMenu = true;
+                    else if (this.returnButton.checkCollision(graphics, collisionX, collisionY)) this.backToMenu = true;
                     break;
                 default:
                     break;

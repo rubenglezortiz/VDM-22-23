@@ -10,7 +10,7 @@ public abstract class AScene  {
 
     public abstract void render(AGraphics graphics);
 
-    public abstract void handleInputs(AInput input, AAudio audio,AExternal external);
+    public abstract void handleInputs(AGraphics graphics, AInput input, AAudio audio,AExternal external);
 
     public abstract void saveScene(Bundle outState);
 

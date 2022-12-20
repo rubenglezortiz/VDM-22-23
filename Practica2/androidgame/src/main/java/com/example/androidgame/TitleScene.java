@@ -68,6 +68,7 @@ public class TitleScene extends HistorySuperScene implements Serializable {
 
     @Override
     public void update(AndroidEngine engine) {
+        super.update(engine);
         if (this.changeScene != 0) {
             if (this.changeScene == 1)
                 engine.getCurrentState().addScene(new SelectCategoryScene(engine, this.data));
@@ -91,8 +92,8 @@ public class TitleScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public synchronized void handleInputs(AInput input, AAudio audio, AExternal external) {
-        super.handleInputs(input,audio,external);
+    public synchronized void handleInputs(AGraphics graphics, AInput input, AAudio audio, AExternal external) {
+        super.handleInputs(graphics, input,audio,external);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         Iterator<AInput.Event> it = eventList.iterator();
         while (it.hasNext()) {
@@ -101,9 +102,9 @@ public class TitleScene extends HistorySuperScene implements Serializable {
                 case TOUCH_RELEASED:
                     float collisionX = ((AInput.TouchInputEvent) event).x;
                     float collisionY = ((AInput.TouchInputEvent) event).y;
-                    if (this.storyButton.checkCollision(collisionX, collisionY)) this.changeScene = 1;
-                    if (this.quickGameButton.checkCollision(collisionX, collisionY)) this.changeScene = 2;
-                    if (this.paletteButton.checkCollision(collisionX, collisionY)) this.changeScene = 3;
+                    if (this.storyButton.checkCollision(graphics, collisionX, collisionY)) this.changeScene = 1;
+                    if (this.quickGameButton.checkCollision(graphics, collisionX, collisionY)) this.changeScene = 2;
+                    if (this.paletteButton.checkCollision(graphics, collisionX, collisionY)) this.changeScene = 3;
                     break;
                 default:
                     break;

@@ -87,6 +87,7 @@ public class LevelScene extends HistorySuperScene implements Serializable {
 
     @Override
     public void update(AndroidEngine engine){
+        super.update(engine);
         if (this.changeScene != 0){
             BoardScene level = new BoardScene(engine, this.changeScene, this.categoryId, 0,0, this.data);
             engine.getCurrentState().addScene(level);
@@ -114,20 +115,20 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public void handleInputs(AInput input, AAudio audio, AExternal external){
-        super.handleInputs(input, audio, external);
+    public void handleInputs(AGraphics graphics, AInput input, AAudio audio, AExternal external){
+        super.handleInputs(graphics, input, audio, external);
         ArrayList<AInput.Event> eventList = (ArrayList<AInput.Event>) input.getEventList().clone();
         for (AInput.Event event : eventList)
             switch (event.type) {
                 case TOUCH_RELEASED:
                     float collisionX = ((AInput.TouchInputEvent) event).x;
                     float collisionY = ((AInput.TouchInputEvent) event).y;
-                    if (this.returnButton.checkCollision(collisionX, collisionY))
+                    if (this.returnButton.checkCollision(graphics, collisionX, collisionY))
                         this.backToMenu = true;
                     else for (int i = 0; i < this.rows; ++i)
                             for (int j = 0; j < this.cols; ++j)
                                 if ((i * this.cols + j) < this.currentLevel)
-                                    if (this.levels[i][j].checkCollision(collisionX, collisionY))
+                                    if (this.levels[i][j].checkCollision(graphics, collisionX, collisionY))
                                         this.changeScene = i * this.cols + j + 1 + (this.categoryId * 20);
                     break;
                 default:
