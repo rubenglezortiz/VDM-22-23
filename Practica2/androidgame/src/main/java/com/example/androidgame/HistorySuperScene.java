@@ -12,28 +12,40 @@ import com.example.aengine.AScene;
 import com.example.aengine.AndroidEngine;
 
 public class HistorySuperScene extends AScene {
-    protected String filename, font, coinsImage;
+    private final String coinsImage, argentinaImage;
+    protected String font;
     protected GameData data;
     protected AColor[][] palettes;
     protected AButton returnButton;
     protected boolean firstFrame;
+    private final float northLatitude, southLatitude, eastLongitude, westLongitude;
 
-
-    HistorySuperScene(AGraphics graphics, GameData data_){
-        this.filename = "super";
+    HistorySuperScene(AndroidEngine engine, GameData data_){
         this.font = "font.TTF";
-        this.coinsImage ="moneda.png";
+        this.coinsImage ="moneda.png"; this.argentinaImage = "argentina.png";
         this.data = data_;
-        this.palettes = new AColor[3][2];
+        this.palettes = new AColor[4][2];
         this.palettes[0][0] = new AColor(255,255,255);
         this.palettes[0][1] = new AColor(0,0,255);
         this.palettes[1][0] = new AColor(255,0,128);
         this.palettes[1][1] = new AColor(128,0,128);
         this.palettes[2][0] = new AColor(255,128,0);
         this.palettes[2][1] = new AColor(255,255,0);
-
-
-        graphics.newImage(this.coinsImage);
+        this.palettes[3][0] = new AColor(117, 170,219);
+        this.palettes[3][1] = new AColor(252,191,73);
+        
+        engine.getGraphics().newImage(this.coinsImage);
+        engine.getGraphics().newImage(this.argentinaImage);
+        this.northLatitude = -9.6f; this.southLatitude = -53;
+        this.westLongitude = -71; this.eastLongitude = -56;
+        float x,y,w,h;
+        x =  engine.getGraphics().getLogicWidth()/ 9.0f;
+        y =  engine.getGraphics().getLogicHeight()/ 10.0f;
+        w = h =  engine.getGraphics().getLogicHeight() / 12.0f;
+        this.returnButton =  engine.getGraphics().newButton("Volver.png",
+                x - (w / 2), y - (h / 2), w, h,
+                engine.getGraphics().newColor(0,0,0,0));
+        
         createReturnButton(graphics);
         this.firstFrame = true;
     }
@@ -43,6 +55,7 @@ public class HistorySuperScene extends AScene {
         graphics.newImage(this.coinsImage);
         createReturnButton(graphics);
         this.firstFrame = true;
+        graphics.newImage(this.argentinaImage);
     }
 
     @Override
@@ -52,17 +65,30 @@ public class HistorySuperScene extends AScene {
         offx = offy = w / 4.0f;
 
         this.returnButton.changeButton(engine.getGraphics(), offx, offy, w, h);
+        checkCoords(engine.getExternal());
     }
 
     @Override
     public void render(AGraphics graphics) {
         graphics.setBackgroundColor(this.palettes[this.data.actPalette][0]);
+        if(this.data.actPalette == 3) graphics.drawImage(this.argentinaImage, 0.0f, 0.0f, graphics.getLogicWidth(), graphics.getLogicHeight()/4.0f, true);
         graphics.drawImage(this.coinsImage, 350,0,25,25, true);
+
         graphics.drawText(this.font, String.valueOf(this.data.coins), 300 ,20, 20, new AColor(0,0,0,255));
     }
 
     @Override
     public void handleInputs(AGraphics graphics, AInput input, AAudio audio, AExternal external) {
+    }
+
+    private void checkCoords(AExternal external){
+        double actualLatitude = external.getLatitude();
+        double actualLongitude = external.getLongitude();
+        if(actualLatitude == 0.0f && actualLongitude == 0.0f) return;
+        if(actualLatitude > this.southLatitude && actualLatitude < this.northLatitude &&
+                actualLongitude > this.westLongitude && actualLongitude < this.eastLongitude)
+            this.data.actPalette = 3;
+        else this.data.actPalette = this.data.selectedPalette;
     }
 
     @Override
@@ -77,10 +103,9 @@ public class HistorySuperScene extends AScene {
     }
 
     @Override
-    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine_) {
         this.data = (GameData) savedInstanceState.getSerializable("data");
-        this.coinsImage = savedInstanceState.getString("coins_image");
-        setUpScene(engine.getGraphics(), engine.getAudio());
+        setUpScene(engine_.getGraphics(), engine_.getAudio());
     }
 
     @Override

@@ -2,15 +2,8 @@ package com.example.androidgame;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -25,27 +18,26 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
+import java.util.Objects;
+
 public class Main extends AppCompatActivity implements LocationListener {
     private static AdView mAdView;
     private SurfaceView myView;
     private AndroidEngine myEngine;
     private GameData data;
-    private int jsonInt;
     private RewardedAd mRewardedAd;
     private final String TAG = "MainActivity";
-
-    LocationManager locationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
         this.myView = findViewById(R.id.surfaceView);
-        this.mAdView = findViewById(R.id.adView);
-        this.myEngine = new AndroidEngine(this.myView, this.mAdView);
-        this.myEngine.getExternal().setActivity(this);
-        this.myEngine.getExternal().createNotification();
+        mAdView = findViewById(R.id.adView);
+        this.myEngine = new AndroidEngine(this.myView, mAdView);
+        this.myEngine.getExternal().setUpExternal(this);
+
         if (savedInstanceState != null) {
             this.myEngine.getCurrentState().restoreScene(savedInstanceState, this.myEngine);
         } else {
@@ -57,10 +49,7 @@ public class Main extends AppCompatActivity implements LocationListener {
 
         //_______________ADS_______________
         this.myEngine.getCurrentState().saveSceneInFile(myView);
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
+        MobileAds.initialize(this, initializationStatus -> {
         });
         AdRequest adRequest = new AdRequest.Builder().build();
         RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917",
@@ -79,27 +68,16 @@ public class Main extends AppCompatActivity implements LocationListener {
                         Log.d(TAG, "Ad was loaded.");
                     }
                 });
-
-        //LOCATION
-        while (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            LocationPermission();
-
-        this.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-
     }
 
-    private void LocationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},0);
-        }
-    }
+
 
     @Override
     protected void onResume() {
         System.out.println("_______________RESUME_______________");
         super.onResume();
         this.myEngine.resume();
+
     }
 
     @Override
@@ -139,5 +117,6 @@ public class Main extends AppCompatActivity implements LocationListener {
     @Override
     public void onLocationChanged(@NonNull Location location) {
         double a = location.getLatitude();
+        double b = location.getLongitude();
     }
 }

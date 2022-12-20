@@ -15,16 +15,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Board implements Serializable {
-    private int numCols, numRows,  initLives, currentLives;
+    private final int initLives;
+    private int numCols, numRows, currentLives;
     private Cell[][] board;
     private ArrayList<Integer>[] colsList;
     private ArrayList<Integer>[] rowsList;
     private Cell pressedCell;
 
     private boolean win = false;
-    private int margin = 50;
-    private int textMessagesSize;
-    private String cellSound, failSound;
+    private final int margin = 50;
+    private final int textMessagesSize;
+    private final String cellSound, failSound;
 
     public Board(int id, int nC, int nR, AndroidEngine engine_){
         this.initLives = this.currentLives = 3;
@@ -67,7 +68,7 @@ public class Board implements Serializable {
             Resources resources = engine_.getSurfaceView().getResources();
             try {
                 //InputStream iS = resources.getAssets().open("level.txt");
-                String levelName = "level" + Integer.toString(id) + ".txt";
+                String levelName = "level" + (id) + ".txt";
                 InputStream iS = resources.getAssets().open(levelName);
                 BufferedReader br = new BufferedReader(new InputStreamReader(iS));
                 this.numRows = Integer.parseInt(br.readLine());
@@ -109,21 +110,19 @@ public class Board implements Serializable {
         this.rowsList = new ArrayList[this.numRows];
 
         for (int i = 0; i < this.numCols; i++){
-            this.colsList[i] = new ArrayList<Integer>();
+            this.colsList[i] = new ArrayList<>();
         }
 
         for (int i = 0; i < this.numRows; i++){
-            this.rowsList[i] = new ArrayList<Integer>();
+            this.rowsList[i] = new ArrayList<>();
         }
 
-        boolean thisCell = false;
         int sum = 0; //Sumador de casillas consecutivas anteriores a esta
 
         //COLUMNAS
         for (int j = 0; j < this.numCols; j++){
             for (int i = 0; i < this.numRows; i++){
-                thisCell = this.board[i][j].isSolution();
-                if (thisCell) {
+                if (this.board[i][j].isSolution()) {
                     sum++;
 
                     //Si ya es la última fila de la columna, se añade a la lista
@@ -145,8 +144,7 @@ public class Board implements Serializable {
         //FILAS
         for (int i = 0; i < this.numRows; i++){
             for (int j = 0; j < this.numCols; j++){
-                thisCell = this.board[i][j].isSolution();
-                if (thisCell) {
+                if (this.board[i][j].isSolution()) {
                     sum++;
 
                     //Si ya es la última fila de la columna, se añade a la lista
@@ -198,7 +196,7 @@ public class Board implements Serializable {
                 for (int j = 0; j < this.colsList[i].size() ;j++)
                     graphics.drawText(this.colsList[i].get(j).toString(),
                             xInicial-this.colsList[i].size()*textSize+j*textSize,
-                            yInicial+casillaH/2+i*(casillaH+separacion)+separacion,
+                            yInicial+casillaH/2.f+i*(casillaH+separacion)+separacion,
                             textSize, graphics.newColor(0, 0, 0, 255));
             }
             int mayorCols = 1;
@@ -207,8 +205,8 @@ public class Board implements Serializable {
                 if (mayorCols < this.rowsList[i].size()) mayorCols = this.rowsList[i].size();
                 for (int j = 0; j < this.rowsList[i].size() ;j++)
                     graphics.drawText(this.rowsList[i].get(j).toString(),
-                            xInicial+casillaW/2+i*(casillaW+separacion)-separacion,
-                            yInicial-this.rowsList[i].size()*textSize+j*textSize+textSize/2,
+                            xInicial+casillaW/2.f+i*(casillaW+separacion)-separacion,
+                            yInicial-this.rowsList[i].size()*textSize+j*textSize+textSize/2.f,
                             textSize, graphics.newColor(0, 0, 0, 255));
             }
 

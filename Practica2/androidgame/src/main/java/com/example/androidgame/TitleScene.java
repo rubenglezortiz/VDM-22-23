@@ -16,25 +16,22 @@ import java.util.Iterator;
 
 public class TitleScene extends HistorySuperScene implements Serializable {
     private AButton storyButton, quickGameButton, paletteButton;
-    private String backgroundMusic;
     private int changeScene;
+    private String backgroundMusic = "music.wav";
 
     public TitleScene(AndroidEngine engine_, GameData data_){
-        super(engine_.getGraphics(), data_);
+        super(engine_, data_);
         this.changeScene = 0;
-        this.backgroundMusic = "music.wav";
-
         setUpScene(engine_.getGraphics(), engine_.getAudio());
         engine_.getExternal().loadBanner();
     }
 
     private void createMusic(AAudio audio) {
-        //Background music
         audio.newSound(this.backgroundMusic);
-        audio.playSound(this.backgroundMusic);
         audio.setVolume(this.backgroundMusic, 0.25f);
         audio.setLooping(this.backgroundMusic, true);
         audio.setBackgroundMusic(this.backgroundMusic);
+        audio.playSound(this.backgroundMusic);
     }
 
     private void createButtons(AGraphics graphics){
@@ -45,19 +42,20 @@ public class TitleScene extends HistorySuperScene implements Serializable {
         h = graphics.getLogicHeight() / 10;
 
         this.storyButton = graphics.newButton("ModoHistoria.png",
-                x - (w / 2), y1 - (h / 2), w, h,
+                x - (w / 2.f), y1 - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
 
         y2 = graphics.getLogicHeight() * 3 / 6;
         this.quickGameButton = graphics.newButton("PartidaRapida.png",
-                x - (w / 2), y2 - (h / 2), w, h,
+                x - (w / 2.f), y2 - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
 
         y3 = graphics.getLogicHeight() * 4 / 6;
         this.paletteButton = graphics.newButton("Colores.png",
-                x - (w / 2), y3 - (h / 2), w, h,
+                x - (w / 2.f), y3 - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
     }
+
     @Override
     protected void setUpScene(AGraphics graphics, AAudio audio) {
         super.setUpScene(graphics,audio);
@@ -125,11 +123,11 @@ public class TitleScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-        super.restoreScene(savedInstanceState, engine);
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine_) {
+        super.restoreScene(savedInstanceState, engine_);
         this.changeScene = savedInstanceState.getInt("changeScene");
-        setUpScene(engine.getGraphics(), engine.getAudio());
-        engine.getExternal().loadBanner();
+        setUpScene(engine_.getGraphics(), engine_.getAudio());
+        engine_.getExternal().loadBanner();
     }
 
     @Override

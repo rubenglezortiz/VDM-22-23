@@ -7,7 +7,7 @@ import android.media.MediaPlayer;
 import java.io.IOException;
 
 public class ASound  {
-    private MediaPlayer mPlayer;
+    private final MediaPlayer mPlayer;
 
     public ASound(String file, AssetManager assetManager){
         this.mPlayer = new MediaPlayer();
@@ -22,15 +22,23 @@ public class ASound  {
         }
     }
 
-    public void play() { this.mPlayer.start(); }
+    public void play() {
+        if(!this.mPlayer.isPlaying())
+            this.mPlayer.start();
+    }
+
 
     public void stop() { this.mPlayer.stop();}
 
     public void pause(){
-        this.mPlayer.pause();
+        if(this.mPlayer.isPlaying()) this.mPlayer.pause();
     }
 
     public void setVolume(float volume) { this.mPlayer.setVolume(volume, volume); }
 
     public void setLooping(boolean looping){ this.mPlayer.setLooping(looping);}
+
+    public boolean isPlaying() {
+        return this.mPlayer.isPlaying();
+    }
 }

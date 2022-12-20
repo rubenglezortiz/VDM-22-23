@@ -3,16 +3,16 @@ import java.io.Serializable;
 
 
 public class AButton implements Serializable {
+    private final String name;
+    private final AColor backgroundColor;
 
     public enum horizontalAlignment{LEFT, HMIDDLE, RIGHT, NO_ALIGNMENT}
     public enum verticalAlignment{TOP, VMIDDLE, BOTTOM, NO_ALIGNMENT}
 
-    private String name;
     private horizontalAlignment hAlign;
     private verticalAlignment vAlign;
     private float offsetX, offsetY;
     private float width, height;
-    private float posX, posY;
     private AColor backgroundColor;
     private int screenWidth, screenHeight;
 
