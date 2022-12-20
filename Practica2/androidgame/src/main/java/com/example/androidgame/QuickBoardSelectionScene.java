@@ -138,7 +138,6 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
 
     @Override
     public void restoreSceneFromFile(View myView) {
-
     }
 
 }
