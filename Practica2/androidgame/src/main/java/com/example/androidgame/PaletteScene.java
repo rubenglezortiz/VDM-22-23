@@ -17,7 +17,7 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
     private AButton p1, p2, p3;
 
     public PaletteScene(AndroidEngine engine_, GameData data){
-        super(engine_.getGraphics(), data);
+        super(engine_, data);
         this.back = false;
         this.costp2 = 50;
         this.costp3 = 100;
@@ -73,21 +73,22 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
                 case TOUCH_RELEASED:
                     float collisionX = ((AInput.TouchInputEvent) event).x;
                     float collisionY = ((AInput.TouchInputEvent) event).y;
-                    if (this.p1.checkCollision(collisionX, collisionY)) this.data.actPalette = 0;
+                    if (this.p1.checkCollision(collisionX, collisionY)) this.data.selectedPalette = 0;
                     else if (this.p2.checkCollision(collisionX, collisionY)){
                         if(this.data.lockp2 && this.costp2 <= this.data.coins) {
                             this.data.coins -= this.costp2;
                             this.data.lockp2 = false;
                         }
-                        if(!this.data.lockp2) this.data.actPalette = 1;
+                        if(!this.data.lockp2) this.data.selectedPalette = 1;
                     }
                     else if (this.p3.checkCollision(collisionX, collisionY)){
                         if(this.data.lockp3 && this.costp3 <= this.data.coins) {
                             this.data.coins -= this.costp3;
                             this.data.lockp3 = false;
                         }
-                        if(!this.data.lockp3) this.data.actPalette = 2;
+                        if(!this.data.lockp3) this.data.selectedPalette = 2;
                     }
+                    this.data.actPalette = this.data.selectedPalette;
                     if(this.returnButton.checkCollision(collisionX,collisionY)) this.back = true;
                     external.pushNotification();
                     break;
@@ -110,7 +111,7 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine_) {
     }
 
     @Override

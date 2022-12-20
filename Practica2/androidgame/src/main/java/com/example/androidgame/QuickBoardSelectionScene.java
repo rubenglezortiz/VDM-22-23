@@ -24,7 +24,7 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
     private AButton button10x10;
 
     public QuickBoardSelectionScene(AndroidEngine engine_, GameData data){
-        super(engine_.getGraphics(), data);
+        super(engine_, data);
         this.changeScene = false;
         this.boardSize = 0;
         this.backToMenu = false;
@@ -125,7 +125,7 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
     }
 
     @Override
-    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine_) {
         this.boardSize = savedInstanceState.getInt("boardSize");
         this.changeScene = savedInstanceState.getBoolean("changeScene");
         setUpScene();

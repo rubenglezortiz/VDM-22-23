@@ -16,25 +16,16 @@ import java.util.Iterator;
 
 public class TitleScene extends HistorySuperScene implements Serializable {
     private AButton storyButton, quickGameButton, paletteButton;
-    private String backgroundMusic;
     private int changeScene;
 
     public TitleScene(AndroidEngine engine_, GameData data_){
-        super(engine_.getGraphics(), data_);
+        super(engine_, data_);
         this.changeScene = 0;
-        this.backgroundMusic = "music.wav";
-
         setUpScene(engine_.getGraphics(), engine_.getAudio());
         engine_.getExternal().loadBanner();
     }
 
     private void createMusic(AAudio audio) {
-        //Background music
-        audio.newSound(this.backgroundMusic);
-        audio.playSound(this.backgroundMusic);
-        audio.setVolume(this.backgroundMusic, 0.25f);
-        audio.setLooping(this.backgroundMusic, true);
-        audio.setBackgroundMusic(this.backgroundMusic);
     }
 
     private void createButtons(AGraphics graphics){
@@ -68,6 +59,7 @@ public class TitleScene extends HistorySuperScene implements Serializable {
 
     @Override
     public void update(AndroidEngine engine) {
+        super.update(engine);
         if (this.changeScene != 0) {
             if (this.changeScene == 1)
                 engine.getCurrentState().addScene(new SelectCategoryScene(engine, this.data));
@@ -124,11 +116,11 @@ public class TitleScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-        super.restoreScene(savedInstanceState, engine);
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine_) {
+        super.restoreScene(savedInstanceState, engine_);
         this.changeScene = savedInstanceState.getInt("changeScene");
-        setUpScene(engine.getGraphics(), engine.getAudio());
-        engine.getExternal().loadBanner();
+        setUpScene(engine_.getGraphics(), engine_.getAudio());
+        engine_.getExternal().loadBanner();
     }
 
     @Override

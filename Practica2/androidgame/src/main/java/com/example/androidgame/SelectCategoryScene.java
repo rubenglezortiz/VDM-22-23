@@ -17,7 +17,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     private AButton forestButton, seaButton, cityButton, desertButton;
 
     public SelectCategoryScene(AndroidEngine engine_, GameData data_){
-        super(engine_.getGraphics(), data_);
+        super(engine_, data_);
         this.changeScene = 0;
         this.backToMenu = false;
 
@@ -124,8 +124,8 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     }
 
     @Override
-    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-        super.restoreScene(savedInstanceState, engine);
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine_) {
+        super.restoreScene(savedInstanceState, engine_);
     }
 
     @Override

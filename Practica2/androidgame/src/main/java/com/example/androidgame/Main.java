@@ -34,8 +34,6 @@ public class Main extends AppCompatActivity implements LocationListener {
     private RewardedAd mRewardedAd;
     private final String TAG = "MainActivity";
 
-    LocationManager locationManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +42,8 @@ public class Main extends AppCompatActivity implements LocationListener {
         this.myView = findViewById(R.id.surfaceView);
         this.mAdView = findViewById(R.id.adView);
         this.myEngine = new AndroidEngine(this.myView, this.mAdView);
-        this.myEngine.getExternal().setActivity(this);
-        this.myEngine.getExternal().createNotification();
+        this.myEngine.getExternal().setUpExternal(this);
+
         if (savedInstanceState != null) {
             this.myEngine.getCurrentState().restoreScene(savedInstanceState, this.myEngine);
         } else {
@@ -79,27 +77,16 @@ public class Main extends AppCompatActivity implements LocationListener {
                         Log.d(TAG, "Ad was loaded.");
                     }
                 });
-
-        //LOCATION
-        while (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            LocationPermission();
-
-        this.locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-
     }
 
-    private void LocationPermission() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},0);
-        }
-    }
+
 
     @Override
     protected void onResume() {
         System.out.println("_______________RESUME_______________");
         super.onResume();
         this.myEngine.resume();
+
     }
 
     @Override
@@ -139,5 +126,6 @@ public class Main extends AppCompatActivity implements LocationListener {
     @Override
     public void onLocationChanged(@NonNull Location location) {
         double a = location.getLatitude();
+        double b = location.getLongitude();
     }
 }

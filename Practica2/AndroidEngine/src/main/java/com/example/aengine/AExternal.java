@@ -1,13 +1,20 @@
 package com.example.aengine;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -19,7 +26,7 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
-public class AExternal {
+public class AExternal implements LocationListener {
     private String TAG;
     private Activity activity;
     private View myView;
@@ -28,10 +35,20 @@ public class AExternal {
     private RewardedAd mRewardedAd;
     private NotificationCompat.Builder builder;
     private NotificationManagerCompat notManager;
+    private LocationManager locationManager;
+    private double latitude, longitude;
 
     public AExternal(View view_, AdView mAdView_) {
         this.myView = view_;
         this.mAdView = mAdView_;
+
+    }
+
+    //ADDS
+    public void setUpExternal(Activity activity_){
+        this.activity = activity_;
+        createNotification();
+        setUpLocationManager();
     }
 
     public void loadBanner() {
@@ -78,6 +95,13 @@ public class AExternal {
         });
     }
 
+    public void setmRewardedAd(RewardedAd rewardedAd_)
+    {
+        this.mRewardedAd = rewardedAd_;
+    }
+
+    //NOTIFICATIONS
+
     public void createNotification(){
         //_______________NOTIFICATION_______________
         //_______________CANAL_______________
@@ -104,18 +128,40 @@ public class AExternal {
 
         this.notManager = NotificationManagerCompat.from(this.activity);
     }
-
     public void pushNotification(){
         this.notManager.notify(0, this.builder.build());
     }
 
-    public void setActivity(Activity activity_)
-    {
-        this.activity = activity_;
+    //LOCATION
+    private void setUpLocationManager() {
+        if (ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            LocationPermission();
+        this.locationManager = (LocationManager) this.activity.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
-    public void setmRewardedAd(RewardedAd rewardedAd_)
-    {
-        this.mRewardedAd = rewardedAd_;
+    private void LocationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            ActivityCompat.requestPermissions(this.activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 0);
     }
+
+    @Override
+    public void onLocationChanged(@NonNull Location location) {
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
+    }
+
+    @Override
+    public void onProviderEnabled(@NonNull String provider) {}
+
+    @Override
+    public void onProviderDisabled(@NonNull String provider) {}
+
+    public double getLatitude(){ return this.latitude; }
+
+    public double getLongitude(){ return this.longitude; }
 }

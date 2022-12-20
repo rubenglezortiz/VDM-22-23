@@ -15,14 +15,14 @@ import java.nio.charset.StandardCharsets;
 
 public class GameData implements Serializable {
     public String filename;
-    public int coins, forestLevels, seaLevels, cityLevels, desertLevels, actPalette, levelInProgress;
+    public int coins, forestLevels, seaLevels, cityLevels, desertLevels, selectedPalette, actPalette, levelInProgress;
     public boolean lockp2, lockp3;
 
     public GameData(){
         this.filename = "data";
         this.coins = this.levelInProgress = 0;
         this.forestLevels = this.seaLevels = this.cityLevels = this.desertLevels = 1;
-        this.actPalette = 0;
+        this.actPalette = this.selectedPalette = 0;
         this.lockp2 = this.lockp3 = true;
     }
 
@@ -34,6 +34,7 @@ public class GameData implements Serializable {
         aux += '\n' + gson.toJson(this.cityLevels);
         aux += '\n' + gson.toJson(this.desertLevels);
         aux += '\n' + gson.toJson(this.actPalette);
+        aux += '\n' + gson.toJson(this.selectedPalette);
         aux += '\n' + gson.toJson(this.levelInProgress);
         aux += '\n' + gson.toJson(this.lockp2);
         aux += '\n' + gson.toJson(this.lockp3);
@@ -63,6 +64,8 @@ public class GameData implements Serializable {
             this.desertLevels = gson.fromJson(line,int.class);
             line = reader.readLine();
             this.actPalette = gson.fromJson(line,int.class);
+            line = reader.readLine();
+            this.selectedPalette = gson.fromJson(line,int.class);
             line = reader.readLine();
             this.levelInProgress = gson.fromJson(line,int.class);
             line = reader.readLine();

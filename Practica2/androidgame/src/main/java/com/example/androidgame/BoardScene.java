@@ -30,8 +30,8 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     private int levelId, categoryId;
     private String winSound, boardInProgressFile;
 
-    public BoardScene(AndroidEngine engine, int id_, int category, int numCols, int numRows, GameData data){
-        super(engine.getGraphics(), data);
+    public BoardScene(AndroidEngine engine_, int id_, int category, int numCols, int numRows, GameData data){
+        super(engine_, data);
         this.winSound = "win.wav";
         this.boardInProgressFile = "board";
         this.liveImage = "corazon_con_vida.png";
@@ -39,10 +39,10 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         this.levelFinished = false;
         this.levelId = id_;
         this.categoryId = category;
-        if(this.levelId!=0) createHistoryBoard(engine, numCols, numRows);
-        else createRandomBoard(engine, numCols, numRows);
+        if(this.levelId!=0) createHistoryBoard(engine_, numCols, numRows);
+        else createRandomBoard(engine_, numCols, numRows);
         this.board.setCellColor(this.palettes[this.data.actPalette][1]);
-        setUpScene(engine.getGraphics(), engine.getAudio());
+        setUpScene(engine_.getGraphics(), engine_.getAudio());
     }
 
     private void createHistoryBoard(AndroidEngine engine, int numCols, int numRows) {
@@ -213,8 +213,8 @@ public class BoardScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine){
-        super.restoreScene(savedInstanceState, engine);
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine_){
+        super.restoreScene(savedInstanceState, engine_);
     }
 
     @Override

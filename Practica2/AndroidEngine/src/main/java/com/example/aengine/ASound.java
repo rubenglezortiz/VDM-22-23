@@ -22,12 +22,15 @@ public class ASound  {
         }
     }
 
-    public void play() { this.mPlayer.start(); }
+    public void play() {
+        if(!this.mPlayer.isPlaying()) this.mPlayer.start();
+    }
+
 
     public void stop() { this.mPlayer.stop();}
 
     public void pause(){
-        this.mPlayer.pause();
+        if(this.mPlayer.isPlaying()) this.mPlayer.pause();
     }
 
     public void setVolume(float volume) { this.mPlayer.setVolume(volume, volume); }

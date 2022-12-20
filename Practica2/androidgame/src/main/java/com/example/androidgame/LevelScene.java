@@ -24,7 +24,7 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     private int rows, cols;
 
     public LevelScene(AndroidEngine engine_, int id_, GameData data){
-        super(engine_.getGraphics(), data);
+        super(engine_, data);
         this.backToMenu = false;
         this.changeScene = 0;
         this.rows = 5;
@@ -98,7 +98,7 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     @Override
     public void render(AGraphics graphics){
         super.render(graphics);
-        graphics.drawText(this.textId,
+        graphics.drawText(this.font, this.textId,
                 graphics.getLogicWidth() / 2.0f - 90,
                 graphics.getLogicHeight() / 8.0f, 25,
                 graphics.newColor(0,0,0,255));
@@ -110,7 +110,6 @@ public class LevelScene extends HistorySuperScene implements Serializable {
                 graphics.drawButton(this.levels[i][j]);
             }
         }
-        graphics.drawText(Integer.toString(this.data.forestLevels), 300,100, 20, graphics.newColor(0,0,0,255));
     }
 
     @Override
@@ -145,14 +144,13 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     }
 
     @Override
-    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine) {
-        super.restoreScene(savedInstanceState, engine);
+    public void restoreScene(Bundle savedInstanceState, AndroidEngine engine_) {
+        super.restoreScene(savedInstanceState, engine_);
     }
 
     @Override
     public void restoreSceneFromFile(View myView) {
         super.restoreSceneFromFile(myView);
-
         if(this.categoryId == 0) {
             this.textId = "Bosque";
             this.currentLevel = this.data.forestLevels;
