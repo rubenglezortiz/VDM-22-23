@@ -7,7 +7,6 @@ import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
 import java.util.HashMap;
 import java.util.Objects;
 

@@ -46,7 +46,11 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
                 graphics.newColor(0,0,0,0));
     }
 
-    protected void setUpScene() {}
+    @Override
+    protected void setUpScene(AGraphics graphics, AAudio audio) {
+        super.setUpScene(graphics, audio);
+        createButtons(graphics);
+    }
 
     @Override
     public void update(AndroidEngine engine){
@@ -111,6 +115,7 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
 
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine_) {
+        setUpScene(engine_.getGraphics(), engine_.getAudio());
     }
 
     @Override

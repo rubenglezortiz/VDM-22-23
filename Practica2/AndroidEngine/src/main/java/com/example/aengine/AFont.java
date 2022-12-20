@@ -3,9 +3,7 @@ package com.example.aengine;
 import android.content.res.AssetManager;
 import android.graphics.Typeface;
 
-
 public class AFont  {
-
     private Typeface typeface;
 
     public  AFont(Typeface t_){

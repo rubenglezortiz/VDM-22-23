@@ -7,12 +7,9 @@ import android.location.LocationListener;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
-
 import com.example.aengine.AndroidEngine;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.rewarded.RewardedAd;
@@ -21,7 +18,6 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import java.util.Objects;
 
 public class Main extends AppCompatActivity implements LocationListener {
-    private static AdView mAdView;
     private SurfaceView myView;
     private AndroidEngine myEngine;
     private GameData data;
@@ -34,7 +30,7 @@ public class Main extends AppCompatActivity implements LocationListener {
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
         this.myView = findViewById(R.id.surfaceView);
-        mAdView = findViewById(R.id.adView);
+        AdView mAdView = findViewById(R.id.adView);
         this.myEngine = new AndroidEngine(this.myView, mAdView);
         this.myEngine.getExternal().setUpExternal(this);
 

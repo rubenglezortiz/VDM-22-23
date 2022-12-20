@@ -20,7 +20,7 @@ public class AndroidEngine implements Runnable {
         this.myView = myView_;
         this.graphics = new AGraphics(this.myView);
         this.audio = new AAudio(this.myView.getContext().getAssets());
-        this.input = new AInput(this.graphics);
+        this.input = new AInput();
         this.external = new AExternal(this.myView, adView_);
 
         this.myView.setOnLongClickListener(this.input);
