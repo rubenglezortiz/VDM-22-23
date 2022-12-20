@@ -10,6 +10,7 @@ import com.example.aengine.AInput;
 import com.example.aengine.AndroidEngine;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.locks.AbstractOwnableSynchronizer;
 
 public class SelectCategoryScene extends HistorySuperScene implements Serializable {
     private int changeScene;
@@ -41,6 +42,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
         w = graphics.getLogicWidth() * 5 / 13;
         h = graphics.getLogicHeight() / 4;
 
+        String forest = "Bosque.png";
         String sea = "Playa.png";
         String city = "Ciudad.png";
         String desert = "Desierto.png";
@@ -49,7 +51,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
         if (this.data.seaLevels < 5) city = "CiudadBloqueado.png";
         if (this.data.cityLevels < 5) desert = "DesiertoBloqueado.png";
 
-        this.forestButton = graphics.newButton("Bosque.png",
+        this.forestButton = graphics.newButton(forest,
                 x1 - (w / 2.0f), y1 - (h / 2.0f), w, h,
                 graphics.newColor(0,0,0,0));
 
