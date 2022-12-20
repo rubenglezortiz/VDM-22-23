@@ -32,7 +32,7 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
     }
 
     private void createButtons(AGraphics graphics){
-        int x, x3x, x5x, x10x, y, w, h;
+        int x3x, x5x, x10x, y, w, h;
         x3x = graphics.getLogicWidth() / 4;
         x5x = graphics.getLogicWidth() * 2 / 4;
         x10x = graphics.getLogicWidth() * 3 / 4;
@@ -41,15 +41,15 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
         h = graphics.getLogicHeight() / 10;
 
         this.button3x3 = graphics.newButton("3x3.png",
-                x3x - (w / 2), y - (h / 2), w, h,
+                x3x - (w / 2.f), y - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
 
         this.button5x5 = graphics.newButton("5x5.png",
-                x5x - (w / 2), y - (h / 2), w, h,
+                x5x - (w / 2.f), y - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
 
         this.button10x10 = graphics.newButton("10x10.png",
-                x10x - (w / 2), y - (h / 2), w, h,
+                x10x - (w / 2.f), y - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
     }
 
@@ -61,9 +61,9 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
         super.update(engine);
         if(this.changeScene){
             this.changeScene = false;
-            if(this.boardSize == 1) engine.getCurrentState().addScene(new BoardScene(engine, 0, 0,3,3, this.data));
-            else if (this.boardSize == 2) engine.getCurrentState().addScene(new BoardScene(engine, 0, 0,5,5, this.data));
-            else if (this.boardSize == 3) engine.getCurrentState().addScene(new BoardScene(engine,0, 0, 10,10, this.data));
+            if(this.boardSize == 1) engine.getCurrentState().addScene(new BoardScene(engine, 0, 3,3, this.data));
+            else if (this.boardSize == 2) engine.getCurrentState().addScene(new BoardScene(engine, 0, 5,5, this.data));
+            else if (this.boardSize == 3) engine.getCurrentState().addScene(new BoardScene(engine,0, 10, 10, this.data));
         }
         if(this.backToMenu){
             engine.getCurrentState().removeScene(1);

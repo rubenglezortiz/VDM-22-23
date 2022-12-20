@@ -15,13 +15,12 @@ import java.util.ArrayList;
 public class LevelScene extends HistorySuperScene implements Serializable {
     private int changeScene;
     private boolean backToMenu;
-    private final String TAG = "LevelScene";
     private AButton[][] levels;
 
-    private int categoryId;
+    private final int categoryId;
     private int currentLevel;
     private String textId;
-    private int rows, cols;
+    private final int rows, cols;
 
     public LevelScene(AndroidEngine engine_, int id_, GameData data){
         super(engine_, data);
@@ -55,10 +54,10 @@ public class LevelScene extends HistorySuperScene implements Serializable {
             for(int j = 0; j < this.cols; ++j){
                 x = x0 + (xi * j);
                 int level = i * this.cols + j + 1;
-                text = "Level" + Integer.toString(level) + ".png";
+                text = "Level" + level + ".png";
                 AColor color = (this.currentLevel>=level) ?  unlockedLevelColor : lockedLevelColor;
                 this.levels[i][j] = graphics.newButton(text,
-                        x - (w / 2), y - (h / 2), w, h,
+                        x - (w / 2.f), y - (h / 2.f), w, h,
                         color);
             }
         }
@@ -89,7 +88,7 @@ public class LevelScene extends HistorySuperScene implements Serializable {
     public void update(AndroidEngine engine){
         super.update(engine);
         if (this.changeScene != 0){
-            BoardScene level = new BoardScene(engine, this.changeScene, this.categoryId, 0,0, this.data);
+            BoardScene level = new BoardScene(engine, this.changeScene, 0,0, this.data);
             engine.getCurrentState().addScene(level);
             this.changeScene = 0;
         }

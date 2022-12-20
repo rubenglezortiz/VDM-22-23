@@ -33,7 +33,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
     }
 
     private void createButtons(AGraphics graphics){
-        int x1, x2, y1, y2, w, h, tx, ty, tSize;
+        int x1, x2, y1, y2, w, h;
         x1 = graphics.getLogicWidth() / 4;
         x2 = graphics.getLogicWidth() * 3 / 4;
         y1 = graphics.getLogicHeight() * 3 / 8;
@@ -62,7 +62,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
                 graphics.newColor(0,0,0,0));
 
         this.desertButton = graphics.newButton(desert,
-                x2 - (w / 2), y2 - (h / 2), w, h,
+                x2 - (w / 2.f), y2 - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
     }
 

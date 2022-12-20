@@ -27,20 +27,17 @@ import java.util.Iterator;
 public class BoardScene extends HistorySuperScene implements Serializable {
     private Board board;
     private AButton levelFinishedButton, lifeAdButton,tweetButton;
-    private String liveImage, noLiveImage;
-    private boolean backToMenu, levelFinished, backToSelectionLevelScene, isHorizontal;
-    private int levelId, categoryId;
-    private String winSound, boardInProgressFile;
+    private final String liveImage = "corazon_con_vida.png";
+    private final String noLiveImage = "corazon_sin_vida.png";
+    private boolean backToMenu, levelFinished, backToSelectionLevelScene,win;
+    private final int levelId;
+    private final String winSound = "win.wav";
+    private final String boardInProgressFile = "board";
 
-    public BoardScene(AndroidEngine engine_, int id_, int category, int numCols, int numRows, GameData data){
+    public BoardScene(AndroidEngine engine_, int id_, int numCols, int numRows, GameData data){
         super(engine_, data);
-        this.winSound = "win.wav";
-        this.boardInProgressFile = "board";
-        this.liveImage = "corazon_con_vida.png";
-        this.noLiveImage = "corazon_sin_vida.png";
         this.levelFinished = false;
         this.levelId = id_;
-        this.categoryId = category;
         if(this.levelId!=0) createHistoryBoard(engine_, numCols, numRows);
         else createRandomBoard(engine_, numCols, numRows);
         this.board.setCellColor(this.palettes[this.data.actPalette][1]);
@@ -99,18 +96,16 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         createSounds(audio);
         createButtons(graphics);
 
-        this.isHorizontal = graphics.getHorizontallyScaled();
-        if (this.isHorizontal) changeToHorizontal(graphics);
+        if (graphics.getHorizontallyScaled()) changeToHorizontal(graphics);
     }
 
     @Override
     public void update(AndroidEngine engine) {
         super.update(engine);
-        boolean win = this.board.checkWin();
-        if(!this.levelFinished && win || this.board.getCurrentLives() == 0){
+        if(!this.levelFinished && this.win || this.board.getCurrentLives() == 0){
             this.data.levelInProgress = 0;
             this.levelFinished = true;
-            if (this.levelId != 0 && win){
+            if (this.levelId != 0 && this.win){
                 if (this.levelId == this.data.forestLevels){
                     this.data.forestLevels++;
                     this.data.coins += 5;
@@ -144,7 +139,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
         graphics.drawButton(this.returnButton);
         this.board.render(graphics);
         if(this.levelFinished) graphics.drawButton(this.levelFinishedButton);
-        if(this.board.checkWin())graphics.drawButton(this.tweetButton);
+        if(this.win)graphics.drawButton(this.tweetButton);
         renderLives(graphics);
     }
 
@@ -189,7 +184,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
                         external.loadRewardedAd();
                         this.board.gainLife();
                     }
-                    else if(this.tweetButton.checkCollision(collisionX, collisionY) && board.checkWin()) {
+                    else if(this.tweetButton.checkCollision(collisionX, collisionY) && this.win) {
                         Uri builtURI = Uri. parse("https://twitter.com/intent/tweet" ).buildUpon()
                                 .appendQueryParameter( "text", "He completado un nuevo nivel de Nonograms! Vaya juegazo >:)")
                                 .build() ; //Genera la URl https://twitter.com/intent/tweet?text=Este%20es%20mi%20texto%20a%20tweettear
@@ -205,6 +200,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
 
 
         }
+        this.win = this.board.checkWin();
         input.clearEventList();
     }
 

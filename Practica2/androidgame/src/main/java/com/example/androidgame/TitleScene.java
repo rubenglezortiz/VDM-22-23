@@ -41,17 +41,17 @@ public class TitleScene extends HistorySuperScene implements Serializable {
         h = graphics.getLogicHeight() / 10;
 
         this.storyButton = graphics.newButton("ModoHistoria.png",
-                x - (w / 2), y1 - (h / 2), w, h,
+                x - (w / 2.f), y1 - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
 
         y2 = graphics.getLogicHeight() * 3 / 6;
         this.quickGameButton = graphics.newButton("PartidaRapida.png",
-                x - (w / 2), y2 - (h / 2), w, h,
+                x - (w / 2.f), y2 - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
 
         y3 = graphics.getLogicHeight() * 4 / 6;
         this.paletteButton = graphics.newButton("Colores.png",
-                x - (w / 2), y3 - (h / 2), w, h,
+                x - (w / 2.f), y3 - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
     }
 

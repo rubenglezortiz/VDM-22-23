@@ -2,15 +2,8 @@ package com.example.androidgame;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
-import android.Manifest;
-import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceView;
@@ -25,23 +18,24 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
+import java.util.Objects;
+
 public class Main extends AppCompatActivity implements LocationListener {
     private static AdView mAdView;
     private SurfaceView myView;
     private AndroidEngine myEngine;
     private GameData data;
-    private int jsonInt;
     private RewardedAd mRewardedAd;
     private final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.activity_main);
         this.myView = findViewById(R.id.surfaceView);
-        this.mAdView = findViewById(R.id.adView);
-        this.myEngine = new AndroidEngine(this.myView, this.mAdView);
+        mAdView = findViewById(R.id.adView);
+        this.myEngine = new AndroidEngine(this.myView, mAdView);
         this.myEngine.getExternal().setUpExternal(this);
 
         if (savedInstanceState != null) {
@@ -55,10 +49,7 @@ public class Main extends AppCompatActivity implements LocationListener {
 
         //_______________ADS_______________
         this.myEngine.getCurrentState().saveSceneInFile(myView);
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-            }
+        MobileAds.initialize(this, initializationStatus -> {
         });
         AdRequest adRequest = new AdRequest.Builder().build();
         RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917",

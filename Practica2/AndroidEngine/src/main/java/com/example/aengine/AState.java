@@ -7,8 +7,8 @@ import java.util.Stack;
 
 public class AState  {
     private Stack<AScene> scenes;
-    private SurfaceView myView;
-    private AndroidEngine myEngine;
+    private final SurfaceView myView;
+    private final AndroidEngine myEngine;
 
     public AState(SurfaceView view, AndroidEngine engine) {
         this.myEngine = engine;
