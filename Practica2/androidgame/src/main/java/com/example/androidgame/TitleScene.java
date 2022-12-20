@@ -17,6 +17,7 @@ import java.util.Iterator;
 public class TitleScene extends HistorySuperScene implements Serializable {
     private AButton storyButton, quickGameButton, paletteButton;
     private int changeScene;
+    private String backgroundMusic = "music.wav";
 
     public TitleScene(AndroidEngine engine_, GameData data_){
         super(engine_, data_);
@@ -26,6 +27,10 @@ public class TitleScene extends HistorySuperScene implements Serializable {
     }
 
     private void createMusic(AAudio audio) {
+        audio.newSound(this.backgroundMusic);
+        audio.setVolume(this.backgroundMusic, 0.25f);
+        audio.setLooping(this.backgroundMusic, true);
+        audio.playSound(this.backgroundMusic);
     }
 
     private void createButtons(AGraphics graphics){
@@ -49,6 +54,7 @@ public class TitleScene extends HistorySuperScene implements Serializable {
                 x - (w / 2), y3 - (h / 2), w, h,
                 graphics.newColor(0,0,0,0));
     }
+
     @Override
     protected void setUpScene(AGraphics graphics, AAudio audio) {
         super.setUpScene(graphics,audio);

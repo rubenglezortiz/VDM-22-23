@@ -87,6 +87,7 @@ public class LevelScene extends HistorySuperScene implements Serializable {
 
     @Override
     public void update(AndroidEngine engine){
+        super.update(engine);
         if (this.changeScene != 0){
             BoardScene level = new BoardScene(engine, this.changeScene, this.categoryId, 0,0, this.data);
             engine.getCurrentState().addScene(level);

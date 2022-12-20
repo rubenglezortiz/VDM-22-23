@@ -12,7 +12,7 @@ import com.example.aengine.AScene;
 import com.example.aengine.AndroidEngine;
 
 public class HistorySuperScene extends AScene {
-    private String argentinaImage, coinsImage, backgroundMusic, argentinaBackgroundMusic;
+    private String argentinaImage, coinsImage;
     protected String font;
     protected GameData data;
     protected AColor[][] palettes;
@@ -22,7 +22,6 @@ public class HistorySuperScene extends AScene {
     HistorySuperScene(AndroidEngine engine, GameData data_){
         this.font = "font.TTF";
         this.coinsImage ="moneda.png"; this.argentinaImage = "argentina.png";
-        this.backgroundMusic = "music.wav"; this.argentinaBackgroundMusic = "duki.mp3";
         this.data = data_;
         this.palettes = new AColor[4][2];
         this.palettes[0][0] = new AColor(255,255,255);
@@ -43,48 +42,27 @@ public class HistorySuperScene extends AScene {
         this.returnButton =  engine.getGraphics().newButton("Volver.png",
                 x - (w / 2), y - (h / 2), w, h,
                 engine.getGraphics().newColor(0,0,0,0));
-        checkCoords(engine.getExternal(), engine.getAudio());
-        createMusic(engine.getAudio());
-    }
-
-    private void createMusic(AAudio audio) {
-        audio.newSound(this.backgroundMusic);
-        audio.newSound(this.argentinaBackgroundMusic);
-        audio.setVolume(this.backgroundMusic, 0.25f);
-        audio.setVolume(this.argentinaBackgroundMusic, 0.25f);
-        audio.setLooping(this.backgroundMusic, true);
-        audio.setLooping(this.argentinaBackgroundMusic, true);
     }
 
     @Override
     protected void setUpScene(AGraphics graphics, AAudio audio) {
         graphics.newImage(this.coinsImage);
         graphics.newImage(this.argentinaImage);
-
     }
 
-    private void checkCoords(AExternal external, AAudio audio){
-        //external.checkCoords();
+    private void checkCoords(AExternal external){
         double actualLatitude = external.getLatitude();
         double actualLongitude = external.getLongitude();
+        if(actualLatitude == 0.0f && actualLongitude == 0.0f) return;
         if(actualLatitude > this.southLatitude && actualLatitude < this.northLatitude &&
-            actualLongitude > this.westLongitude && actualLongitude < this.eastLongitude) {
+            actualLongitude > this.westLongitude && actualLongitude < this.eastLongitude)
             this.data.actPalette = 3;
-            audio.pauseSound(this.backgroundMusic);
-            audio.playSound(this.argentinaBackgroundMusic);
-            audio.setBackgroundMusic(this.argentinaBackgroundMusic);
-        }
-        else {
-            this.data.actPalette = this.data.selectedPalette;
-            audio.pauseSound(this.argentinaBackgroundMusic);
-            audio.playSound(this.backgroundMusic);
-            audio.setBackgroundMusic(this.backgroundMusic);
-        }
+        else this.data.actPalette = this.data.selectedPalette;
     }
 
     @Override
     public void update(AndroidEngine engine) {
-        checkCoords(engine.getExternal(), engine.getAudio());
+        checkCoords(engine.getExternal());
     }
 
     @Override

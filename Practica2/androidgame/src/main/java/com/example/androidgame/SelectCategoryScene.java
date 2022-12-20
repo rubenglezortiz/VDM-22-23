@@ -68,6 +68,7 @@ public class SelectCategoryScene extends HistorySuperScene implements Serializab
 
     @Override
     public void update(AndroidEngine engine) {
+        super.update(engine);
         if (this.changeScene != 0){
             engine.getCurrentState().addScene(new LevelScene(engine, this.changeScene - 1, this.data));
             this.changeScene = 0;

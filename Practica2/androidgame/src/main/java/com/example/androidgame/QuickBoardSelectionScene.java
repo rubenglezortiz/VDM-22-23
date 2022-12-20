@@ -58,6 +58,7 @@ public class QuickBoardSelectionScene extends HistorySuperScene implements Seria
 
     @Override
     public void update(AndroidEngine engine) {
+        super.update(engine);
         if(this.changeScene){
             this.changeScene = false;
             if(this.boardSize == 1) engine.getCurrentState().addScene(new BoardScene(engine, 0, 0,3,3, this.data));

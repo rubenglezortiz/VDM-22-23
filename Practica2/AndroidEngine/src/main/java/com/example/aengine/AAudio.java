@@ -54,6 +54,19 @@ public class AAudio {
         }
     }
 
+    public boolean isPlaying(String key){
+        boolean isPlaying = false;
+        try {
+            if (this.sounds.containsKey(key))
+               isPlaying = this.sounds.get(key).isPlaying();
+            else throw new IOException("!!!!!!!!!!!!!!Key audio does not exist!!!!!!!!!!!!!!");
+        }
+        catch (IOException e){
+            System.err.println(e.getMessage());
+        }
+        return isPlaying;
+    }
+
     public void setLooping(String key, boolean looping){
         try {
             if (this.sounds.containsKey(key))

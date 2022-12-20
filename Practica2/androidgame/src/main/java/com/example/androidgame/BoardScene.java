@@ -105,6 +105,7 @@ public class BoardScene extends HistorySuperScene implements Serializable {
 
     @Override
     public void update(AndroidEngine engine) {
+        super.update(engine);
         boolean win = this.board.checkWin();
         if(!this.levelFinished && win || this.board.getCurrentLives() == 0){
             this.data.levelInProgress = 0;

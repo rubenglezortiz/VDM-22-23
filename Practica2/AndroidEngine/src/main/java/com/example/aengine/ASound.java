@@ -23,7 +23,8 @@ public class ASound  {
     }
 
     public void play() {
-        if(!this.mPlayer.isPlaying()) this.mPlayer.start();
+        if(!this.mPlayer.isPlaying())
+            this.mPlayer.start();
     }
 
 
@@ -36,4 +37,8 @@ public class ASound  {
     public void setVolume(float volume) { this.mPlayer.setVolume(volume, volume); }
 
     public void setLooping(boolean looping){ this.mPlayer.setLooping(looping);}
+
+    public boolean isPlaying() {
+        return this.mPlayer.isPlaying();
+    }
 }

@@ -102,7 +102,6 @@ public class AExternal implements LocationListener {
     }
 
     //NOTIFICATIONS
-
     public void createNotification(){
         //_______________NOTIFICATION_______________
         //_______________CANAL_______________
@@ -129,6 +128,7 @@ public class AExternal implements LocationListener {
 
         this.notManager = NotificationManagerCompat.from(this.activity);
     }
+
     public void pushNotification(){
         this.notManager.notify(0, this.builder.build());
     }
@@ -136,8 +136,9 @@ public class AExternal implements LocationListener {
     //LOCATION
     private void setUpLocationManager() {
         if (ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            LocationPermission();
+            locationPermission();
         this.locationManager = (LocationManager) this.activity.getSystemService(Context.LOCATION_SERVICE);
+
         if (ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
@@ -145,7 +146,7 @@ public class AExternal implements LocationListener {
         this.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
     }
 
-    private void LocationPermission() {
+    private void locationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             ActivityCompat.requestPermissions(this.activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 0);
     }
@@ -165,8 +166,12 @@ public class AExternal implements LocationListener {
     public double getLatitude(){ return this.latitude; }
 
     public double getLongitude(){ return this.longitude; }
+
     public void startActivity(Intent intent)
     {
         this.activity.startActivity(intent);
+    }
+    public void setGPS(){
+        setUpLocationManager();
     }
 }

@@ -52,6 +52,7 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
 
     @Override
     public void update(AndroidEngine engine){
+        super.update(engine);
         if (this.back) engine.getCurrentState().removeScene(1);
     }
 
