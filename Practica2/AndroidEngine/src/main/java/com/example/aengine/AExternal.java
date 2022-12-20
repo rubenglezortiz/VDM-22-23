@@ -38,16 +38,15 @@ public class AExternal implements LocationListener {
     public AExternal(View view_, AdView mAdView_) {
         this.myView = view_;
         this.mAdView = mAdView_;
-
     }
 
-    //ADDS
     public void setUpExternal(Activity activity_){
         this.activity = activity_;
         createNotification();
         setUpLocationManager();
     }
 
+    //ADDS
     public void loadBanner() {
         this.mAdView.loadAd(new AdRequest.Builder().build());
     }
@@ -160,8 +159,5 @@ public class AExternal implements LocationListener {
     public void startActivity(Intent intent)
     {
         this.activity.startActivity(intent);
-    }
-    public void setGPS(){
-        setUpLocationManager();
     }
 }

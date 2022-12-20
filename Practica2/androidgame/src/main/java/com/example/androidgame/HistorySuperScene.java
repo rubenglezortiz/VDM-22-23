@@ -12,7 +12,7 @@ import com.example.aengine.AScene;
 import com.example.aengine.AndroidEngine;
 
 public class HistorySuperScene extends AScene {
-    private final String argentinaImage, coinsImage;
+    private final String coinsImage, argentinaImage;
     protected String font;
     protected GameData data;
     protected AColor[][] palettes;
@@ -33,6 +33,7 @@ public class HistorySuperScene extends AScene {
         this.palettes[3][0] = new AColor(117, 170,219);
         this.palettes[3][1] = new AColor(252,191,73);
         engine.getGraphics().newImage(this.coinsImage);
+        engine.getGraphics().newImage(this.argentinaImage);
         this.northLatitude = -9.6f; this.southLatitude = -53;
         this.westLongitude = -71; this.eastLongitude = -56;
         float x,y,w,h;
@@ -48,16 +49,6 @@ public class HistorySuperScene extends AScene {
     protected void setUpScene(AGraphics graphics, AAudio audio) {
         graphics.newImage(this.coinsImage);
         graphics.newImage(this.argentinaImage);
-    }
-
-    private void checkCoords(AExternal external){
-        double actualLatitude = external.getLatitude();
-        double actualLongitude = external.getLongitude();
-        if(actualLatitude == 0.0f && actualLongitude == 0.0f) return;
-        if(actualLatitude > this.southLatitude && actualLatitude < this.northLatitude &&
-            actualLongitude > this.westLongitude && actualLongitude < this.eastLongitude)
-            this.data.actPalette = 3;
-        else this.data.actPalette = this.data.selectedPalette;
     }
 
     @Override
@@ -77,6 +68,16 @@ public class HistorySuperScene extends AScene {
     public void handleInputs(AInput input, AAudio audio, AExternal external) {
     }
 
+    private void checkCoords(AExternal external){
+        double actualLatitude = external.getLatitude();
+        double actualLongitude = external.getLongitude();
+        if(actualLatitude == 0.0f && actualLongitude == 0.0f) return;
+        if(actualLatitude > this.southLatitude && actualLatitude < this.northLatitude &&
+                actualLongitude > this.westLongitude && actualLongitude < this.eastLongitude)
+            this.data.actPalette = 3;
+        else this.data.actPalette = this.data.selectedPalette;
+    }
+
     @Override
     public void saveScene(Bundle outState) {
         outState.putSerializable("data", this.data);
@@ -91,7 +92,6 @@ public class HistorySuperScene extends AScene {
     @Override
     public void restoreScene(Bundle savedInstanceState, AndroidEngine engine_) {
         this.data = (GameData) savedInstanceState.getSerializable("data");
-        this.coinsImage = savedInstanceState.getString("coins_image");
         setUpScene(engine_.getGraphics(), engine_.getAudio());
     }
 

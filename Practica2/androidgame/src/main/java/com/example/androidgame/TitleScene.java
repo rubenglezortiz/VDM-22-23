@@ -30,6 +30,7 @@ public class TitleScene extends HistorySuperScene implements Serializable {
         audio.newSound(this.backgroundMusic);
         audio.setVolume(this.backgroundMusic, 0.25f);
         audio.setLooping(this.backgroundMusic, true);
+        audio.setBackgroundMusic(this.backgroundMusic);
         audio.playSound(this.backgroundMusic);
     }
 
