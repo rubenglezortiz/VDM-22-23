@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.content.Intent;
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
@@ -164,4 +165,8 @@ public class AExternal implements LocationListener {
     public double getLatitude(){ return this.latitude; }
 
     public double getLongitude(){ return this.longitude; }
+    public void startActivity(Intent intent)
+    {
+        this.activity.startActivity(intent);
+    }
 }
