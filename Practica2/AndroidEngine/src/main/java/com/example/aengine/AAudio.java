@@ -5,10 +5,11 @@ import android.content.res.AssetManager;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class AAudio {
-    private AssetManager assetManager;
-    private HashMap<String, ASound> sounds;
+    private final AssetManager assetManager;
+    private final HashMap<String, ASound> sounds;
     private String backgroundMusic;
     public AAudio(AssetManager aM){
         this.sounds = new HashMap<>();
@@ -24,7 +25,7 @@ public class AAudio {
     public void playSound(String key) {
         try {
             if (this.sounds.containsKey(key))
-                this.sounds.get(key).play();
+                Objects.requireNonNull(this.sounds.get(key)).play();
             else throw new IOException("!!!!!!!!!!!!!!Key audio does not exist!!!!!!!!!!!!!!");
         }
         catch (IOException e){
@@ -35,7 +36,7 @@ public class AAudio {
     public void stopSound(String key) {
         try {
             if (this.sounds.containsKey(key))
-                this.sounds.get(key).stop();
+                Objects.requireNonNull(this.sounds.get(key)).stop();
             else throw new IOException("!!!!!!!!!!!!!!Key audio does not exist!!!!!!!!!!!!!!");
         }
         catch (IOException e){
@@ -46,7 +47,7 @@ public class AAudio {
     public void pauseSound(String key) {
         try {
             if (this.sounds.containsKey(key))
-                this.sounds.get(key).pause();
+                Objects.requireNonNull(this.sounds.get(key)).pause();
             else throw new IOException("!!!!!!!!!!!!!!Key audio does not exist!!!!!!!!!!!!!!");
         }
         catch (IOException e){
@@ -57,7 +58,7 @@ public class AAudio {
     public void setLooping(String key, boolean looping){
         try {
             if (this.sounds.containsKey(key))
-                this.sounds.get(key).setLooping(looping);
+                Objects.requireNonNull(this.sounds.get(key)).setLooping(looping);
             else throw new IOException("!!!!!!!!!!!!!!Key audio does not exist!!!!!!!!!!!!!!");
         }
         catch (IOException e){
@@ -68,7 +69,7 @@ public class AAudio {
     public void setVolume(String key, float volume){
         try {
             if (this.sounds.containsKey(key))
-                this.sounds.get(key).setVolume(volume);
+                Objects.requireNonNull(this.sounds.get(key)).setVolume(volume);
             else throw new IOException("!!!!!!!!!!!!!!Key audio does not exist!!!!!!!!!!!!!!");
         }
         catch (IOException e){
@@ -81,10 +82,10 @@ public class AAudio {
     }
 
     public void pauseAllSounds(){
-       if(this.sounds.containsKey(this.backgroundMusic)) this.sounds.get(this.backgroundMusic).pause();
+       if(this.sounds.containsKey(this.backgroundMusic)) Objects.requireNonNull(this.sounds.get(this.backgroundMusic)).pause();
    }
 
     public void resumeAllSounds(){
-        if(this.sounds.containsKey(this.backgroundMusic)) this.sounds.get(this.backgroundMusic).play();
+        if(this.sounds.containsKey(this.backgroundMusic)) Objects.requireNonNull(this.sounds.get(this.backgroundMusic)).play();
     }
 }

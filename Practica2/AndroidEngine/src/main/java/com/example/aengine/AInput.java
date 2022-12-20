@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class AInput implements View.OnTouchListener, View.OnLongClickListener{
     private float xTouch, yTouch;
-    private AGraphics graphics;
+    private final AGraphics graphics;
 
     public AInput(AGraphics graphics_) {this.graphics = graphics_;}
 
@@ -39,7 +39,7 @@ public class AInput implements View.OnTouchListener, View.OnLongClickListener{
         }
     }
 
-    private ArrayList<Event> events = new ArrayList<Event>();
+    private final ArrayList<Event> events = new ArrayList<>();
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {

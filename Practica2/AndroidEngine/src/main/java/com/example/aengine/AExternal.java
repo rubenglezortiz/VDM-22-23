@@ -22,17 +22,13 @@ import androidx.core.app.NotificationManagerCompat;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.OnUserEarnedRewardListener;
-import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 public class AExternal implements LocationListener {
-    private String TAG;
     private Activity activity;
-    private View myView;
-    private AdView mAdView;
-    private AdRequest adRequestBanner;
+    private final View myView;
+    private final AdView mAdView;
     private RewardedAd mRewardedAd;
     private NotificationCompat.Builder builder;
     private NotificationManagerCompat notManager;
@@ -53,45 +49,39 @@ public class AExternal implements LocationListener {
     }
 
     public void loadBanner() {
-        this.adRequestBanner = new AdRequest.Builder().build();
-        this.mAdView.loadAd(adRequestBanner);
+        this.mAdView.loadAd(new AdRequest.Builder().build());
     }
 
     public void loadRewardedAd(){
-        this.activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mRewardedAd != null) {
-                    mRewardedAd.show(activity, new OnUserEarnedRewardListener() {
-                        @Override
-                        public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
-                            // Handle the reward.
-                            Log.d(TAG, "The user earned the reward.");
-                            //int rewardAmount = rewardItem.getAmount();
-                            //String rewardType = rewardItem.getType();
-                        }
-                    });
-                    AdRequest adRequest = new AdRequest.Builder().build();
-                    RewardedAd.load(activity, "ca-app-pub-3940256099942544/5224354917",
-                            adRequest, new RewardedAdLoadCallback() {
-                                @Override
-                                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                                    // Handle the error.
-                                    Log.d(TAG, loadAdError.toString());
-                                    mRewardedAd = null;
-                                }
+        String TAG = null;
+        this.activity.runOnUiThread(() -> {
+            if (mRewardedAd != null) {
+                mRewardedAd.show(activity, rewardItem -> {
+                    // Handle the reward.
+                    Log.d(TAG, "The user earned the reward.");
+                    //int rewardAmount = rewardItem.getAmount();
+                    //String rewardType = rewardItem.getType();
+                });
+                AdRequest adRequest = new AdRequest.Builder().build();
+                RewardedAd.load(activity, "ca-app-pub-3940256099942544/5224354917",
+                        adRequest, new RewardedAdLoadCallback() {
+                            @Override
+                            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                                // Handle the error.
+                                Log.d(TAG, loadAdError.toString());
+                                mRewardedAd = null;
+                            }
 
-                                @Override
-                                public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
-                                    mRewardedAd = rewardedAd;
-                                    Log.d(TAG, "Ad was loaded.");
-                                }
-                            });
-                }
-                else {
-                    System.out.println("The rewarded ad wasn't ready yet.");
-                    Log.d(TAG, "The rewarded ad wasn't ready yet.");
-                }
+                            @Override
+                            public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                                mRewardedAd = rewardedAd;
+                                Log.d(TAG, "Ad was loaded.");
+                            }
+                        });
+            }
+            else {
+                System.out.println("The rewarded ad wasn't ready yet.");
+                Log.d(TAG, "The rewarded ad wasn't ready yet.");
             }
         });
     }

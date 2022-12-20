@@ -27,7 +27,8 @@ public class AGraphics  {
     private boolean isHorizontallyScaled;
 
     // Items Variables
-    private  AColor background, defaultColor;
+    private  AColor background;
+    private final AColor defaultColor;
     private final String defaultFont;
     private final HashMap<String, AFont> fonts;
     private final HashMap<String, AImage> images;

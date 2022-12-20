@@ -4,14 +4,13 @@ import android.view.SurfaceView;
 import com.google.android.gms.ads.AdView;
 
 public class AndroidEngine implements Runnable {
-    private AGraphics graphics;
-    private AAudio audio;
-    private AInput input;
-    private AState currentState;
-    private AExternal external;
+    private final AGraphics graphics;
+    private final AAudio audio;
+    private final AInput input;
+    private final AState currentState;
+    private final AExternal external;
 
-    private SurfaceView myView;
-    private AdView adView;
+    private final SurfaceView myView;
     private Thread currentThread;
 
     private boolean running;
@@ -19,11 +18,10 @@ public class AndroidEngine implements Runnable {
     @SuppressLint("ClickableViewAccessibility")
     public AndroidEngine(SurfaceView myView_, AdView adView_){
         this.myView = myView_;
-        this.adView = adView_;
         this.graphics = new AGraphics(this.myView);
         this.audio = new AAudio(this.myView.getContext().getAssets());
         this.input = new AInput(this.graphics);
-        this.external = new AExternal(this.myView, this.adView);
+        this.external = new AExternal(this.myView, adView_);
 
         this.myView.setOnLongClickListener(this.input);
         this.myView.setOnTouchListener(this.input);

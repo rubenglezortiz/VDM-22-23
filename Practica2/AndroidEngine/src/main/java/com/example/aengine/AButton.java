@@ -3,9 +3,10 @@ import java.io.Serializable;
 
 
 public class AButton implements Serializable {
-    private String name;
-    private float posX, posY, width, height;
-    private AColor backgroundColor;
+    private final String name;
+    private float posX, posY;
+    private final float width, height;
+    private final AColor backgroundColor;
 
     public AButton(String buttonName, float x, float y, float w, float h, AColor bgColor) {
         this.name = buttonName;

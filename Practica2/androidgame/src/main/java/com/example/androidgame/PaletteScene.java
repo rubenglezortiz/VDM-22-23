@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class PaletteScene extends HistorySuperScene implements Serializable {
     private boolean back;
-    private int costp2, costp3;
+    private final int costp2, costp3;
     private AButton p1, p2, p3;
 
     public PaletteScene(AndroidEngine engine_, GameData data){
@@ -25,26 +25,24 @@ public class PaletteScene extends HistorySuperScene implements Serializable {
     }
 
     private void createButtons(AGraphics graphics){
-        int x, x3x, x5x, x10x, y, w, h, tx, ty, tSize;
+        int x3x, x5x, x10x, y, w, h;
         x3x = graphics.getLogicWidth() / 4;
         x5x = graphics.getLogicWidth() * 2 / 4;
         x10x = graphics.getLogicWidth() * 3 / 4;
         y = graphics.getLogicHeight() / 2;
         w = graphics.getLogicWidth() / 5;
         h = graphics.getLogicHeight() / 10;
-        ty = 35;
-        tSize = 15;
 
         this.p1 = graphics.newButton("Paleta1.png",
-                x3x - (w / 2), y - (h / 2), w, h,
+                x3x - (w / 2.f), y - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
 
         this.p2 = graphics.newButton("Paleta2.png",
-                x5x - (w / 2), y - (h / 2), w, h,
+                x5x - (w / 2.f), y - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
 
         this.p3 = graphics.newButton("Paleta3.png",
-                x10x - (w / 2), y - (h / 2), w, h,
+                x10x - (w / 2.f), y - (h / 2.f), w, h,
                 graphics.newColor(0,0,0,0));
     }
 

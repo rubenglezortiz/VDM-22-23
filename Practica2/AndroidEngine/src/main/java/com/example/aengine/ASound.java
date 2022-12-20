@@ -7,7 +7,7 @@ import android.media.MediaPlayer;
 import java.io.IOException;
 
 public class ASound  {
-    private MediaPlayer mPlayer;
+    private final MediaPlayer mPlayer;
 
     public ASound(String file, AssetManager assetManager){
         this.mPlayer = new MediaPlayer();

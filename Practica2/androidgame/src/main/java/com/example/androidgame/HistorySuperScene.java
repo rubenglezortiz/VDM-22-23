@@ -12,12 +12,13 @@ import com.example.aengine.AScene;
 import com.example.aengine.AndroidEngine;
 
 public class HistorySuperScene extends AScene {
-    private String argentinaImage, coinsImage, backgroundMusic, argentinaBackgroundMusic;
+    private final String argentinaImage, backgroundMusic, argentinaBackgroundMusic;
+    private String  coinsImage;
     protected String font;
     protected GameData data;
     protected AColor[][] palettes;
     protected AButton returnButton;
-    private float northLatitude, southLatitude, eastLongitude, westLongitude;
+    private final float northLatitude, southLatitude, eastLongitude, westLongitude;
 
     HistorySuperScene(AndroidEngine engine, GameData data_){
         this.font = "font.TTF";

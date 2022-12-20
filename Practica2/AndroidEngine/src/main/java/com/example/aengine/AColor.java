@@ -3,7 +3,7 @@ package com.example.aengine;
 import java.io.Serializable;
 
 public class AColor implements Serializable {
-    private int r,g,b,a;
+    private final int r,g,b,a;
 
     public AColor(int r_,int g_,int b_){
         this.r = r_; this.g = g_; this.b = b_; this.a = 255;
