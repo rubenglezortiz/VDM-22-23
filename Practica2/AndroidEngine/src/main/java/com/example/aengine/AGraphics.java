@@ -67,7 +67,7 @@ public class AGraphics  {
     public void setResolution(float newWidth, float newHeight){
         float scaleFactorX = newWidth / (float) this.logicWidth;
         float scaleFactorY = newHeight / (float) this.logicHeight;
-        this.scaleFactor = Math.min(scaleFactorX, scaleFactorY);
+            this.scaleFactor = Math.min(scaleFactorX, scaleFactorY);
 
         this.isHorizontallyScaled = screenWidth * 3 > screenHeight * 2;
 

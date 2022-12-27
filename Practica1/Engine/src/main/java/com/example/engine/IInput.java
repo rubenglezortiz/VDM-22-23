@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public interface IInput {
-    public ArrayList<Event> getEventList();
+    public ArrayList<MyInputEvent> getEventList();
     public void clearEventList();
 
     public static enum InputType{
@@ -18,36 +18,25 @@ public interface IInput {
         KEY_LONG,
     }
 
-    public static class Event {
+    public static class MyInputEvent {
         public InputType type;
-        public int index;
+        public int index, x, y, mouseButton;
+        public char key;
 
-        public Event(int index_, InputType type_){
-            this.index = index_;
+        public MyInputEvent(InputType type_, int index_, int x_, int y_, int mouseButton_){
             this.type = type_;
-        }
-    }
-
-    public static class MouseInputEvent extends Event{
-        public int x;
-        public int y;
-        public int mouseButton;
-
-        public MouseInputEvent(int x_, int y_, int mouseButton_, int index_, InputType type_) {
-            super(index_, type_);
+            this.index = index_;
             this.x = x_;
             this.y = y_;
             this.mouseButton = mouseButton_;
+            this.key = ' ';
+        }
+
+        public MyInputEvent(InputType type_, int index_, char key){
+            this.type = type_;
+            this.index = index_;
+            this.x = this.y =  this. mouseButton = 0;
+            this.key = key;
         }
     }
-
-    public static class KeyInputEvent extends Event{
-        public char key;
-
-        public KeyInputEvent(char key_, int index_, InputType type_){
-            super(index_, type_);
-            this.key = key_;
-        }
-    }
-
 }

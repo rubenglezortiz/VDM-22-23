@@ -8,11 +8,9 @@ public class Cell extends GameObject {
     private boolean solution;
     private int row, col;
     private State state;
-    private IGraphics graphics;
 
     public Cell(int row_, int col_, int w, int h, boolean sol, IGraphics graphics_){
         super(w, h);
-        this.graphics = graphics_;
         this.state = State.UNMARKED;
         this.row = row_;
         this.col = col_;
@@ -80,10 +78,10 @@ public class Cell extends GameObject {
     }
 
     public boolean checkCollisions(int x, int y) {
-        return (x >= this.graphics.realToLogicX(this.x) &&
-                x <= this.graphics.realToLogicX(this.x + this.w) &&
-                y >= this.graphics.realToLogicY(this.y)  &&
-                y <= this.graphics.realToLogicY(this.y + this.h));
+        return (x >= this.x &&
+                x <= this.x + this.w &&
+                y >= this.y  &&
+                y <= this.y + this.h);
     }
 
     public boolean isIncorrect(){

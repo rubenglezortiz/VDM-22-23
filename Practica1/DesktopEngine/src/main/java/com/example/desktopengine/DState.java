@@ -7,27 +7,29 @@ import java.util.Stack;
 
 public class DState implements IState {
     private Stack<IScene> scenes;
+    private DesktopEngine myEngine;
 
-    public DState(){
+    public DState(DesktopEngine engine_){
+        this.myEngine = engine_;
         this.scenes = new Stack<IScene>();
     }
 
     @Override
     public void update() {
         if(this.scenes.size() > 0)
-            this.scenes.peek().update();
+            this.scenes.peek().update(this.myEngine);
     }
 
     @Override
     public void render() {
         if(this.scenes.size() > 0)
-            this.scenes.peek().render();
+            this.scenes.peek().render(this.myEngine.getGraphics());
     }
 
     @Override
     public void handleInputs() {
         if(this.scenes.size() > 0)
-            this.scenes.peek().handleInputs();
+            this.scenes.peek().handleInputs(this.myEngine.getInput(), this.myEngine.getAudio());
     }
 
     @Override

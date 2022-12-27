@@ -12,8 +12,6 @@ public class Board {
     private ArrayList<Integer>[] colsList;
     private ArrayList<Integer>[] rowsList;
     private Cell pressedCell;
-    private IGraphics graphics;
-    private IAudio audio;
 
     private boolean checkPressed = false;
     private  boolean showLevelInfo = false;
@@ -22,18 +20,16 @@ public class Board {
     private boolean win = false;
     private int margin = 50;
     private int textMessagesSize;
-    private ISound cellSound;
+    private String cellSound;
 
     public Board(int nC, int nR, IGraphics graphics_, IAudio audio_){
         this.numCols = nC;
         this.numRows = nR;
         this.board = new Cell[numRows][numCols];
-        this.graphics = graphics_;
-        this.audio = audio_;
-        this.textMessagesSize = this.graphics.getLogicWidth()/20;
+        this.textMessagesSize = graphics_.getLogicWidth()/20;
+        this.cellSound = "cell.wav";
         int numCells = nC * nR;
-        int cellSize = Math.min(this.graphics.getLogicWidth() - this.margin*3, this.graphics.getLogicHeight() - margin*3);
-
+        int cellSize = Math.min(graphics_.getLogicWidth() - this.margin*3, graphics_.getLogicHeight() - margin*3);
         int cont = 0;
         for(int i=0; i < this.numRows; i++){
             for (int j = 0; j < this.numCols; j++){
@@ -45,7 +41,7 @@ public class Board {
                     if (isSol) cont++;
                 }
                 this.board[i][j] = new Cell(i,j, cellSize/this.numCols,
-                        cellSize/this.numRows, isSol, this.graphics);
+                        cellSize/this.numRows, isSol, graphics_);
             }
         }
 
@@ -125,7 +121,7 @@ public class Board {
                 }
             }
         }
-        createSounds();
+        createSounds(audio_);
     }
 
     public void render(IGraphics graphics) {
@@ -202,16 +198,16 @@ public class Board {
         }
     }
 
-    public void handleInputs(IInput.Event event) {
+    public void handleInputs(IInput.MyInputEvent event, IAudio audio) {
         switch (event.type) {
             case TOUCH_PRESSED:
-                if(((IInput.MouseInputEvent)event).mouseButton == 1){
-                    checkCellsCollision(((IInput.MouseInputEvent)event).x, ((IInput.MouseInputEvent)event).y, true);
+                if((event.mouseButton == 1)){
+                    checkCellsCollision(audio, event.x, event.y, true);
                 }
                 break;
             case TOUCH_RELEASED:
-                if(((IInput.MouseInputEvent)event).mouseButton == 1){
-                    checkCellsCollision(((IInput.MouseInputEvent)event).x, ((IInput.MouseInputEvent)event).y, false);
+                if(event.mouseButton == 1){
+                    checkCellsCollision(audio, event.x, event.y, false);
                 }
                 break;
             default:
@@ -219,7 +215,7 @@ public class Board {
         }
     }
 
-    private void checkCellsCollision(int mouseX, int mouseY, boolean pressed){
+    private void checkCellsCollision(IAudio audio, int mouseX, int mouseY, boolean pressed){
         int i = 0, j = 0;
         boolean checked = false;
 
@@ -237,7 +233,7 @@ public class Board {
                         checked = true;
                         if(this.pressedCell== this.board[i][j]){
                             this.board[i][j].changeState();
-                            this.audio.playSound(this.cellSound);
+                            audio.playSound(this.cellSound);
                         }
                     }
                 }
@@ -288,7 +284,7 @@ public class Board {
         this.checkPressed = false;
     }
 
-    private void createSounds(){
-        this.cellSound = this.audio.newSound("cell.wav");
+    private void createSounds(IAudio audio){
+        audio.newSound(this.cellSound);
     }
 }

@@ -2,6 +2,7 @@ package com.example.desktopengine;
 
 import com.example.engine.IInput;
 
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -10,7 +11,13 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 public class DInput implements IInput, KeyListener, MouseListener, MouseMotionListener {
-    private ArrayList<Event> events = new ArrayList<Event>();
+    private ArrayList<MyInputEvent> events;
+    private DGraphicsEngine graphics;
+
+    public DInput(DGraphicsEngine graphics_){
+        this.graphics = graphics_;
+        this.events = new ArrayList<>();
+    }
 
     @Override
     public void keyTyped(KeyEvent keyEvent) {
@@ -58,18 +65,18 @@ public class DInput implements IInput, KeyListener, MouseListener, MouseMotionLi
     public void mouseDragged(MouseEvent mouseEvent) {
     }
 
-    public synchronized void addEvent(KeyEvent event, InputType tipo){
-        Event newEvent = new KeyInputEvent(KeyEvent.getKeyText((event.getKeyCode())).charAt(0), 0, tipo);
+    public synchronized void addEvent(KeyEvent event, InputType type){
+        MyInputEvent newEvent = new MyInputEvent(type, 0, KeyEvent.getKeyText((event.getKeyCode())).charAt(0));
         events.add(newEvent);
     }
 
-    public synchronized void addEvent(MouseEvent event, InputType tipo){
-        Event newEvent = new MouseInputEvent(event.getX(), event.getY(), event.getButton(), 0, tipo);
-        events.add(newEvent);
+    public synchronized void addEvent(MouseEvent event, InputType type){
+        MyInputEvent newEvent = new MyInputEvent(type, 0, graphics.logicToRealX(event.getX()),  graphics.logicToRealY(event.getY()),1);
+        this.events.add(newEvent);
     }
 
     @Override
-    public synchronized ArrayList<Event> getEventList(){
+    public synchronized ArrayList<MyInputEvent> getEventList(){
         return this.events;
     }
 

@@ -29,9 +29,9 @@ public class AndroidEngine implements IEngine, Runnable {
         this.myView = myView_;
         this.graphics = new AGraphics(this.myView); //DESDE DÓNDE SE PASA EL SURFACE VIEW???
         this.audio = new AAudio(this.myView.getContext().getAssets());
-        this.input = new AInput();
+        this.input = new AInput(this.graphics);
         this.myView.setOnTouchListener(this.input);
-        this.currentState = new AState();
+        this.currentState = new AState(this.myView, this);
         this.currentThread = new Thread(this);
         this.currentThread.start();
     }

@@ -1,8 +1,10 @@
 package com.example.logica;
 
+import com.example.engine.IAudio;
 import com.example.engine.IButton;
 import com.example.engine.IEngine;
 import com.example.engine.IFont;
+import com.example.engine.IGraphics;
 import com.example.engine.IInput;
 import com.example.engine.IScene;
 import com.example.engine.ISound;
@@ -11,47 +13,47 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class TitleScene implements IScene {
-    private IEngine engine;
     private IButton startButton;
-    private ISound backgroundMusic;
+    private String backgroundMusic;
     private IFont font;
     private boolean changeScene;
 
     public TitleScene(IEngine engine_){
         this.changeScene = false;
-        this.engine = engine_;
-        this.font = this.engine.getGraphics().newFont("font.TTF", false);
-        createMusic();
-        createButton();
+        this.font = engine_.getGraphics().newFont("font.TTF", false);
+        this.backgroundMusic = "music.wav";
+        createMusic(engine_.getAudio());
+        createButton(engine_.getGraphics());
     }
 
     @Override
-    public void update() {
+    public void update(IEngine engine) {
         if (this.changeScene) {
             this.changeScene = false;
-            this.engine.getCurrentState().addScene(new BoardSelectionScene(this.engine));
+            engine.getCurrentState().addScene(new BoardSelectionScene(engine));
         }
     }
 
     @Override
-    public void render() {
-        this.engine.getGraphics().drawText(this.font, "NONOGRAMS", this.engine.getGraphics().getLogicWidth()/2.0f - ((10*30)/2.0f),
-                100, 27, this.engine.getGraphics().newColor(0,0,0,255));
+    public void render(IGraphics graphics) {
+        graphics.drawText(this.font, "NONOGRAMS", graphics.getLogicWidth()/2.0f - ((10*30)/2.0f),
+                100, 27, graphics.newColor(0,0,0,255));
 
-        this.engine.getGraphics().drawButton(this.startButton);
+        graphics.drawButton(this.startButton);
     }
 
     @Override
-    public synchronized void handleInputs() {
-        ArrayList<IInput.Event> eventList = (ArrayList<IInput.Event>) this.engine.getInput().getEventList().clone();
-        Iterator<IInput.Event> it = eventList.iterator();
+    public synchronized void handleInputs(IInput input, IAudio audio) {
+        ArrayList<IInput.MyInputEvent> eventList = (ArrayList<IInput.MyInputEvent>) input.getEventList().clone();
+        Iterator<IInput.MyInputEvent> it = eventList.iterator();
         while (it.hasNext()) {
-            IInput.Event event = it.next();
+            IInput.MyInputEvent event = it.next();
+            int x = event.x;
+            int y = event.y;
             switch (event.type) {
                 case TOUCH_RELEASED:
-                    if(((IInput.MouseInputEvent)event).mouseButton == 1){
-                        if (this.startButton.checkCollision(this.engine.getGraphics().logicToRealX(((IInput.MouseInputEvent)event).x),
-                                this.engine.getGraphics().logicToRealY(((IInput.MouseInputEvent)event).y))){
+                    if(event.mouseButton == 1){
+                        if (this.startButton.checkCollision(x, y)){
                             this.changeScene = true;
                         }
                     }
@@ -61,30 +63,30 @@ public class TitleScene implements IScene {
                     break;
             }
         }
-        this.engine.getInput().clearEventList();
+        input.clearEventList();
     }
 
-    private void createMusic(){
+    private void createMusic(IAudio audio){
         //Background music
-        this.backgroundMusic = this.engine.getAudio().newSound("music.wav");
-        this.engine.getAudio().setLooping(this.backgroundMusic, true);
-        this.engine.getAudio().setVolume(this.backgroundMusic, 0.25f);
-        this.engine.getAudio().playSound(this.backgroundMusic);
-        this.engine.getAudio().setBackgroundMusic(this.backgroundMusic);
+        audio.newSound(this.backgroundMusic);
+        audio.setLooping(this.backgroundMusic, true);
+        audio.setVolume(this.backgroundMusic, 0.25f);
+        audio.playSound(this.backgroundMusic);
+        audio.setBackgroundMusic(this.backgroundMusic);
     }
 
-    private void createButton(){
+    private void createButton(IGraphics graphics){
         int x,y,w,h;
-        x = this.engine.getGraphics().getLogicWidth() / 2;
-        y = this.engine.getGraphics().getLogicHeight() * 2 / 3;
-        w = this.engine.getGraphics().getLogicWidth() / 3;
-        h = this.engine.getGraphics().getLogicHeight() / 10;
+        x = graphics.getLogicWidth() / 2;
+        y = graphics.getLogicHeight() * 2 / 3;
+        w = graphics.getLogicWidth() / 3;
+        h = graphics.getLogicHeight() / 10;
 
-        this.startButton = this.engine.getGraphics().newButton("Start",
+        this.startButton = graphics.newButton("Start",
                 x - (w / 2), y - (h / 2), w, h,
                 10,35, 18,
                 this.font,
-                this.engine.getGraphics().newColor(0, 0, 0, 255),
-                this.engine.getGraphics().newColor(255, 255, 255, 255));
+                graphics.newColor(0, 0, 0, 255),
+                graphics.newColor(255, 255, 255, 255));
     }
 }

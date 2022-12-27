@@ -8,7 +8,13 @@ import com.example.engine.IInput;
 import java.util.ArrayList;
 
 public class AInput implements IInput, View.OnTouchListener {
-    private ArrayList<Event> events = new ArrayList<Event>();
+    private ArrayList<MyInputEvent> events;
+    private AGraphics graphics;
+
+    public AInput(AGraphics graphics_){
+        this.graphics = graphics_;
+        this.events = new ArrayList<>();
+    }
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -24,13 +30,13 @@ public class AInput implements IInput, View.OnTouchListener {
     }
 
     public synchronized void addEvent(MotionEvent event, InputType type){
-        Event newEvent = new MouseInputEvent((int)event.getX(), (int)event.getY(), 1, 0, type);
+        MyInputEvent newEvent = new MyInputEvent(type, 0, graphics.logicToRealX((int)event.getX()),  graphics.logicToRealY((int)event.getY()),1);
         this.events.add(newEvent);
     }
 
 
     @Override
-    public ArrayList<Event> getEventList() {return this.events;}
+    public ArrayList<MyInputEvent> getEventList() {return this.events;}
 
     @Override
     public void clearEventList() {this.events.clear();}
