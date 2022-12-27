@@ -13,7 +13,7 @@ public class main {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setVisible(true);
 
-        DesktopEngine myEngine = new DesktopEngine(window);
+        DesktopEngine myEngine = new DesktopEngine(window,400,600);
         TitleScene titleScene = new TitleScene(myEngine);
         myEngine.getCurrentState().addScene(titleScene);
     }

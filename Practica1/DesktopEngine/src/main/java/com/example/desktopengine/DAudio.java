@@ -94,5 +94,9 @@ public class DAudio implements IAudio {
 
     public void loopSound(DSound sound, int n){ sound.loop(n);}
 
+    public void setAudiosPath(String newPath){
+        this.path = newPath;
+    }
+
     //public boolean soundIsRunning(DSound sound){ return sound.isRunning(); }
 }

@@ -19,10 +19,10 @@ public class DGraphics implements IGraphics {
     private BufferStrategy buffer;
     private Graphics2D canvas;
     // Class variables
-    private int logicWidth, logicHeight;
+    private float logicWidth, logicHeight;
     private float scaleFactorX, scaleFactorY;
     private boolean scaleInX;
-    private int offsetX, offsetY;
+    private float offsetX, offsetY;
     private Font defaultFont;
     // Thread
     private Thread renderThread;
@@ -35,6 +35,35 @@ public class DGraphics implements IGraphics {
         this.window = window_;
         this.logicWidth = 400;
         this.logicHeight = 600;
+        this.window.setSize((int)this.logicWidth, (int)this.logicHeight);
+
+        this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        int intentos = 1000;
+        while(intentos > 0) {
+            try {
+                this.window.createBufferStrategy(2);
+                break;
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            intentos--;
+        }
+        if (intentos == 0) {
+            System.err.println("No pude crear la BufferStrategy");
+            return;
+        }
+
+        this.buffer = this.window.getBufferStrategy();
+        this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
+        this.window.setIgnoreRepaint(true);
+        this.window.setVisible(true);
+        this.defaultFont = this.canvas.getFont();
+    }
+    public DGraphicsEngine(JFrame window_,int logicWidth_,int logicHeight_){
+        this.window = window_;
+        this.logicWidth = logicWidth_;
+        this.logicHeight = logicHeight_;
         this.window.setSize(this.logicWidth, this.logicHeight);
         this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.fonts = new HashMap<>();
@@ -217,31 +246,31 @@ public class DGraphics implements IGraphics {
     public void translate (int x, int y){ this.canvas.translate(x,y);}
 
     @Override
-    public int realToLogicX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ; }
+    public float realToLogicX(float x) { return (x - this.offsetX) / getScaleFactor(); }
 
     @Override
-    public int realToLogicY(int y) { return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
+    public float realToLogicY(float y) { return (y - this.offsetY) / getScaleFactor(); }
 
     @Override
-    public int realToLogicScale(int s) {  return (int) ((float)s * getScaleFactor()); }
+    public float realToLogicScale(float s) { return s / getScaleFactor(); }
 
     @Override
-    public int logicToRealX(int x) { return (int) ((float)(x - this.offsetX) / getScaleFactor());}
+    public float logicToRealX(float x) { return (x * getScaleFactor()) + this.offsetX ; }
 
     @Override
-    public int logicToRealY(int y) { return (int) ((float)(y - this.offsetY) / getScaleFactor());}
+    public float logicToRealY(float y) { return (y * getScaleFactor()) + this.offsetY ; }
 
     @Override
-    public int logicToRealScale(int s) { return (int) ((float) s/ getScaleFactor()); }
+    public float logicToRealScale(float s) { return s * getScaleFactor(); }
 
 
     @Override
     public void setColor(IColor color){
-        canvas.setColor(((DColor)color).getColor());
+        this.canvas.setColor(((DColor)color).getColor());
     }
 
     @Override
     public void setFont(IFont font) {
-        canvas.setFont(((DFont)font).getFont());
+        this.canvas.setFont(((DFont)font).getFont());
     }
 }

@@ -28,10 +28,10 @@ public class AGraphics implements IGraphics {
     private Paint paint;
     private AssetManager assetManager;
     // Class Variables
-    private int screenWidth, screenHeight;
-    private int logicWidth, logicHeight;
+    private float screenWidth, screenHeight;
+    private float logicWidth, logicHeight;
     private float scaleFactorX, scaleFactorY, scaleFactor;
-    private int offsetX, offsetY;
+    private float offsetX, offsetY;
     private boolean scaleInX;
     private Typeface defaultFont;
     // Thread
@@ -55,6 +55,21 @@ public class AGraphics implements IGraphics {
         this.defaultFont = this.paint.getTypeface();
         this.fonts = new HashMap<>();
         this.images = new HashMap<>();
+    }
+    public AGraphics(SurfaceView myView_,int logicWidth_, int logicHeight_){
+        this.myView = myView_;
+        this.holder = this.myView.getHolder();
+        this.paint = new Paint();
+        this.paint.setColor(0xFFFFFFFF);
+        this.assetManager = this.myView.getContext().getAssets();
+        this.logicWidth = logicWidth_;
+        this.logicHeight = logicHeight_;
+
+        DisplayMetrics metrics = this.myView.getContext().getResources().getDisplayMetrics();
+        this.screenHeight = metrics.heightPixels;
+        this.screenWidth = metrics.widthPixels;
+        setResolution((float)this.screenWidth, (float)this.screenHeight);
+        this.defaultFont = this.paint.getTypeface();
     }
 
 
@@ -225,22 +240,22 @@ public class AGraphics implements IGraphics {
     }
 
     @Override
-    public int realToLogicX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ; }
+    public float realToLogicX(float x) { return (x - this.offsetX) / getScaleFactor(); }
 
     @Override
-    public int realToLogicY(int y) { return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
+    public float realToLogicY(float y) { return (y - this.offsetY) / getScaleFactor(); }
 
     @Override
-    public int realToLogicScale(int s) {  return (int) ((float)s * getScaleFactor()); }
+    public float realToLogicScale(float s) { return s / getScaleFactor(); }
 
     @Override
-    public int logicToRealX(int x) { return (int) ((float)(x - this.offsetX) / getScaleFactor());}
+    public float logicToRealX(float x) { return (x * getScaleFactor()) + this.offsetX;}
 
     @Override
-    public int logicToRealY(int y){ return (int) ((float)(y - this.offsetY) / getScaleFactor());}
+    public float logicToRealY(float y){ return (y * getScaleFactor()) + this.offsetY; }
 
     @Override
-    public int logicToRealScale(int s){ return (int) ((float) s/ getScaleFactor()); }
+    public float logicToRealScale(float s){ return s * getScaleFactor(); }
 
     @Override
     public void setColor(IColor color){

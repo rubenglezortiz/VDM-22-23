@@ -36,6 +36,10 @@ public class DFont implements IFont {
         return this.fuente.isBold();
     }
 
+    public void setFontsPath(String newPath){
+        this.path = newPath;
+    }
+
     /*@Override
     public void setSize(float size) { this.fuente.deriveFont(size);}*/
 }
