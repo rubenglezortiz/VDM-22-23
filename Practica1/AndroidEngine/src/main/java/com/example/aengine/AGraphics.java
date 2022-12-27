@@ -51,6 +51,21 @@ public class AGraphics implements IGraphics {
         setResolution((float)this.screenWidth, (float)this.screenHeight);
         this.defaultFont = this.paint.getTypeface();
     }
+    public AGraphics(SurfaceView myView_,int logicWidth_, int logicHeight_){
+        this.myView = myView_;
+        this.holder = this.myView.getHolder();
+        this.paint = new Paint();
+        this.paint.setColor(0xFFFFFFFF);
+        this.assetManager = this.myView.getContext().getAssets();
+        this.logicWidth = logicWidth_;
+        this.logicHeight = logicHeight_;
+
+        DisplayMetrics metrics = this.myView.getContext().getResources().getDisplayMetrics();
+        this.screenHeight = metrics.heightPixels;
+        this.screenWidth = metrics.widthPixels;
+        setResolution((float)this.screenWidth, (float)this.screenHeight);
+        this.defaultFont = this.paint.getTypeface();
+    }
 
     // Android functions
     @Override

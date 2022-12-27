@@ -30,7 +30,19 @@ public class DesktopEngine implements IEngine, Runnable {
         this.currentThread = new Thread(this);
         this.currentThread.start();
     }
+    public DesktopEngine(JFrame window_,int logicWidth, int logicHeight){
+        this.window = window_;
+        this.graphics = new DGraphicsEngine(window,logicWidth,logicHeight);
+        this.audio = new DAudio();
+        this.input = new DInput();
+        this.window.addKeyListener(this.input);
+        this.window.addMouseListener(this.input);
+        this.window.addMouseMotionListener(this.input);
+        this.currentState = new DState();
 
+        this.currentThread = new Thread(this);
+        this.currentThread.start();
+    }
 
     @Override
     public IGraphics getGraphics() { return this.graphics;}

@@ -58,7 +58,35 @@ public class DGraphicsEngine implements IGraphics {
         this.window.setVisible(true);
         this.defaultFont = this.canvas.getFont();
     }
+    public DGraphicsEngine(JFrame window_,int logicWidth_,int logicHeight_){
+        this.window = window_;
+        this.logicWidth = logicWidth_;
+        this.logicHeight = logicHeight_;
+        this.window.setSize(this.logicWidth, this.logicHeight);
 
+        this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        int intentos = 1000;
+        while(intentos > 0) {
+            try {
+                this.window.createBufferStrategy(2);
+                break;
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            intentos--;
+        }
+        if (intentos == 0) {
+            System.err.println("No pude crear la BufferStrategy");
+            return;
+        }
+
+        this.buffer = this.window.getBufferStrategy();
+        this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
+        this.window.setIgnoreRepaint(true);
+        this.window.setVisible(true);
+        this.defaultFont = this.canvas.getFont();
+    }
     // Canvas functions
 
     @Override
