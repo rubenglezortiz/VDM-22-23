@@ -38,10 +38,24 @@ public class AGraphics implements IGraphics {
     private Thread renderThread;
     private boolean running;
     // Maps
-    private final HashMap<String, AFont> fonts;
-    private final HashMap<String, AImage> images;
+    private HashMap<String, AFont> fonts;
+    private HashMap<String, AImage> images;
 
     public AGraphics(SurfaceView myView_){
+        this.logicWidth = 400;
+        this.logicHeight = 600;
+        AGrpahicsInit(myView_);
+    }
+
+    public AGraphics(SurfaceView myView_,int logicWidth_, int logicHeight_){
+        this.logicWidth = logicWidth_;
+        this.logicHeight = logicHeight_;
+        this.fonts = new HashMap<>();
+        this.images = new HashMap<>();
+        AGrpahicsInit(myView_);
+    }
+
+    private void AGrpahicsInit(SurfaceView myView_){
         this.myView = myView_;
         this.holder = this.myView.getHolder();
         this.paint = new Paint();
@@ -55,21 +69,6 @@ public class AGraphics implements IGraphics {
         this.defaultFont = this.paint.getTypeface();
         this.fonts = new HashMap<>();
         this.images = new HashMap<>();
-    }
-    public AGraphics(SurfaceView myView_,int logicWidth_, int logicHeight_){
-        this.myView = myView_;
-        this.holder = this.myView.getHolder();
-        this.paint = new Paint();
-        this.paint.setColor(0xFFFFFFFF);
-        this.assetManager = this.myView.getContext().getAssets();
-        this.logicWidth = logicWidth_;
-        this.logicHeight = logicHeight_;
-
-        DisplayMetrics metrics = this.myView.getContext().getResources().getDisplayMetrics();
-        this.screenHeight = metrics.heightPixels;
-        this.screenWidth = metrics.widthPixels;
-        setResolution((float)this.screenWidth, (float)this.screenHeight);
-        this.defaultFont = this.paint.getTypeface();
     }
 
 
@@ -117,10 +116,7 @@ public class AGraphics implements IGraphics {
     @Override
     public void drawRectangle(float x_, float y_, float w_, float h_, IColor color) {
         setColor(color);
-        int x = realToLogicX((int)x_);
-        int y = realToLogicY((int)y_);
-        int w = realToLogicScale((int)w_);
-        int h = realToLogicScale((int)h_);
+        float x = realToLogicX(x_), y = realToLogicY(y_), w = realToLogicScale(w_), h = realToLogicScale(h_);
         this.canvas.drawLine(x,y,x+w,y,this.paint);
         this.canvas.drawLine(x,y,x,y + h,this.paint);
         this.canvas.drawLine(x,y+h,x+w,y+h,this.paint);
@@ -130,10 +126,10 @@ public class AGraphics implements IGraphics {
     @Override
     public void fillRectangle(float x_, float y_, float w_, float h_,IColor color){
         setColor(color);
-        int x = realToLogicX((int)x_);
-        int y = realToLogicY((int)y_);
-        int w = realToLogicScale((int)w_);
-        int h = realToLogicScale((int)h_);
+        float x = realToLogicX(x_);
+        float y = realToLogicY(y_);
+        float w = realToLogicScale(w_);
+        float h = realToLogicScale(h_);
         this.canvas.drawRect(x,y,x+w, y+h, this.paint);
     }
 
@@ -179,20 +175,20 @@ public class AGraphics implements IGraphics {
 
     //________________________________GETTERS________________________________
     @Override
-    public int getWidth() { return this.screenWidth; }
+    public float getWidth() { return this.screenWidth; }
 
     @Override
-    public int getHeight() {
+    public float getHeight() {
         return this.screenHeight;
     }
 
     @Override
-    public int getLogicWidth() {
+    public float getLogicWidth() {
        return this.logicWidth;
     }
 
     @Override
-    public int getLogicHeight() {
+    public float getLogicHeight() {
         return this.logicHeight;
     }
 
