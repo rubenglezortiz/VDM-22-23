@@ -12,7 +12,7 @@ public class DesktopEngine implements IEngine, Runnable {
     private DGraphicsEngine graphics;
     private DAudio audio;
     private DInput input;
-    private DState currentState;
+    private IState currentState;
 
     private JFrame window;
     private Thread currentThread;
@@ -25,7 +25,7 @@ public class DesktopEngine implements IEngine, Runnable {
         this.window.addKeyListener(this.input);
         this.window.addMouseListener(this.input);
         this.window.addMouseMotionListener(this.input);
-        this.currentState = new DState(this);
+        this.currentState = new IState(this);
 
         this.currentThread = new Thread(this);
         this.currentThread.start();

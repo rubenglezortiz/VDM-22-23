@@ -17,7 +17,7 @@ public class AndroidEngine implements IEngine, Runnable {
     private AGraphics graphics;
     private AAudio audio;
     private AInput input;
-    private AState currentState;
+    private IState currentState;
 
     private SurfaceView myView;
     private Thread currentThread;
@@ -31,7 +31,7 @@ public class AndroidEngine implements IEngine, Runnable {
         this.audio = new AAudio(this.myView.getContext().getAssets());
         this.input = new AInput(this.graphics);
         this.myView.setOnTouchListener(this.input);
-        this.currentState = new AState(this.myView, this);
+        this.currentState = new IState( this);
         this.currentThread = new Thread(this);
         this.currentThread.start();
     }
