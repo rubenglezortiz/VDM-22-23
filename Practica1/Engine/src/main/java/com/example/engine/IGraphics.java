@@ -23,8 +23,8 @@ public interface IGraphics {
 
     //Create
     public IColor newColor(int r_, int g_, int b_, int a_);
-    public IImage newImage(String name);
-    public IFont newFont (String name, boolean bold);
+    public void newImage(String name);
+    public void newFont (String name, boolean bold);
     public IButton newButton(String text, int x, int y, int w, int h, int tX, int tY, int tSize, IFont f, IColor mColor, IColor bgColor);
 
     // Draw
@@ -32,9 +32,9 @@ public interface IGraphics {
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color);
     public void drawRectangle(float x, float y, float w, float h, IColor  color);
     public void fillRectangle(float x, float y, float w, float h,IColor color);
-    public void drawImage(IImage image, int x, int y, int w, int h);
+    public void drawImage(String image, float x, float y, float w, float h);
     public void drawText(String text, float x, float y, float textSize, IColor color);
-    public void drawText(IFont font, String text, float x, float y, float textSize, IColor color);
+    public void drawText(String font, String text, float x, float y, float textSize, IColor color);
     public void drawButton(IButton button);
 
     // Getters

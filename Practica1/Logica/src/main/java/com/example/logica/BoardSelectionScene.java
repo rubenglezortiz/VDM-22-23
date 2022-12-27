@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class BoardSelectionScene implements IScene {
-    private IFont font;
+    private String font;
     private boolean changeScene;
     private int boardSize;
 
@@ -22,7 +22,8 @@ public class BoardSelectionScene implements IScene {
 
     public BoardSelectionScene(IEngine engine_){
         this.changeScene = false; this.boardSize = 0;
-        this.font = engine_.getGraphics().newFont("font.TTF", false);
+        this.font = "font.TTF";
+        engine_.getGraphics().newFont(this.font, false);
         createButtons(engine_.getGraphics());
     }
 
@@ -38,12 +39,8 @@ public class BoardSelectionScene implements IScene {
 
     @Override
     public void render(IGraphics graphics) {
-        graphics.setFont(this.font);
-        graphics.drawText("LEVEL",graphics.getLogicWidth()/2.0f - ((5*50)/2.0f),
+        graphics.drawText(this.font, "LEVEL",graphics.getLogicWidth()/2.0f - ((5*50)/2.0f),
                 100, 45, graphics.newColor(0,0,0,255));
-        //graphics.drawText("1 = tablero 3x3\n 2 = tablero 5x5 \n 3 = tablero 10x10",
-        //        graphics.getLogicWidth()/2.0f-((15*10*3)/2.0f),  200, 10,
-        //        graphics.newColor(255,0,255,255));
         graphics.drawButton(this.button3x3);
         graphics.drawButton(this.button5x5);
         graphics.drawButton(this.button10x10);

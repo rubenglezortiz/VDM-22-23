@@ -2,15 +2,13 @@ package com.example.logica;
 import com.example.engine.IAudio;
 import com.example.engine.IGraphics;
 import com.example.engine.IInput;
-import com.example.engine.ISound;
-
 import java.util.ArrayList;
 
 public class Board {
-    private int numCols, numRows;
+    private final int numCols, numRows;
     private Cell[][] board;
-    private ArrayList<Integer>[] colsList;
-    private ArrayList<Integer>[] rowsList;
+    private final ArrayList<Integer>[] colsList;
+    private final ArrayList<Integer>[] rowsList;
     private Cell pressedCell;
 
     private boolean checkPressed = false;
@@ -18,9 +16,9 @@ public class Board {
     private int wrongCells = 0;
     private int remainingCells = 0;
     private boolean win = false;
-    private int margin = 50;
-    private int textMessagesSize;
-    private String cellSound;
+    private final int margin = 50;
+    private final int textMessagesSize;
+    private final String cellSound;
 
     public Board(int nC, int nR, IGraphics graphics_, IAudio audio_){
         this.numCols = nC;

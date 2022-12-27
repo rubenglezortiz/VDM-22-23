@@ -3,11 +3,9 @@ package com.example.logica;
 import com.example.engine.IAudio;
 import com.example.engine.IButton;
 import com.example.engine.IEngine;
-import com.example.engine.IFont;
 import com.example.engine.IGraphics;
 import com.example.engine.IInput;
 import com.example.engine.IScene;
-import com.example.engine.ISound;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,12 +13,13 @@ import java.util.Iterator;
 public class TitleScene implements IScene {
     private IButton startButton;
     private String backgroundMusic;
-    private IFont font;
+    private String font;
     private boolean changeScene;
 
     public TitleScene(IEngine engine_){
         this.changeScene = false;
-        this.font = engine_.getGraphics().newFont("font.TTF", false);
+        this.font = "font.TTF";
+        engine_.getGraphics().newFont(this.font, false);
         this.backgroundMusic = "music.wav";
         createMusic(engine_.getAudio());
         createButton(engine_.getGraphics());

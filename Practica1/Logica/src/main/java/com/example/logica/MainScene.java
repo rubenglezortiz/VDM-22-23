@@ -15,15 +15,15 @@ import java.util.Iterator;
 import sun.awt.AWTAutoShutdown;
 
 public class MainScene implements IScene {
-    private Board board;
+    private final Board board;
     private IButton checkButton, backToMenuButton;
-    private IFont font;
+    private final String font, winSound, failSound;
     private float timer;
     private boolean backToMenu;
-    private String winSound, failSound;
 
     public MainScene(IEngine engine_, int numRows, int numCols){
-        this.font = engine_.getGraphics().newFont("font.TTF", false);
+        this.font = "font.TTF";
+        engine_.getGraphics().newFont(this.font, false);
         this.board = new Board(numRows, numCols, engine_.getGraphics(), engine_.getAudio());
         this.backToMenu = false;
         this.timer = 0.0f;

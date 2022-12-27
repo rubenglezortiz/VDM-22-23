@@ -2,7 +2,6 @@ package com.example.desktopengine;
 
 import com.example.engine.IInput;
 
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -12,9 +11,9 @@ import java.util.ArrayList;
 
 public class DInput implements IInput, KeyListener, MouseListener, MouseMotionListener {
     private ArrayList<MyInputEvent> events;
-    private DGraphicsEngine graphics;
+    private DGraphics graphics;
 
-    public DInput(DGraphicsEngine graphics_){
+    public DInput(DGraphics graphics_){
         this.graphics = graphics_;
         this.events = new ArrayList<>();
     }

@@ -9,7 +9,7 @@ import com.example.engine.IStateManager;
 import javax.swing.JFrame;
 
 public class DesktopEngine implements IEngine, Runnable {
-    private DGraphicsEngine graphics;
+    private DGraphics graphics;
     private DAudio audio;
     private DInput input;
     private IStateManager currentState;
@@ -19,7 +19,7 @@ public class DesktopEngine implements IEngine, Runnable {
 
     public DesktopEngine(JFrame window_){
         this.window = window_;
-        this.graphics = new DGraphicsEngine(window);
+        this.graphics = new DGraphics(window);
         this.audio = new DAudio();
         this.input = new DInput(this.graphics);
         this.window.addKeyListener(this.input);
