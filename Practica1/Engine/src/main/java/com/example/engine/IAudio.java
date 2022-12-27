@@ -1,11 +1,11 @@
 package com.example.engine;
 
 public interface IAudio {
-    public ISound newSound(String file);
-    public void playSound(ISound sound);
-    public void stopSound(ISound sound);
-    public void pauseSound(ISound sound);
-    public void setLooping(ISound sound, boolean looping);
-    public void setVolume(ISound sound, float volume);
-    void setBackgroundMusic(ISound backgroundMusic);
+    public void newSound(String file);
+    public void playSound(String key);
+    public void stopSound(String key);
+    public void pauseSound(String key);
+    public void setLooping(String key, boolean looping);
+    public void setVolume(String key, float volume);
+    void setBackgroundMusic(String backgroundMusic);
 }

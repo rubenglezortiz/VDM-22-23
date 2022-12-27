@@ -11,6 +11,7 @@ public class AAudio {
     private final AssetManager assetManager;
     private final HashMap<String, ASound> sounds;
     private String backgroundMusic;
+
     public AAudio(AssetManager aM){
         this.sounds = new HashMap<>();
         this.assetManager = aM;
