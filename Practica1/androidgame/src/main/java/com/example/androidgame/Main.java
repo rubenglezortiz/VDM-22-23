@@ -10,13 +10,15 @@ import com.example.logica.BoardSelectionScene;
 import com.example.logica.MainScene;
 import com.example.logica.TitleScene;
 
+import java.util.Objects;
+
 public class Main extends AppCompatActivity {
     private SurfaceView myView;
     private AndroidEngine myEngine;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Objects.requireNonNull(getSupportActionBar()).hide();
         this.myView = new SurfaceView(this);
         setContentView(this.myView);
 
