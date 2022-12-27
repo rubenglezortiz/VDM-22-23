@@ -105,32 +105,32 @@ public class DGraphicsEngine implements IGraphics {
     public void translate (int x, int y){ this.canvas.translate(x,y);}
 
     @Override
-    public int realToLogicX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ; }
+    public int realToLogicX(int x) { return (int) ((float)(x - this.offsetX) / getScaleFactor()); }
 
     @Override
-    public int realToLogicY(int y) { return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
+    public int realToLogicY(int y) { return (int) ((float)(y - this.offsetY) / getScaleFactor()); }
 
     @Override
-    public int realToLogicScale(int s) {  return (int) ((float)s * getScaleFactor()); }
+    public int realToLogicScale(int s) { return (int) ((float) s / getScaleFactor()); }
 
     @Override
-    public int logicToRealX(int x) { return (int) ((float)(x - this.offsetX) / getScaleFactor());}
+    public int logicToRealX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ; }
 
     @Override
-    public int logicToRealY(int y) { return (int) ((float)(y - this.offsetY) / getScaleFactor());}
+    public int logicToRealY(int y) { return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
 
     @Override
-    public int logicToRealScale(int s) { return (int) ((float) s/ getScaleFactor()); }
+    public int logicToRealScale(int s) { return (int) ((float)s * getScaleFactor()); }
 
 
     @Override
     public void setColor(IColor color){
-        canvas.setColor(((DColor)color).getColor());
+        this.canvas.setColor(((DColor)color).getColor());
     }
 
     @Override
     public void setFont(IFont font) {
-        canvas.setFont(((DFont)font).getFont());
+        this.canvas.setFont(((DFont)font).getFont());
     }
 
     // Create
@@ -164,42 +164,42 @@ public class DGraphicsEngine implements IGraphics {
     @Override
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color){
         setColor(color);
-        this.canvas.drawLine(realToLogicX((int)x), realToLogicY((int)y), realToLogicX((int)x_stop), realToLogicY((int)y_stop));
+        this.canvas.drawLine(logicToRealX((int)x), logicToRealY((int)y), logicToRealX((int)x_stop), logicToRealY((int)y_stop));
     }
 
     @Override
     public void drawRectangle(float x, float y, float w, float h, IColor color) {
         setColor(color);
-        this.canvas.drawRect(realToLogicX((int)x), realToLogicY((int)y),
-                realToLogicScale((int)w), realToLogicScale((int)h));
+        this.canvas.drawRect(logicToRealX((int)x), logicToRealY((int)y),
+                logicToRealScale((int)w), logicToRealScale((int)h));
     }
 
     @Override
     public void fillRectangle(float x, float y, float w, float h, IColor  color) {
         setColor(color);
-        this.canvas.fillRect(realToLogicX((int)x), realToLogicY((int)y),
-                realToLogicScale((int)w), realToLogicScale((int)h));
+        this.canvas.fillRect(logicToRealX((int)x), logicToRealY((int)y),
+                logicToRealScale((int)w), logicToRealScale((int)h));
     }
 
     @Override
     public void drawImage(IImage image, int x, int y, int w, int h) {
-        this.canvas.drawImage(((DImage)image).getImage(), realToLogicX(x), realToLogicY(y),
-                realToLogicScale(w),realToLogicScale(h),null);
+        this.canvas.drawImage(((DImage)image).getImage(), logicToRealX(x), logicToRealY(y),
+                logicToRealScale(w),logicToRealScale(h),null);
     }
 
     @Override
     public void drawText(String text, float x, float y, float textSize, IColor color) {
         setColor(color);
-        this.canvas.setFont(this.canvas.getFont().deriveFont(textSize * getScaleFactor()));
-        this.canvas.drawString(text,realToLogicX((int)x),realToLogicY((int)y));
+        this.canvas.setFont(this.canvas.getFont().deriveFont(logicToRealScale((int)textSize)));
+        this.canvas.drawString(text,logicToRealX((int)x),logicToRealY((int)y));
         this.canvas.setFont(this.defaultFont);
     }
 
     @Override
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
         setColor(color);
-        this.canvas.setFont(((DFont)font).getFont().deriveFont(textSize * getScaleFactor()));
-        this.canvas.drawString(text,realToLogicX((int)x),realToLogicY((int)y));
+        this.canvas.setFont(((DFont)font).getFont().deriveFont(logicToRealScale((int)textSize)));
+        this.canvas.drawString(text,logicToRealX((int)x),logicToRealY((int)y));
     }
 
     @Override
