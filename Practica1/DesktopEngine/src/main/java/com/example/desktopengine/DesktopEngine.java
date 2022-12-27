@@ -4,7 +4,7 @@ import com.example.engine.IAudio;
 import com.example.engine.IEngine;
 import com.example.engine.IGraphics;
 import com.example.engine.IInput;
-import com.example.engine.IState;
+import com.example.engine.IStateManager;
 
 import javax.swing.JFrame;
 
@@ -12,7 +12,7 @@ public class DesktopEngine implements IEngine, Runnable {
     private DGraphicsEngine graphics;
     private DAudio audio;
     private DInput input;
-    private IState currentState;
+    private IStateManager currentState;
 
     private JFrame window;
     private Thread currentThread;
@@ -25,7 +25,7 @@ public class DesktopEngine implements IEngine, Runnable {
         this.window.addKeyListener(this.input);
         this.window.addMouseListener(this.input);
         this.window.addMouseMotionListener(this.input);
-        this.currentState = new IState(this);
+        this.currentState = new IStateManager(this);
 
         this.currentThread = new Thread(this);
         this.currentThread.start();
@@ -39,7 +39,7 @@ public class DesktopEngine implements IEngine, Runnable {
     public IInput getInput() {return this.input;}
 
     @Override
-    public IState getCurrentState() { return this.currentState;}
+    public IStateManager getCurrentState() { return this.currentState;}
 
     @Override
     public IAudio getAudio() { return this.audio;}

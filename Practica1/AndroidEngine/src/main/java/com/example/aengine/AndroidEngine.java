@@ -2,22 +2,20 @@ package com.example.aengine;
 
 
 import android.annotation.SuppressLint;
-import android.icu.util.Calendar;
-import android.text.format.Time;
 import android.view.SurfaceView;
 
 import com.example.engine.IAudio;
 import com.example.engine.IEngine;
 import com.example.engine.IGraphics;
 import com.example.engine.IInput;
-import com.example.engine.IState;
+import com.example.engine.IStateManager;
 
 
 public class AndroidEngine implements IEngine, Runnable {
     private AGraphics graphics;
     private AAudio audio;
     private AInput input;
-    private IState currentState;
+    private IStateManager currentState;
 
     private SurfaceView myView;
     private Thread currentThread;
@@ -31,7 +29,7 @@ public class AndroidEngine implements IEngine, Runnable {
         this.audio = new AAudio(this.myView.getContext().getAssets());
         this.input = new AInput(this.graphics);
         this.myView.setOnTouchListener(this.input);
-        this.currentState = new IState( this);
+        this.currentState = new IStateManager( this);
         this.currentThread = new Thread(this);
         this.currentThread.start();
     }
@@ -43,7 +41,7 @@ public class AndroidEngine implements IEngine, Runnable {
     public IInput getInput() {return this.input;}
 
     @Override
-    public IState getCurrentState() { return this.currentState;}
+    public IStateManager getCurrentState() { return this.currentState;}
 
     @Override
     public IAudio getAudio() { return this.audio;}

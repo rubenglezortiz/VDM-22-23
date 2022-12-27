@@ -1,11 +1,11 @@
 package com.example.engine;
 import java.util.Stack;
 
-public class IState  {
+public class IStateManager {
     private Stack<IScene> scenes;
     private IEngine myEngine;
 
-    public IState(IEngine engine_){
+    public IStateManager(IEngine engine_){
         this.myEngine = engine_;
         this.scenes = new Stack<IScene>();
     }
