@@ -30,7 +30,7 @@ public class AInput implements IInput, View.OnTouchListener {
     }
 
     public synchronized void addEvent(MotionEvent event, InputType type){
-        MyInputEvent newEvent = new MyInputEvent(type, 0, this.graphics.realToLogicX((int)event.getX()),  this.graphics.realToLogicY((int)event.getY()),1);
+        MyInputEvent newEvent = new MyInputEvent(type, 0, (int)this.graphics.realToLogicX(event.getX()),  (int)this.graphics.realToLogicY(event.getY()),1);
         this.events.add(newEvent);
     }
 

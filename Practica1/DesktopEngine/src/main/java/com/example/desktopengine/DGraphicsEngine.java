@@ -19,10 +19,10 @@ public class DGraphicsEngine implements IGraphics {
     private Graphics2D canvas;
 
     // Class variables
-    private int logicWidth, logicHeight;
+    private float logicWidth, logicHeight;
     private float scaleFactorX, scaleFactorY;
     private boolean scaleInX;
-    private int offsetX, offsetY;
+    private float offsetX, offsetY;
     private Font defaultFont;
 
     // Thread
@@ -33,7 +33,7 @@ public class DGraphicsEngine implements IGraphics {
         this.window = window_;
         this.logicWidth = 400;
         this.logicHeight = 600;
-        this.window.setSize(this.logicWidth, this.logicHeight);
+        this.window.setSize((int)this.logicWidth, (int)this.logicHeight);
 
         this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -105,22 +105,22 @@ public class DGraphicsEngine implements IGraphics {
     public void translate (int x, int y){ this.canvas.translate(x,y);}
 
     @Override
-    public int realToLogicX(int x) { return (int) ((float)(x - this.offsetX) / getScaleFactor()); }
+    public float realToLogicX(float x) { return (x - this.offsetX) / getScaleFactor(); }
 
     @Override
-    public int realToLogicY(int y) { return (int) ((float)(y - this.offsetY) / getScaleFactor()); }
+    public float realToLogicY(float y) { return (y - this.offsetY) / getScaleFactor(); }
 
     @Override
-    public int realToLogicScale(int s) { return (int) ((float) s / getScaleFactor()); }
+    public float realToLogicScale(float s) { return s / getScaleFactor(); }
 
     @Override
-    public int logicToRealX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ; }
+    public float logicToRealX(float x) { return (x * getScaleFactor()) + this.offsetX ; }
 
     @Override
-    public int logicToRealY(int y) { return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
+    public float logicToRealY(float y) { return (y * getScaleFactor()) + this.offsetY ; }
 
     @Override
-    public int logicToRealScale(int s) { return (int) ((float)s * getScaleFactor()); }
+    public float logicToRealScale(float s) { return s * getScaleFactor(); }
 
 
     @Override
@@ -158,48 +158,49 @@ public class DGraphicsEngine implements IGraphics {
     @Override
     public void clear (IColor color){
         setColor(color);
-        this.canvas.fillRect(0,0,getWidth(), getHeight());
+        this.canvas.fillRect(0,0,(int) getWidth(), (int) getHeight());
     }
 
     @Override
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color){
         setColor(color);
-        this.canvas.drawLine(logicToRealX((int)x), logicToRealY((int)y), logicToRealX((int)x_stop), logicToRealY((int)y_stop));
+        this.canvas.drawLine((int)logicToRealX(x), (int)logicToRealY(y),
+                (int)logicToRealX(x_stop), (int)logicToRealY(y_stop));
     }
 
     @Override
     public void drawRectangle(float x, float y, float w, float h, IColor color) {
         setColor(color);
-        this.canvas.drawRect(logicToRealX((int)x), logicToRealY((int)y),
-                logicToRealScale((int)w), logicToRealScale((int)h));
+        this.canvas.drawRect((int)logicToRealX(x), (int)logicToRealY(y),
+                (int)logicToRealScale(w), (int)logicToRealScale(h));
     }
 
     @Override
     public void fillRectangle(float x, float y, float w, float h, IColor  color) {
         setColor(color);
-        this.canvas.fillRect(logicToRealX((int)x), logicToRealY((int)y),
-                logicToRealScale((int)w), logicToRealScale((int)h));
+        this.canvas.fillRect((int)logicToRealX(x), (int)logicToRealY(y),
+                (int)logicToRealScale(w), (int)logicToRealScale(h));
     }
 
     @Override
-    public void drawImage(IImage image, int x, int y, int w, int h) {
-        this.canvas.drawImage(((DImage)image).getImage(), logicToRealX(x), logicToRealY(y),
-                logicToRealScale(w),logicToRealScale(h),null);
+    public void drawImage(IImage image, float x, float y, float w, float h) {
+        this.canvas.drawImage(((DImage)image).getImage(), (int)logicToRealX(x), (int)logicToRealY(y),
+                (int)logicToRealScale(w),(int)logicToRealScale(h),null);
     }
 
     @Override
     public void drawText(String text, float x, float y, float textSize, IColor color) {
         setColor(color);
-        this.canvas.setFont(this.canvas.getFont().deriveFont(logicToRealScale((int)textSize)));
-        this.canvas.drawString(text,logicToRealX((int)x),logicToRealY((int)y));
+        this.canvas.setFont(this.canvas.getFont().deriveFont(logicToRealScale(textSize)));
+        this.canvas.drawString(text,logicToRealX(x),logicToRealY(y));
         this.canvas.setFont(this.defaultFont);
     }
 
     @Override
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
         setColor(color);
-        this.canvas.setFont(((DFont)font).getFont().deriveFont(logicToRealScale((int)textSize)));
-        this.canvas.drawString(text,logicToRealX((int)x),logicToRealY((int)y));
+        this.canvas.setFont(((DFont)font).getFont().deriveFont(logicToRealScale(textSize)));
+        this.canvas.drawString(text,logicToRealX(x),logicToRealY(y));
     }
 
     @Override
@@ -220,20 +221,20 @@ public class DGraphicsEngine implements IGraphics {
 
     // Getters
     @Override
-    public int getWidth() {
+    public float getWidth() {
         return this.window.getWidth();
     }
 
     @Override
-    public int getHeight() { return this.window.getHeight(); }
+    public float getHeight() { return this.window.getHeight(); }
 
     @Override
-    public int getLogicWidth() {
+    public float getLogicWidth() {
         return this.logicWidth;
     }
 
     @Override
-    public int getLogicHeight() { return this.logicHeight; }
+    public float getLogicHeight() { return this.logicHeight; }
 
     @Override
     public float getScaleFactor() { return Math.min(this.scaleFactorX, this.scaleFactorY); }

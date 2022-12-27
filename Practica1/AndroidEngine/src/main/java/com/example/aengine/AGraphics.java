@@ -25,10 +25,10 @@ public class AGraphics implements IGraphics {
     private AssetManager assetManager;
 
     // Class Variables
-    private int screenWidth, screenHeight;
-    private int logicWidth, logicHeight;
+    private float screenWidth, screenHeight;
+    private float logicWidth, logicHeight;
     private float scaleFactorX, scaleFactorY, scaleFactor;
-    private int offsetX, offsetY;
+    private float offsetX, offsetY;
     private boolean scaleInX;
     private Typeface defaultFont;
 
@@ -91,22 +91,22 @@ public class AGraphics implements IGraphics {
     }
 
     @Override
-    public int realToLogicX(int x) { return (int) ((float)(x - this.offsetX) / getScaleFactor()); }
+    public float realToLogicX(float x) { return (x - this.offsetX) / getScaleFactor(); }
 
     @Override
-    public int realToLogicY(int y) { return (int) ((float)(y - this.offsetY) / getScaleFactor()); }
+    public float realToLogicY(float y) { return (y - this.offsetY) / getScaleFactor(); }
 
     @Override
-    public int realToLogicScale(int s) { return (int) ((float) s / getScaleFactor()); }
+    public float realToLogicScale(float s) { return s / getScaleFactor(); }
 
     @Override
-    public int logicToRealX(int x) { return ((int) ((float)x * getScaleFactor()) + this.offsetX) ;}
+    public float logicToRealX(float x) { return (x * getScaleFactor()) + this.offsetX;}
 
     @Override
-    public int logicToRealY(int y){ return ((int) ((float)y * getScaleFactor()) + this.offsetY) ; }
+    public float logicToRealY(float y){ return (y * getScaleFactor()) + this.offsetY; }
 
     @Override
-    public int logicToRealScale(int s){ return (int) ((float)s * getScaleFactor()); }
+    public float logicToRealScale(float s){ return s * getScaleFactor(); }
 
     @Override
     public void setColor(IColor color){ this.paint.setColor(((AColor)color).getARGBColor()); }
@@ -149,17 +149,17 @@ public class AGraphics implements IGraphics {
     @Override
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color) {
         setColor(color);
-        this.canvas.drawLine(logicToRealX((int)x), logicToRealY((int)y),
-                logicToRealX((int)x_stop), logicToRealY((int)y_stop), this.paint);
+        this.canvas.drawLine(logicToRealX(x), logicToRealY(y),
+                logicToRealX(x_stop), logicToRealY(y_stop), this.paint);
     }
 
     @Override
     public void drawRectangle(float x_, float y_, float w_, float h_, IColor color) {
         setColor(color);
-        int x = logicToRealX((int)x_);
-        int y = logicToRealY((int)y_);
-        int w = logicToRealScale((int)w_);
-        int h = logicToRealScale((int)h_);
+        float x = logicToRealX(x_);
+        float y = logicToRealY(y_);
+        float w = logicToRealScale(w_);
+        float h = logicToRealScale(h_);
         this.canvas.drawLine(x,y,x+w,y,this.paint);
         this.canvas.drawLine(x,y,x,y + h,this.paint);
         this.canvas.drawLine(x,y+h,x+w,y+h,this.paint);
@@ -169,18 +169,18 @@ public class AGraphics implements IGraphics {
     @Override
     public void fillRectangle(float x_, float y_, float w_, float h_,IColor color){
         setColor(color);
-        int x = logicToRealX((int)x_);
-        int y = logicToRealY((int)y_);
-        int w = logicToRealScale((int)w_);
-        int h = logicToRealScale((int)h_);
+        float x = logicToRealX(x_);
+        float y = logicToRealY(y_);
+        float w = logicToRealScale(w_);
+        float h = logicToRealScale(h_);
         this.canvas.drawRect(x,y,x+w, y+h, this.paint);
     }
 
     @Override
-    public void drawImage(IImage image, int x, int y, int w, int h) {
+    public void drawImage(IImage image, float x, float y, float w, float h) {
         //INTENTAR METER VALORES POR DEFECTO
-        ((AImage)image).setWidth(logicToRealScale(w));
-        ((AImage)image).setHeight(logicToRealScale(h));
+        ((AImage)image).setWidth((int)logicToRealScale(w));
+        ((AImage)image).setHeight((int)logicToRealScale(h));
         this.canvas.drawBitmap(((AImage)image).getBitmap(),logicToRealX(x), logicToRealY(y), this.paint);
     }
 
@@ -188,9 +188,9 @@ public class AGraphics implements IGraphics {
     @Override
     public void drawText(String text, float x, float y, float textSize, IColor color) {
         float prevTextSize = this.paint.getTextSize();
-        this.paint.setTextSize(logicToRealScale((int)textSize));
+        this.paint.setTextSize(logicToRealScale(textSize));
         this.paint.setColor(((AColor)color).getARGBColor());
-        this.canvas.drawText(text,logicToRealX((int)x),logicToRealY((int)y), this.paint);
+        this.canvas.drawText(text,logicToRealX(x),logicToRealY(y), this.paint);
         this.paint.setTextSize(prevTextSize);
     }
 
@@ -198,8 +198,8 @@ public class AGraphics implements IGraphics {
     public void drawText(IFont font, String text, float x, float y, float textSize, IColor color) {
         setColor(color);
         this.paint.setTypeface(((AFont)font).getTypeface());
-        this.paint.setTextSize(logicToRealScale((int)textSize));
-        this.canvas.drawText(text,logicToRealX((int)x),logicToRealY((int)y), this.paint);
+        this.paint.setTextSize(logicToRealScale(textSize));
+        this.canvas.drawText(text,logicToRealX(x),logicToRealY(y), this.paint);
         this.paint.setTypeface(this.defaultFont);
     }
 
@@ -221,20 +221,20 @@ public class AGraphics implements IGraphics {
 
     // Getters
     @Override
-    public int getWidth() { return this.screenWidth; }
+    public float getWidth() { return this.screenWidth; }
 
     @Override
-    public int getHeight() {
+    public float getHeight() {
         return this.screenHeight;
     }
 
     @Override
-    public int getLogicWidth() {
+    public float getLogicWidth() {
        return this.logicWidth;
     }
 
     @Override
-    public int getLogicHeight() {
+    public float getLogicHeight() {
         return this.logicHeight;
     }
 

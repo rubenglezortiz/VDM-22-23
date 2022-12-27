@@ -71,7 +71,8 @@ public class DInput implements IInput, KeyListener, MouseListener, MouseMotionLi
     }
 
     public synchronized void addEvent(MouseEvent event, InputType type){
-        MyInputEvent newEvent = new MyInputEvent(type, 0, this.graphics.realToLogicX(event.getX()),  this.graphics.realToLogicY(event.getY()),1);
+        MyInputEvent newEvent = new MyInputEvent(type, 0, (int)this.graphics.realToLogicX(event.getX()),
+                (int)this.graphics.realToLogicY(event.getY()),1);
         this.events.add(newEvent);
     }
 
