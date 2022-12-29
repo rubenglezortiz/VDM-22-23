@@ -76,16 +76,13 @@ public class TitleScene implements IScene {
 
     private void createButton(IGraphics graphics){
         int x,y,w,h;
-        x = graphics.getLogicWidth() / 2;
-        y = graphics.getLogicHeight() * 2 / 3;
-        w = graphics.getLogicWidth() / 3;
-        h = graphics.getLogicHeight() / 10;
+        x = (int)graphics.getLogicWidth() / 2;
+        y = (int)graphics.getLogicHeight() * 2 / 3;
+        w = (int)graphics.getLogicWidth() / 3;
+        h = (int)graphics.getLogicHeight() / 10;
 
-        this.startButton = graphics.newButton("Start",
+        this.startButton = graphics.newButton("PartidaRapida.png",
                 x - (w / 2), y - (h / 2), w, h,
-                10,35, 18,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
                 graphics.newColor(255, 255, 255, 255));
     }
 }

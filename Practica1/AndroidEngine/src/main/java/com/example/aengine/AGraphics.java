@@ -33,7 +33,7 @@ public class AGraphics implements IGraphics {
     private float scaleFactorX, scaleFactorY, scaleFactor;
     private float offsetX, offsetY;
     private boolean scaleInX;
-    private Typeface defaultFont;
+    private String defaultFont;
     // Thread
     private Thread renderThread;
     private boolean running;
@@ -44,18 +44,16 @@ public class AGraphics implements IGraphics {
     public AGraphics(SurfaceView myView_){
         this.logicWidth = 400;
         this.logicHeight = 600;
-        AGrpahicsInit(myView_);
+        this.AGraphicsInit(myView_);
     }
 
     public AGraphics(SurfaceView myView_,int logicWidth_, int logicHeight_){
         this.logicWidth = logicWidth_;
         this.logicHeight = logicHeight_;
-        this.fonts = new HashMap<>();
-        this.images = new HashMap<>();
-        AGrpahicsInit(myView_);
+        this.AGraphicsInit(myView_);
     }
 
-    private void AGrpahicsInit(SurfaceView myView_){
+    private void AGraphicsInit(SurfaceView myView_){
         this.myView = myView_;
         this.holder = this.myView.getHolder();
         this.paint = new Paint();
@@ -65,10 +63,11 @@ public class AGraphics implements IGraphics {
         DisplayMetrics metrics = this.myView.getContext().getResources().getDisplayMetrics();
         this.screenHeight = metrics.heightPixels;
         this.screenWidth = metrics.widthPixels;
-        setResolution((float)this.screenWidth, (float)this.screenHeight);
-        this.defaultFont = this.paint.getTypeface();
+        setResolution(this.screenWidth, this.screenHeight);
+        this.defaultFont = "font.TTF";
         this.fonts = new HashMap<>();
         this.images = new HashMap<>();
+        newFont(this.defaultFont, false);
     }
 
 
@@ -93,8 +92,9 @@ public class AGraphics implements IGraphics {
     }
 
     @Override
-    public IButton newButton(String text, int x, int y, int w, int h, int tX, int tY, int tSize, IFont f, IColor mColor, IColor bgColor) {
-        return new AButton(text, x, y, w, h, tX, tY, tSize, (AFont)f, (AColor) mColor, (AColor) bgColor);
+    public IButton newButton(String imgKey, int x, int y, int w, int h, IColor bgColor) {
+        newImage(imgKey);
+        return new AButton(imgKey, x, y, w, h, (AColor) bgColor);
     }
 
 
@@ -109,14 +109,14 @@ public class AGraphics implements IGraphics {
     @Override
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color) {
         setColor(color);
-        this.canvas.drawLine(realToLogicX((int)x), realToLogicY((int)y),
-                realToLogicX((int)x_stop), realToLogicY((int)y_stop), this.paint);
+        this.canvas.drawLine(logicToRealX((int)x), logicToRealY((int)y),
+                logicToRealX((int)x_stop), logicToRealY((int)y_stop), this.paint);
     }
 
     @Override
     public void drawRectangle(float x_, float y_, float w_, float h_, IColor color) {
         setColor(color);
-        float x = realToLogicX(x_), y = realToLogicY(y_), w = realToLogicScale(w_), h = realToLogicScale(h_);
+        float x = logicToRealX(x_), y = logicToRealY(y_), w = logicToRealScale(w_), h = logicToRealScale(h_);
         this.canvas.drawLine(x,y,x+w,y,this.paint);
         this.canvas.drawLine(x,y,x,y + h,this.paint);
         this.canvas.drawLine(x,y+h,x+w,y+h,this.paint);
@@ -126,10 +126,10 @@ public class AGraphics implements IGraphics {
     @Override
     public void fillRectangle(float x_, float y_, float w_, float h_,IColor color){
         setColor(color);
-        float x = realToLogicX(x_);
-        float y = realToLogicY(y_);
-        float w = realToLogicScale(w_);
-        float h = realToLogicScale(h_);
+        float x = logicToRealX(x_);
+        float y = logicToRealY(y_);
+        float w = logicToRealScale(w_);
+        float h = logicToRealScale(h_);
         this.canvas.drawRect(x,y,x+w, y+h, this.paint);
     }
 
@@ -137,16 +137,17 @@ public class AGraphics implements IGraphics {
     public void drawImage(String key, float x_, float y_, float w_, float h_) {
         if(this.images.containsKey(key)) {
             this.canvas.drawBitmap(Objects.requireNonNull(images.get(key)).getBitmap(), null,
-                    new Rect((int) x_, (int) y_,(int)(x_ + w_), (int)(y_ + h_)), this.paint);
+                    new Rect((int)logicToRealX(x_), (int)logicToRealY(y_),
+                            (int)logicToRealX(x_ + w_), (int)logicToRealY(y_ + h_)), this.paint);
         }
     }
 
     @Override
     public void drawText(String text, float x, float y, float textSize, IColor color) {
         float prevTextSize = this.paint.getTextSize();
-        this.paint.setTextSize(textSize * getScaleFactor());
+        this.paint.setTextSize(logicToRealScale(textSize));
         this.paint.setColor(((AColor)color).getColor());
-        this.canvas.drawText(text,realToLogicX((int)x),realToLogicY((int)y), this.paint);
+        this.canvas.drawText(text,logicToRealX((int)x),logicToRealY((int)y), this.paint);
         this.paint.setTextSize(prevTextSize);
     }
 
@@ -157,7 +158,7 @@ public class AGraphics implements IGraphics {
             this.paint.setTypeface(Objects.requireNonNull(this.fonts.get(font)).getTypeface());
             this.paint.setTextSize(logicToRealScale((int) textSize));
             this.canvas.drawText(text, logicToRealX((int) x), logicToRealY((int) y), this.paint);
-            this.paint.setTypeface(Objects.requireNonNull(this.fonts.get(defaultFont)).getTypeface());
+            this.paint.setTypeface(Objects.requireNonNull(this.fonts.get(this.defaultFont)).getTypeface());
         }
     }
 
@@ -167,8 +168,11 @@ public class AGraphics implements IGraphics {
         float butY = (float) button.getPosY();
         float butW = (float) button.getWidth();
         float butH = (float) button.getHeight();
+        String imageKey = button.getImageKey();
+
         this.fillRectangle(butX,butY,butW,butH, button.getBackgroundColor());
-        this.drawRectangle(butX,butY,butW,butH, button.getMainColor());
+        this.drawImage(imageKey, butX, butY, butW, butH);
+        //this.drawRectangle(butX,butY,butW,butH, button.getMainColor());
     }
 
 

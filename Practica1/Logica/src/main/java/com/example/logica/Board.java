@@ -24,10 +24,10 @@ public class Board {
         this.numCols = nC;
         this.numRows = nR;
         this.board = new Cell[numRows][numCols];
-        this.textMessagesSize = graphics_.getLogicWidth()/20;
+        this.textMessagesSize = (int)graphics_.getLogicWidth()/40;
         this.cellSound = "cell.wav";
         int numCells = nC * nR;
-        int cellSize = Math.min(graphics_.getLogicWidth() - this.margin*3, graphics_.getLogicHeight() - margin*3);
+        int cellSize = Math.min((int)graphics_.getLogicWidth() - this.margin*3, (int)graphics_.getLogicHeight() - margin*3);
         int cont = 0;
         for(int i=0; i < this.numRows; i++){
             for (int j = 0; j < this.numCols; j++){
@@ -123,8 +123,8 @@ public class Board {
     }
 
     public void render(IGraphics graphics) {
-        int width = graphics.getLogicWidth();
-        int height = graphics.getLogicHeight();
+        int width = (int)graphics.getLogicWidth();
+        int height = (int)graphics.getLogicHeight();
         // Ancho y alto de cada casilla
         int casillaW = this.board[0][0].w;
         int casillaH = this.board[0][0].h;

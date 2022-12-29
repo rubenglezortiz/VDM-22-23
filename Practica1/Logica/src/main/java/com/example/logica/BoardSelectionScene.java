@@ -3,7 +3,6 @@ package com.example.logica;
 import com.example.engine.IAudio;
 import com.example.engine.IButton;
 import com.example.engine.IEngine;
-import com.example.engine.IFont;
 import com.example.engine.IGraphics;
 import com.example.engine.IInput;
 import com.example.engine.IScene;
@@ -79,35 +78,24 @@ public class BoardSelectionScene implements IScene {
     }
 
     private void createButtons(IGraphics graphics){
-        int x3x, x5x, x10x, y, w, h, tx, ty, tSize;
-        x3x = graphics.getLogicWidth() / 4;
-        x5x = graphics.getLogicWidth() * 2 / 4;
-        x10x = graphics.getLogicWidth() * 3 / 4;
-        y = graphics.getLogicHeight() / 2;
-        w = graphics.getLogicWidth() / 5;
-        h = graphics.getLogicHeight() / 10;
-        ty = 35;
-        tSize = 15;
+        int x3x, x5x, x10x, y, w, h;
+        x3x = (int)graphics.getLogicWidth() / 4;
+        x5x = (int)graphics.getLogicWidth() * 2 / 4;
+        x10x = (int)graphics.getLogicWidth() * 3 / 4;
+        y = (int)graphics.getLogicHeight() / 2;
+        w = (int)graphics.getLogicWidth() / 5;
+        h = (int)graphics.getLogicHeight() / 10;
 
-        this.button3x3 = graphics.newButton("3x3",
+        this.button3x3 = graphics.newButton("3x3.png",
                 x3x - (w / 2), y - (h / 2), w, h,
-                12,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
                 graphics.newColor(255, 255, 255, 255));
 
-        this.button5x5 = graphics.newButton("5x5",
+        this.button5x5 = graphics.newButton("5x5.png",
                 x5x - (w / 2), y - (h / 2), w, h,
-                12,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
                 graphics.newColor(255, 255, 255, 255));
 
-        this.button10x10 = graphics.newButton("10x10",
+        this.button10x10 = graphics.newButton("10x10.png",
                 x10x - (w / 2), y - (h / 2), w, h,
-                5,ty, tSize,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
                 graphics.newColor(255, 255, 255, 255));
     }
 }

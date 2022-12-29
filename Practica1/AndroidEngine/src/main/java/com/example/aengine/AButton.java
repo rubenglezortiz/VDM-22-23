@@ -1,28 +1,20 @@
 package com.example.aengine;
 
-import android.widget.Button;
-
 import com.example.engine.IButton;
 import com.example.engine.IColor;
-import com.example.engine.IFont;
+import com.example.engine.IImage;
 
 public class AButton implements IButton {
-    private String text;
-    private int posX, posY, width, height, textX, textY, textSize;
-    private AFont font;
-    private AColor mainColor, backgroundColor;
+    private int posX, posY, width, height;
+    private AColor backgroundColor;
+    private String imageKey;
 
-    public AButton(String buttonText, int x, int y, int w, int h, int tX, int tY, int tSize, AFont f, AColor mColor, AColor bgColor) {
-        this.text = buttonText;
+    public AButton(String img, int x, int y, int w, int h, AColor bgColor) {
+        this.imageKey = img;
         this.posX = x;
         this.posY = y;
         this.width = w;
         this.height = h;
-        this.textX = tX;
-        this.textY = tY;
-        this.textSize = tSize;
-        this.font = f;
-        this.mainColor = mColor;
         this.backgroundColor = bgColor;
     }
 
@@ -45,22 +37,7 @@ public class AButton implements IButton {
     public int getHeight() { return this.height; }
 
     @Override
-    public String getText() { return this.text; }
-
-    @Override
-    public int getTextX() { return this.textX; }
-
-    @Override
-    public int getTextY() { return this.textY; }
-
-    @Override
-    public int getTextSize() { return this.textSize; }
-
-    @Override
-    public IFont getFont() { return this.font; }
-
-    @Override
-    public IColor getMainColor() { return this.mainColor; }
+    public String getImageKey() { return this.imageKey; }
 
     @Override
     public IColor getBackgroundColor() { return this.backgroundColor; }

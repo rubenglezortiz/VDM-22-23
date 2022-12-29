@@ -25,7 +25,7 @@ public interface IGraphics {
     public IColor newColor(int r_, int g_, int b_, int a_);
     public void newImage(String name);
     public void newFont (String name, boolean bold);
-    public IButton newButton(String text, int x, int y, int w, int h, int tX, int tY, int tSize, IFont f, IColor mColor, IColor bgColor);
+    public IButton newButton(String imgKey, int x, int y, int w, int h, IColor bgColor);
 
     // Draw
     public void clear (IColor color);

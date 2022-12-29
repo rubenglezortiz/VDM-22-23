@@ -32,13 +32,13 @@ public class DesktopEngine implements IEngine, Runnable {
     }
     public DesktopEngine(JFrame window_,int logicWidth, int logicHeight){
         this.window = window_;
-        this.graphics = new DGraphicsEngine(window,logicWidth,logicHeight);
+        this.graphics = new DGraphics(window,logicWidth,logicHeight);
         this.audio = new DAudio();
-        this.input = new DInput();
+        this.input = new DInput(this.graphics);
         this.window.addKeyListener(this.input);
         this.window.addMouseListener(this.input);
         this.window.addMouseMotionListener(this.input);
-        this.currentState = new DState();
+        this.currentState = new IStateManager( this);
 
         this.currentThread = new Thread(this);
         this.currentThread.start();

@@ -5,12 +5,7 @@ public interface IButton {
     public int getPosY();
     public int getWidth();
     public int getHeight();
-    public String getText();
-    public int getTextX();
-    public int getTextY();
-    public int getTextSize();
-    public IFont getFont();
-    public IColor getMainColor();
+    public String getImageKey();
     public IColor getBackgroundColor();
     public boolean checkCollision(int coordX, int coordY);
 }

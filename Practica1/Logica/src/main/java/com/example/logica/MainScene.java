@@ -82,25 +82,19 @@ public class MainScene implements IScene {
 
     private void createButtons(IGraphics graphics){
         int x,y,w,h;
-        x = graphics.getLogicWidth() / 3;
-        y = graphics.getLogicHeight() * 6 / 7;
-        w = graphics.getLogicWidth() / 5;
-        h = graphics.getLogicHeight() / 15;
+        x = (int)graphics.getLogicWidth() / 3;
+        y = (int)graphics.getLogicHeight() * 6 / 7;
+        w = h = (int)graphics.getLogicWidth() / 7;
 
-        this.backToMenuButton = graphics.newButton("Volver",
+        this.backToMenuButton = graphics.newButton("Volver.png",
                 x - (w / 2), y - (h / 2), w, h,
-                6,25, 9,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
                 graphics.newColor(255, 255, 255, 255));
 
-        x = graphics.getLogicWidth() * 2 / 3;
+        x = (int)graphics.getLogicWidth() * 2 / 3;
+        w = h*3;
 
-        this.checkButton = graphics.newButton("Comprueba",
+        this.checkButton = graphics.newButton("Comprueba.png",
                 x - (w / 2), y - (h / 2), w, h,
-                2,25, 7,
-                this.font,
-                graphics.newColor(0, 0, 0, 255),
                 graphics.newColor(255, 255, 255, 255));
     }
 

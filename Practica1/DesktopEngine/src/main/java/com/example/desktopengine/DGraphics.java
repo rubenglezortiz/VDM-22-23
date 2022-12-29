@@ -28,8 +28,8 @@ public class DGraphics implements IGraphics {
     private Thread renderThread;
     private boolean running;
     // Maps
-    private final HashMap<String, DFont> fonts;
-    private final HashMap<String, DImage> images;
+    private HashMap<String, DFont> fonts;
+    private HashMap<String, DImage> images;
 
     public DGraphics(JFrame window_){
         this.window = window_;
@@ -60,11 +60,12 @@ public class DGraphics implements IGraphics {
         this.window.setVisible(true);
         this.defaultFont = this.canvas.getFont();
     }
-    public DGraphicsEngine(JFrame window_,int logicWidth_,int logicHeight_){
+
+    public DGraphics(JFrame window_,int logicWidth_,int logicHeight_){
         this.window = window_;
         this.logicWidth = logicWidth_;
         this.logicHeight = logicHeight_;
-        this.window.setSize(this.logicWidth, this.logicHeight);
+        this.window.setSize((int)this.logicWidth, (int)this.logicHeight);
         this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.fonts = new HashMap<>();
         this.images = new HashMap<>();
@@ -114,8 +115,9 @@ public class DGraphics implements IGraphics {
     }
 
     @Override
-    public IButton newButton(String text, int x, int y, int w, int h, int tX, int tY, int tSize, IFont f, IColor mColor, IColor bgColor) {
-        return new DButton(text, x, y, w, h, tX, tY, tSize, (DFont)f, (DColor)mColor, (DColor)bgColor);
+    public IButton newButton(String imgKey, int x, int y, int w, int h, IColor bgColor) {
+        newImage(imgKey);
+        return new DButton(imgKey, x, y, w, h, (DColor)bgColor);
     }
 
 
@@ -124,42 +126,42 @@ public class DGraphics implements IGraphics {
     @Override
     public void clear (IColor color){
         setColor(color);
-        this.canvas.fillRect(0,0,getWidth(), getHeight());
+        this.canvas.fillRect(0,0,(int)getWidth(), (int)getHeight());
     }
 
     @Override
     public void drawLine(float x, float y, float x_stop, float y_stop, IColor color){
         setColor(color);
-        this.canvas.drawLine(realToLogicX((int)x), realToLogicY((int)y), realToLogicX((int)x_stop), realToLogicY((int)y_stop));
+        this.canvas.drawLine((int)logicToRealX(x), (int)logicToRealY(y), (int)logicToRealX(x_stop), (int)logicToRealY(y_stop));
     }
 
     @Override
     public void drawRectangle(float x, float y, float w, float h, IColor color) {
         setColor(color);
-        this.canvas.drawRect(realToLogicX((int)x), realToLogicY((int)y),
-                realToLogicScale((int)w), realToLogicScale((int)h));
+        this.canvas.drawRect((int)logicToRealX(x), (int)logicToRealY(y),
+                (int)logicToRealScale(w), (int)logicToRealScale(h));
     }
 
     @Override
     public void fillRectangle(float x, float y, float w, float h, IColor  color) {
         setColor(color);
-        this.canvas.fillRect(realToLogicX((int)x), realToLogicY((int)y),
-                realToLogicScale((int)w), realToLogicScale((int)h));
+        this.canvas.fillRect((int)logicToRealX(x), (int)logicToRealY(y),
+                (int)logicToRealScale(w), (int)logicToRealScale(h));
     }
 
     @Override
     public void drawImage(String key, float x, float y, float w, float h) {
         if(this.images.containsKey(key)) {
-            this.canvas.drawImage(this.images.get(key).getImage(), realToLogicX((int) x), realToLogicY((int) y),
-                    realToLogicScale((int) w), realToLogicScale((int) h), null);
+            this.canvas.drawImage(this.images.get(key).getImage(), (int)logicToRealX(x), (int)logicToRealY(y),
+                    (int)logicToRealScale(w), (int)logicToRealScale(h), null);
         }
     }
 
     @Override
     public void drawText(String text, float x, float y, float textSize, IColor color) {
         setColor(color);
-        this.canvas.setFont(this.canvas.getFont().deriveFont(textSize * getScaleFactor()));
-        this.canvas.drawString(text,realToLogicX((int)x),realToLogicY((int)y));
+        this.canvas.setFont(this.canvas.getFont().deriveFont(logicToRealScale(textSize)));
+        this.canvas.drawString(text,logicToRealX(x),logicToRealY(y));
         this.canvas.setFont(this.defaultFont);
     }
 
@@ -167,8 +169,8 @@ public class DGraphics implements IGraphics {
     public void drawText(String key, String text, float x, float y, float textSize, IColor color) {
         setColor(color);
         if(this.fonts.containsKey(key)) {
-            this.canvas.setFont(this.fonts.get(key).getFont().deriveFont(textSize * getScaleFactor()));
-            this.canvas.drawString(text, realToLogicX((int) x), realToLogicY((int) y));
+            this.canvas.setFont(this.fonts.get(key).getFont().deriveFont(logicToRealScale(textSize)));
+            this.canvas.drawString(text, logicToRealX(x), logicToRealY(y));
         }
     }
 
@@ -178,23 +180,25 @@ public class DGraphics implements IGraphics {
         float butY = (float) button.getPosY();
         float butW = (float) button.getWidth();
         float butH = (float) button.getHeight();
+        String imageKey = button.getImageKey();
 
         this.fillRectangle(butX,butY,butW,butH, button.getBackgroundColor());
-        this.drawRectangle(butX,butY,butW,butH, button.getMainColor());
+        this.drawImage(imageKey, butX, butY, butW, butH);
+        //this.drawRectangle(butX,butY,butW,butH, button.getMainColor());
     }
 
     //________________________________GETTERS________________________________
     @Override
-    public int getWidth() { return this.window.getWidth(); }
+    public float getWidth() { return this.window.getWidth(); }
 
     @Override
-    public int getHeight() { return this.window.getHeight(); }
+    public float getHeight() { return this.window.getHeight(); }
 
     @Override
-    public int getLogicWidth() { return this.logicWidth; }
+    public float getLogicWidth() { return this.logicWidth; }
 
     @Override
-    public int getLogicHeight() { return this.logicHeight; }
+    public float getLogicHeight() { return this.logicHeight; }
 
     @Override
     public float getScaleFactor() { return Math.min(this.scaleFactorX, this.scaleFactorY); }
