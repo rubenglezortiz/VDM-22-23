@@ -4,9 +4,7 @@ import com.example.engine.IButton;
 import com.example.engine.IColor;
 import com.example.engine.IFont;
 import com.example.engine.IGraphics;
-import com.example.engine.IImage;
 
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.util.HashMap;
@@ -23,7 +21,7 @@ public class DGraphics implements IGraphics {
     private float scaleFactorX, scaleFactorY;
     private boolean scaleInX;
     private float offsetX, offsetY;
-    private Font defaultFont;
+    private String defaultFont;
     // Thread
     private Thread renderThread;
     private boolean running;
@@ -35,6 +33,17 @@ public class DGraphics implements IGraphics {
         this.window = window_;
         this.logicWidth = 400;
         this.logicHeight = 600;
+        DGraphicsInit();
+    }
+
+    public DGraphics(JFrame window_,int logicWidth_,int logicHeight_){
+        this.window = window_;
+        this.logicWidth = logicWidth_;
+        this.logicHeight = logicHeight_;
+        DGraphicsInit();
+    }
+
+    private void DGraphicsInit(){
         this.window.setSize((int)this.logicWidth, (int)this.logicHeight);
 
         this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -58,41 +67,11 @@ public class DGraphics implements IGraphics {
         this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
         this.window.setIgnoreRepaint(true);
         this.window.setVisible(true);
-        this.defaultFont = this.canvas.getFont();
-    }
-
-    public DGraphics(JFrame window_,int logicWidth_,int logicHeight_){
-        this.window = window_;
-        this.logicWidth = logicWidth_;
-        this.logicHeight = logicHeight_;
-        this.window.setSize((int)this.logicWidth, (int)this.logicHeight);
-        this.window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.defaultFont = "font.TTF";
         this.fonts = new HashMap<>();
         this.images = new HashMap<>();
-
-        int tries = 1000;
-        while(tries > 0) {
-            try {
-                this.window.createBufferStrategy(2);
-                break;
-            } catch (Exception e){
-                e.printStackTrace();
-            }
-            tries--;
-        }
-        if (tries == 0) {
-            System.err.println("No pude crear la BufferStrategy");
-            return;
-        }
-
-        this.buffer = this.window.getBufferStrategy();
-        this.canvas = (Graphics2D) this.buffer.getDrawGraphics();
-        this.window.setIgnoreRepaint(true);
-        this.window.setVisible(true);
-        this.defaultFont = this.canvas.getFont();
+        newFont(this.defaultFont, false);
     }
-
-
 
     //________________________________CREATE________________________________
     @Override
@@ -143,10 +122,14 @@ public class DGraphics implements IGraphics {
     }
 
     @Override
-    public void fillRectangle(float x, float y, float w, float h, IColor  color) {
+    public void fillRectangle(float x_, float y_, float w_, float h_, IColor  color) {
         setColor(color);
-        this.canvas.fillRect((int)logicToRealX(x), (int)logicToRealY(y),
-                (int)logicToRealScale(w), (int)logicToRealScale(h));
+        float x = logicToRealX(x_);
+        float y = logicToRealY(y_);
+        float w = logicToRealScale(w_);
+        float h = logicToRealScale(h_);
+        this.canvas.fillRect((int)(x), (int)(y),
+                (int)(w), (int)(h));
     }
 
     @Override
@@ -160,9 +143,8 @@ public class DGraphics implements IGraphics {
     @Override
     public void drawText(String text, float x, float y, float textSize, IColor color) {
         setColor(color);
-        this.canvas.setFont(this.canvas.getFont().deriveFont(logicToRealScale(textSize)));
+        this.canvas.setFont(this.fonts.get(this.defaultFont).getFont().deriveFont(logicToRealScale(textSize)));;//.deriveFont(logicToRealScale(textSize)));
         this.canvas.drawString(text,logicToRealX(x),logicToRealY(y));
-        this.canvas.setFont(this.defaultFont);
     }
 
     @Override

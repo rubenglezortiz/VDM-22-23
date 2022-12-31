@@ -9,10 +9,11 @@ import javax.imageio.ImageIO;
 
 public class DImage implements IImage {
     private Image image;
+    private String path = "./Assets/Images/";
 
     public DImage(String name){
         try {
-            this.image = ImageIO.read(new File(name));
+            this.image = ImageIO.read(new File(this.path + name));
         } catch (IOException e) {
             e.printStackTrace();
         }
